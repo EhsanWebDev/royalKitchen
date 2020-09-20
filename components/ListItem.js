@@ -4,7 +4,6 @@ import { Button, useTheme } from "react-native-paper";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addToCart } from "../src/store/actions";
-// import FastImage from "react-native-fast-image";
 
 const ListItem = (props) => {
   const { item } = props;
@@ -56,10 +55,10 @@ const ListItem = (props) => {
             opacity: 0.95,
           }}
         >
-          {/* <FastImage
-            source={{ uri: item.image, priority: FastImage.priority.low }}
+          <Image
+            source={{ uri: item.image }}
             style={{ width: 50, height: 40, borderRadius: 8 }}
-          /> */}
+          />
 
           <View style={{ marginHorizontal: 28 }}>
             <Text

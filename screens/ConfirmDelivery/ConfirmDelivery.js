@@ -9,8 +9,6 @@ import {
 } from "react-native-paper";
 import Delivery from "./Delivery";
 import TakeAway from "./TakeAway";
-import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
 
 class ConfirmDelivery extends React.Component {
   state = {
@@ -19,20 +17,7 @@ class ConfirmDelivery extends React.Component {
     longitude: "",
   };
 
-  async componentDidMount() {
-    let { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      console.log("Not Granted");
-    }
-    try {
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-      console.log(location);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  async componentDidMount() {}
 
   render() {
     const { value } = this.state;

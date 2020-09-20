@@ -2211,6 +2211,11 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
+crypto-js@^3.1.9-1:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+
 css-color-keywords@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
@@ -4652,11 +4657,6 @@ react-native-appearance@~0.3.3:
     invariant "^2.2.4"
     use-subscription "^1.0.0"
 
-react-native-fast-image@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.2.tgz#e9db271b70b9634b7be054760914d80954f9898c"
-  integrity sha512-AJ0b4BEswRwa0bh4SibYUtXszEiaO88Lf4CZ1ib+t5ZfkAgsMk9Liv3L0LYnDblMJmSeGTr1+2ViIM8F2vamjg==
-
 react-native-gesture-handler@~1.6.0:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
@@ -4671,6 +4671,13 @@ react-native-image-crop-picker@^0.35.0:
   version "0.35.0"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.35.0.tgz#a93450028354a7d7576a3e107fa627693f509e63"
   integrity sha512-vbmwYK7R3X30Qjv5SUw84ii7e5/FnCLA4E/2DlmEKiqvjpe6VHFPhIl9ntdU6JpEpxFBkEdOWTVAE8EcK1l5qQ==
+
+react-native-img-cache@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-img-cache/-/react-native-img-cache-1.6.0.tgz#79635bd249146f4973629d53047edac05d6f9533"
+  integrity sha512-4LDlOW6hmFG4l0QjStuvIPuhpgr4VxKMjWsX2OPlfzgPUBV4bcipGoBf4wuAh2yJ1YuvEQYXKEiaUHopIK4mzA==
+  dependencies:
+    crypto-js "^3.1.9-1"
 
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"

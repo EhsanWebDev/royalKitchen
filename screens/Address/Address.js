@@ -11,7 +11,7 @@ import {
   Paragraph,
 } from "react-native-paper";
 import { connect } from "react-redux";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+import { MaterialCommunityIcons as Icon, AntDesign } from "@expo/vector-icons";
 import { allAddress, thisAddress } from "../../src/store/actions/address";
 const Address = ({ user, navigation, dispatch, address }) => {
   const theme = useTheme();
@@ -75,14 +75,17 @@ const Address = ({ user, navigation, dispatch, address }) => {
             >
               <Card.Title
                 title={item.street_address}
-                titleStyle={{ color: "#000" }}
-                subtitleStyle={{ color: "#333" }}
+                titleStyle={{
+                  color: theme.dark ? "#fff" : "#000",
+                  fontSize: 14,
+                }}
+                subtitleStyle={{ color: theme.dark ? "#fff" : "#777" }}
                 subtitle={item.city}
                 left={(props) => (
                   <Icon
                     {...props}
                     name="home-city-outline"
-                    color="#000"
+                    color={theme.dark ? "#fff" : "#000"}
                     size={32}
                   />
                 )}
@@ -94,17 +97,24 @@ const Address = ({ user, navigation, dispatch, address }) => {
               <Card.Content>
                 <Text
                   style={{
-                    color: "#000",
+                    color: theme.dark ? "#fff" : "#000",
                   }}
                 >
                   Name: {item.name}
                 </Text>
                 <Paragraph
                   style={{
-                    color: "#000",
+                    color: theme.dark ? "#fff" : "#000",
                   }}
                 >
                   Phone: {item.contact_number}
+                </Paragraph>
+                <Paragraph
+                  style={{
+                    color: theme.dark ? "#fff" : "#000",
+                  }}
+                >
+                  Location: {item.lat} , {item.lng}
                 </Paragraph>
               </Card.Content>
               <Card.Actions>
@@ -115,6 +125,14 @@ const Address = ({ user, navigation, dispatch, address }) => {
             </Card>
           )}
         />
+      )}
+      {!address && (
+        <View style={{ flex: 2, alignItems: "center" }}>
+          <AntDesign name="home" size={40} color="black" />
+          <Text style={{ fontSize: 18 }}>
+            No Addresses found. Please add one
+          </Text>
+        </View>
       )}
 
       <FAB

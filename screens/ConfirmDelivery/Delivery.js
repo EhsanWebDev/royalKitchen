@@ -34,23 +34,23 @@ const Delivery = ({ defaultAddress }) => {
           </Title>
           <Card
             style={{
-              marginHorizontal: 15,
-              marginVertical: 10,
+              // marginHorizontal: 5,
+              marginVertical: 20,
               borderColor: "#000",
               borderWidth: 1,
             }}
           >
             <Card.Title
               title={defaultAddress[0].street_address}
-              titleStyle={{ color: "#000" }}
-              subtitleStyle={{ color: "#333" }}
+              titleStyle={{ color: theme.dark ? "#fff" : "#000", fontSize: 14 }}
+              subtitleStyle={{ color: theme.dark ? "#fff" : "#000" }}
               subtitle={defaultAddress[0].city}
               left={(props) => (
                 <Icon
                   {...props}
                   name="home-city-outline"
-                  color="#000"
-                  size={32}
+                  color={theme.dark ? "#fff" : "#000"}
+                  size={40}
                 />
               )}
 
@@ -61,14 +61,14 @@ const Delivery = ({ defaultAddress }) => {
             <Card.Content>
               <Text
                 style={{
-                  color: "#000",
+                  color: theme.dark ? "#fff" : "#000",
                 }}
               >
                 Name: {defaultAddress[0].name}
               </Text>
               <Paragraph
                 style={{
-                  color: "#000",
+                  color: theme.dark ? "#fff" : "#000",
                 }}
               >
                 Phone: {defaultAddress[0].contact_number}
@@ -101,6 +101,7 @@ const Delivery = ({ defaultAddress }) => {
         <Button
           mode="contained"
           style={{ marginHorizontal: 30, borderRadius: 8 }}
+          onPress={() => navigation.navigate("PlaceOrder")}
         >
           Continue
         </Button>

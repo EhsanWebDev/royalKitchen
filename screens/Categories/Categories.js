@@ -63,7 +63,8 @@ const All = (props) => {
         setLoading(false);
       } else {
         setLoading(false);
-        alert("error occured");
+        alert("error occurred");
+        console.log(res.data);
       }
       // console.log('Response', res);
     };

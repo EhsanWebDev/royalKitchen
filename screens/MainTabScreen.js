@@ -22,6 +22,7 @@ import Categories from "./Categories/Categories";
 import ConfirmDelivery from "./ConfirmDelivery/ConfirmDelivery";
 import Address from "./Address/Address";
 import CreateAdd from "./Address/CreateAdd";
+import PlaceOrder from "./ConfirmDelivery/PlaceOrder";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -169,7 +170,12 @@ const HomeStackScreen = ({ navigation }) => {
     </HomeStack.Navigator>
   );
 };
-const CategoryStackScreen = ({ navigation }) => {
+const CategoryStackScreen = ({ navigation, route }) => {
+  if (route.state && route.state.index > 0) {
+    navigation.setOptions({ tabBarVisible: false });
+  } else {
+    navigation.setOptions({ tabBarVisible: true });
+  }
   const { colors } = useTheme();
   const theme = useTheme();
   return (
@@ -209,6 +215,7 @@ const CategoryStackScreen = ({ navigation }) => {
         name="ConfirmDelivery"
         component={ConfirmDelivery}
       />
+      <CategoryStack.Screen name="PlaceOrder" component={PlaceOrder} />
     </CategoryStack.Navigator>
   );
 };
