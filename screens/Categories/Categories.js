@@ -50,7 +50,7 @@ const All = (props) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   useEffect(() => {
-    console.log(props.id);
+    // console.log(props.id);
     const fetchData = async () => {
       const res = await Axios.post(
         "https://gradhatcreators.com/api/user/products",
@@ -131,8 +131,10 @@ class Categories extends React.Component {
   };
   componentDidMount() {
     this._isMounted = true;
+    console.log(this.props.route.params);
     if (this._isMounted) {
-      const cats = this.props.categories.map((item) => item.name);
+      const cats =
+        this.props.categories && this.props.categories.map((item) => item.name);
       // console.log(cats);
       this.setState({
         selected: this.props.categories[0].name,
@@ -152,7 +154,7 @@ class Categories extends React.Component {
     //   "find",
     //   cats.find((item) => item === selected)
     // );
-    console.log("selected", selected);
+    // console.log("selected", selected);
     return (
       <Container dark={theme.dark ? true : false}>
         <StatusBar
@@ -237,7 +239,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("state", state.categories);
+  // console.log("state", state.categories);
   return {
     categories: state.category.categories,
   };

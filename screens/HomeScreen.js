@@ -19,19 +19,27 @@ import { connect } from "react-redux";
 import { getAllCategories } from "../src/store/actions/categories";
 
 const HomeScreen = ({ navigation, categories, dispatch }) => {
+  let _isMounted = false;
+
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   useEffect(() => {
+    _isMounted = true;
     const fetchDate = async () => {
       const res = await dispatch(getAllCategories());
       if (res.data.status) {
-        setLoading(false);
         setData(res.data.source);
+        setLoading(false);
       }
       // console.log(categories);
     };
+    if (_isMounted) {
+      fetchDate();
+    }
 
-    fetchDate();
+    return () => {
+      isMounted = false;
+    };
   }, []);
   const theme = useTheme();
   const { colors } = useTheme();
@@ -43,7 +51,8 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
         <ActivityIndicator size="large" />
       </View>
     );
-  } else {
+  }
+  if (data.length > 0) {
     return (
       <ScrollView
         style={[
@@ -120,15 +129,24 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
                             color: "#fff",
                             paddingRight: 10,
                           }}
-                          onPress={() => alert("ok")}
+                          onPress={() =>
+                            navigation.navigate("Categories", {
+                              params: {
+                                selected: item.name,
+                              },
+                              screen: "CategoryScreen",
+                            })
+                          }
                           style={{
                             flex: 0,
+                            // marginTop: 10,
+                            // paddingTop: 10,
                             alignItems: "flex-end",
 
                             backgroundColor: "#c0392b",
                           }}
                         >
-                          View
+                          Discover
                         </Button>
                       </View>
                     </ImageBackground>
@@ -258,16 +276,36 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
             </View> */}
           </Swiper>
         </View>
-        <Title
+        <View
           style={{
-            color: theme.dark ? "#fff" : "#333",
-            paddingLeft: 20,
-            marginTop: 20,
-            fontSize: 28,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          Categories
-        </Title>
+          <Title
+            style={{
+              color: theme.dark ? "#fff" : "#333",
+              paddingLeft: 20,
+              marginTop: 20,
+              fontSize: 28,
+            }}
+          >
+            Categories
+          </Title>
+          <Button
+            onPress={() =>
+              navigation.navigate("Categories", {
+                screen: "CategoryScreen",
+              })
+            }
+            icon="arrow-right"
+            style={{ marginTop: 18 }}
+          >
+            See All
+          </Button>
+        </View>
+
         <View style={styles.categoryContainer}>
           {data.length > 0 &&
             data
@@ -276,11 +314,7 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
                 <TouchableOpacity
                   key={index}
                   style={styles.categoryBtn}
-                  onPress={() =>
-                    navigation.navigate("CardListScreen", {
-                      title: "Restaurant",
-                    })
-                  }
+                  disabled
                 >
                   <ImageBackground
                     source={{
@@ -484,6 +518,8 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
       </ScrollView>
     );
   }
+
+  return null;
 };
 const mapStateToProps = (state) => {
   // console.log('state', state);

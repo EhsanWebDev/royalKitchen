@@ -8,6 +8,8 @@ import Constants from "expo-constants";
 import OrderSummary from "../../components/OrderSummary";
 import { Button, withTheme, ActivityIndicator } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
+import { empty } from "../../src/store/actions";
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 // import { placeOrder, empty } from "../../store/actions";
 class PlaceOrder extends React.Component {
   state = {
@@ -55,27 +57,22 @@ class PlaceOrder extends React.Component {
     //     this.setState({ loading: false });
     //   } else {
     //     this.setState({ userID: val[0][1], loading: false });
-    this.getData();
+
     //   }
     // });
   }
 
-  getData = () => {
-    const data = {};
-    const quantities = this.getQuantityCount();
+  // getData = (cb) => {
 
-    // !! Data
-    data.user_id = this.props.user.id;
-    data.products = this.getProductsID();
-    data.quantity = this.getTotalQuantity(quantities);
-    (data.type = "delivery"),
-      (data.coupon = this.state.promoMatch ? this.state.promoMatch : 0),
-      (data.price = this.calPrice());
-    data.address_id = this.props.defaultAddress[0].id;
-    this.setState({
-      data: data,
-    });
-  };
+  //   this.setState(
+  //     {
+  //       data: data,
+  //     },
+  //     () => {
+  //       cb();
+  //     }
+  //   );
+  // };
   getProductsID = () => {
     return this.props.cartItems.map((element) => element);
   };
@@ -83,15 +80,40 @@ class PlaceOrder extends React.Component {
     return this.props.cartItems.map((element) => element.units);
   };
 
-  postData = async (data) => {
-    console.log(JSON.stringify(data));
+  postData = async () => {
+    this.setState({ loading: true });
+    const data = {};
+    const quantities = this.getQuantityCount();
 
-    // const res = await axios.post(
-    //   "https://gradhatcreators.com/api/user/add_order",
-    //   JSON.stringify(data)
-    // );
+    // !! Data
+    data.user_id = this.props.user.id;
+    data.products = JSON.stringify(this.getProductsID());
+    data.quantity = this.getTotalQuantity(quantities);
+    (data.type = "delivery"),
+      (data.coupon = this.state.promoMatch ? this.state.promoMatch.id : 0),
+      (data.price = this.calPrice());
+    data.address_id = this.props.defaultAddress[0].id;
 
-    // console.log(res.data);
+    // console.log(data);
+    // console.log(JSON.stringify(data));
+
+    const res = await axios.post(
+      "https://gradhatcreators.com/api/user/add_order",
+      JSON.stringify(data)
+    );
+
+    if (!res.data.status) {
+      this.setState({ loading: false });
+      alert(res.data.message);
+      return;
+    } else {
+      this.setState({ loading: false }, () => {
+        alert(res.data.message);
+        this.props.dispatch(empty());
+        this.props.navigation.navigate("Home");
+      });
+    }
+
     //   this.props
     //     .dispatch(placeOrder(data))
     //     .then(() => {
@@ -287,7 +309,18 @@ class PlaceOrder extends React.Component {
                 flex: 1,
               }}
             >
-              <Text>Hello,{this.state.userID} </Text>
+              <Icon name="cart" size={48} color="#777" />
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "bold",
+                  color: "#777",
+                  marginHorizontal: 30,
+                }}
+              >
+                Nothing to see, Please add some items into your cart to place
+                order ...{" "}
+              </Text>
             </View>
           )}
         </View>
@@ -314,4 +347,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(withTheme(PlaceOrder));
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTheme(PlaceOrder));

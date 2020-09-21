@@ -171,11 +171,6 @@ const HomeStackScreen = ({ navigation }) => {
   );
 };
 const CategoryStackScreen = ({ navigation, route }) => {
-  if (route.state && route.state.index > 0) {
-    navigation.setOptions({ tabBarVisible: false });
-  } else {
-    navigation.setOptions({ tabBarVisible: true });
-  }
   const { colors } = useTheme();
   const theme = useTheme();
   return (

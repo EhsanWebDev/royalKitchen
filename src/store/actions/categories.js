@@ -1,12 +1,12 @@
-import axios from 'axios';
-import {CATEGORIES_URL} from '../../helpers/constants';
-import {actionTypes} from './types';
+import axios from "axios";
+import { CATEGORIES_URL } from "../../helpers/constants";
+import { actionTypes } from "./types";
 
 export const getAllCategories = () => {
-  return async dispatch => {
-    dispatch({
-      type: actionTypes.CATEGORY_LOADING,
-    });
+  return async (dispatch) => {
+    // dispatch({
+    //   type: actionTypes.CATEGORY_LOADING,
+    // });
 
     const response = await axios.get(CATEGORIES_URL);
 

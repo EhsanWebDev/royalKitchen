@@ -1,5 +1,5 @@
-import {actionTypes} from '../actions/types';
-const {CATEGORY_FAIL, CATEGORY_LOADING, CATEGORY_SUCCESS} = actionTypes;
+import { actionTypes } from "../actions/types";
+const { CATEGORY_FAIL, CATEGORY_LOADING, CATEGORY_SUCCESS } = actionTypes;
 
 const INITIAL_STATE = {
   categories: null,
@@ -15,12 +15,14 @@ export default (state = INITIAL_STATE, action) => {
       };
     case CATEGORY_SUCCESS:
       return {
+        ...state,
         categories: action.categories,
         isLoading: false,
         error: null,
       };
     case CATEGORY_FAIL:
       return {
+        ...state,
         isLoading: false,
         error: action.error,
       };

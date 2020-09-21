@@ -33,7 +33,7 @@ const Navigation = ({ user, dispatch }) => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
-    console.log(user);
+    // console.log(user);
     setTimeout(async () => {
       setLoading(false);
       let userToken;
@@ -146,7 +146,7 @@ const Navigation = ({ user, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     user: state.auth.user,
   };
