@@ -13,11 +13,23 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
+
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+
+      "bundleIdentifier": "com.ehsanwebdev47.RoyalKitchen",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.706778063952-u6kf1vcilqa8ens89pork3eo6d66bj74"
+        }
+      },
+
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "package": "com.ehsanwebdev47.RoyalKitchen",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

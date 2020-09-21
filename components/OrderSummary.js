@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  ActivityIndicator,
   Image,
   ScrollView,
   KeyboardAvoidingView,
@@ -14,11 +13,16 @@ import {
 import Axios from "axios";
 // import { URL } from "../utls";
 import { connect } from "react-redux";
-import { Button, TextInput, withTheme } from "react-native-paper";
+import {
+  Button,
+  TextInput,
+  withTheme,
+  ActivityIndicator,
+} from "react-native-paper";
 class OrderSummary extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: false, promo: "", promoRes: null, isPromo: "" };
+    this.state = { loading: true, promo: "", promoRes: null, PromoDis: 0 };
   }
 
   renderProdList = (data) => {
@@ -140,6 +144,13 @@ class OrderSummary extends Component {
   //       .catch((e) => console.log(e));
   //   };
 
+  async componentDidMount() {
+    const coup = await Axios.get(
+      "https://gradhatcreators.com/api/user/coupons"
+    );
+    this.setState({ loading: false });
+    // console.log(coup);
+  }
   render() {
     const { theme } = this.props;
     const { colors } = theme;
@@ -153,28 +164,35 @@ class OrderSummary extends Component {
       return (
         <ScrollView style={{ flex: 1 }}>
           <View style={{ flex: 1 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <TextInput
-                mode="outlined"
-                label="ENTER PROMO CODE"
-                onChangeText={(value) => this.setState({ promo: value })}
-                theme={{
-                  colors: { text: colors.dark, placeholder: colors.dark },
-                }}
+            {!this.props.hideCoupon && (
+              <View
                 style={{
-                  backgroundColor: "#fff",
-                  fontSize: 14,
-                  width: Dimensions.get("screen").width / 1.4,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
-              />
-              <Button mode="contained">Check</Button>
-            </View>
+              >
+                <TextInput
+                  mode="outlined"
+                  label="ENTER PROMO CODE"
+                  onChangeText={(value) => this.props.promo(value)}
+                  theme={{
+                    colors: { text: colors.dark, placeholder: colors.dark },
+                  }}
+                  style={{
+                    backgroundColor: "#fff",
+                    fontSize: 14,
+                    width: Dimensions.get("screen").width / 1.4,
+                  }}
+                />
+                <Button
+                  mode="contained"
+                  onPress={() => this.props.handleCoupon()}
+                >
+                  Check
+                </Button>
+              </View>
+            )}
 
             {/* {this.state.isPromo === null ? (
               <Text style={{ fontSize: 16, color: "red", fontWeight: "bold" }}>

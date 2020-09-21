@@ -15,7 +15,8 @@ import {
 import * as Animatable from "react-native-animatable";
 
 import { FontAwesome, Feather } from "@expo/vector-icons";
-
+import * as GoogleSignIn from "expo-google-sign-in";
+import * as Google from "expo-google-app-auth";
 import {
   Button,
   Modal,
@@ -129,7 +130,24 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
   //     })
   //     .catch(e => alert('Error occurred while signing in '));
   // };
+  const attempt = async () => {
+    const { type, accessToken, user } = await Google.logInAsync({
+      iosClientId: `706778063952-v9031e7idlub8vebv34m3htamumqr0i5.apps.googleusercontent.com`,
+      androidClientId: `706778063952-98jo45uaieid42mem4sucmb9nre353ru.apps.googleusercontent.com`,
+      iosStandaloneAppClientId: `706778063952-v9031e7idlub8vebv34m3htamumqr0i5.apps.googleusercontent.com`,
+      androidStandaloneAppClientId: `706778063952-98jo45uaieid42mem4sucmb9nre353ru.apps.googleusercontent.com`,
+      scopes: [""],
+    });
+    if (type === "success") {
+      /* `accessToken` is now valid and can be used to get data from the Google API with HTTP requests */
+      navigation.navigate("Modal", { user });
+    }
+  };
 
+  useEffect(() => {
+    // attempt();
+    // initAsync();
+  }, []);
   const loginHandle = async () => {
     // console.log(number);
     // console.log(user);
@@ -389,7 +407,9 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             </Animatable.View>
           )} */}
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
             <Text
               style={{
                 color: "#fff",
@@ -442,7 +462,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             </Button>
 
             <TouchableOpacity
-              // onPress={() => handleGoogleAuth()}
+              onPress={() => attempt()}
               style={[
                 styles.signIn,
                 {

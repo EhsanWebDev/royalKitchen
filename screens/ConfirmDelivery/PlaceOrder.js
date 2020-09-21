@@ -1,22 +1,55 @@
 import React from "react";
-import { ActivityIndicator, View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 // import { getTokens } from "../../utls";
 import { connect } from "react-redux";
 import axios from "axios";
 // import { URL } from "../../utls";
 import Constants from "expo-constants";
 import OrderSummary from "../../components/OrderSummary";
-import { Button, withTheme } from "react-native-paper";
+import { Button, withTheme, ActivityIndicator } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 // import { placeOrder, empty } from "../../store/actions";
 class PlaceOrder extends React.Component {
   state = {
     userID: "",
-    loading: false,
+    loading: true,
     data: [],
+    promoRes: null,
+    promo: "",
+    hideCoupon: false,
+    PromoDis: null,
+    promoMatch: null,
   };
+  handleCoupons = () => {
+    const { promoRes, promo } = this.state;
+    if (promo.length <= 0) {
+      alert("Please enter promo code");
+      return;
+    }
+    const promoMatch = promoRes.find((item) => item.code === promo);
 
-  componentDidMount() {
+    if (promoMatch) {
+      alert(`You'll get ${promoMatch.price}  on your order`);
+      this.setState({
+        PromoDis: promoMatch.price,
+        promoMatch: promoMatch,
+        hideCoupon: true,
+      });
+      return;
+    } else {
+      alert("Coupon expired or not valid");
+    }
+    // console.log(this.state.promo);
+  };
+  promo = (promo) => {
+    this.setState({ promo });
+  };
+  async componentDidMount() {
+    const coup = await axios.get(
+      "https://gradhatcreators.com/api/user/coupons"
+    );
+    this.setState({ loading: false, promoRes: coup.data.source });
+    console.log(coup);
     // getTokens((val) => {
     //   if (val[0][1] === null) {
     //     this.setState({ loading: false });
@@ -30,15 +63,15 @@ class PlaceOrder extends React.Component {
   getData = () => {
     const data = {};
     const quantities = this.getQuantityCount();
-    data.userID = this.props.user.id;
-    data.products_id = this.getProductsID();
-    data.quantities = this.getQuantityCount();
-    data.total_quantity = this.getTotalQuantity(quantities);
-    data.total_price = this.calPrice();
-    //   data.amountAfterDiscount = this.calPrice();
-    data.shippingID = this.props.defaultAddress[0].id;
-    data.orderStatus = 0;
-    //   data.totalShippingCharges = this.calPrice() + 20;
+
+    // !! Data
+    data.user_id = this.props.user.id;
+    data.products = this.getProductsID();
+    data.quantity = this.getTotalQuantity(quantities);
+    (data.type = "delivery"),
+      (data.coupon = this.state.promoMatch ? this.state.promoMatch : 0),
+      (data.price = this.calPrice());
+    data.address_id = this.props.defaultAddress[0].id;
     this.setState({
       data: data,
     });
@@ -50,8 +83,15 @@ class PlaceOrder extends React.Component {
     return this.props.cartItems.map((element) => element.units);
   };
 
-  postData = (data) => {
-    console.log(data);
+  postData = async (data) => {
+    console.log(JSON.stringify(data));
+
+    // const res = await axios.post(
+    //   "https://gradhatcreators.com/api/user/add_order",
+    //   JSON.stringify(data)
+    // );
+
+    // console.log(res.data);
     //   this.props
     //     .dispatch(placeOrder(data))
     //     .then(() => {
@@ -81,7 +121,12 @@ class PlaceOrder extends React.Component {
     const { theme } = this.props;
     if (this.state.loading) {
       return (
-        <View style={styles.loading}>
+        <View
+          style={[
+            styles.loading,
+            { backgroundColor: theme.dark ? "#333" : "white" },
+          ]}
+        >
           <ActivityIndicator size="large" />
         </View>
       );
@@ -153,9 +198,25 @@ class PlaceOrder extends React.Component {
               </View>
 
               <View style={{ padding: 10, flex: 1 }}>
-                <OrderSummary items={this.props.cartItems} />
+                <OrderSummary
+                  hideCoupon={this.state.hideCoupon}
+                  promo={this.promo}
+                  handleCoupon={this.handleCoupons}
+                  items={this.props.cartItems}
+                />
               </View>
-
+              {this.state.PromoDis && (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginVertical: 10,
+                  }}
+                >
+                  You'll get {this.state.PromoDis}₹ discount on your order !{" "}
+                </Text>
+              )}
               <View
                 style={{
                   flexDirection: "row",
@@ -182,14 +243,28 @@ class PlaceOrder extends React.Component {
                       Total :
                     </Text>
                     <Text
-                      style={{
-                        fontSize: 16,
-                        // fontWeight: "bold",
-                        // marginRight: 15,
-                      }}
+                      style={
+                        {
+                          // fontWeight: "bold",
+                          // marginRight: 15,
+                        }
+                      }
                     >
-                      {" "}
-                      ₹ {this.calPrice()}
+                      <Text
+                        style={{
+                          textDecorationLine:
+                            this.state.PromoDis && "line-through",
+                          fontSize: 14,
+                        }}
+                      >
+                        ₹ {this.calPrice()}
+                      </Text>
+                      {"  "}
+                      {this.state.PromoDis && (
+                        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                          ₹{this.calPrice() - this.state.PromoDis}
+                        </Text>
+                      )}
                     </Text>
                   </View>
                 </View>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "706778063952",
+    "firebase_url": "https://royal-kitchen-4b18c.firebaseio.com",
+    "project_id": "royal-kitchen-4b18c",
+    "storage_bucket": "royal-kitchen-4b18c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706778063952:android:461cd8c7127de81bb91d55",
+        "android_client_info": {
+          "package_name": "com.ehsanwebdev47.RoyalKitchen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706778063952-7b3g1rfvl6o2o83j3gu5bhj91b1j62iu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ehsanwebdev47.RoyalKitchen",
+            "certificate_hash": "3abf10d40c80e10e6066bc94f9158ffa184ec159"
+          }
+        },
+        {
+          "client_id": "706778063952-db4rmbp2susq9ftohdl7m4s2ps30d3um.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD8Dfh6BKVnMDb2fCm3HjX0odQhMBqrT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706778063952-db4rmbp2susq9ftohdl7m4s2ps30d3um.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

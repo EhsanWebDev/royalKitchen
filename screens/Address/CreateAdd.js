@@ -89,6 +89,8 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
           street_address: street,
           id: makeid(2),
           uid: user.id,
+          lat: location.latitude,
+          lng: location.longitude,
         })
       );
       alert(res.data.message);
