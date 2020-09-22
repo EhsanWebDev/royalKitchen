@@ -1,20 +1,20 @@
-import {actionTypes} from './types';
-import axios from 'axios';
-import {LOGIN_URL, SIGNUP_URL} from '../../helpers/constants';
-import AsyncStorage from '@react-native-community/async-storage';
+import { actionTypes } from "./types";
+import axios from "axios";
+import { LOGIN_URL, SIGNUP_URL } from "../../helpers/constants";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const {LOGIN_FAIL, LOGIN_LOADING, LOGIN_SUCCESS} = actionTypes;
+const { LOGIN_FAIL, LOGIN_LOADING, LOGIN_SUCCESS } = actionTypes;
 
 export function loginUser(payload) {
-  return async dispatch => {
-    const {phone, password} = payload;
+  return async (dispatch) => {
+    const { email, password } = payload;
 
     // dispatch({
     //   type: LOGIN_LOADING,
     // });
 
     const response = await axios.post(LOGIN_URL, {
-      phone,
+      email,
       password,
     });
     //   console.log('Auth_Res ->', response);
@@ -25,13 +25,13 @@ export function loginUser(payload) {
         user: response.data.source,
       });
       try {
-        console.log('saving');
+        console.log("saving");
         await AsyncStorage.setItem(
-          'userToken',
-          JSON.stringify(response.data.source),
+          "userToken",
+          JSON.stringify(response.data.source)
         );
       } catch (e) {
-        console.log('error in signing in', e);
+        console.log("error in signing in", e);
       }
       return response;
     } else {
@@ -44,19 +44,19 @@ export function loginUser(payload) {
   };
 }
 export function SIGNOUT() {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem("userToken");
     } catch (e) {
       console.log(e);
     }
     dispatch({
-      type: 'SIGN_OUT',
+      type: "SIGN_OUT",
     });
   };
 }
 export function createUser(payload) {
-  return async dispatch => {
+  return async (dispatch) => {
     const response = await axios.post(SIGNUP_URL, {
       ...payload,
     });
@@ -75,11 +75,11 @@ export function createUser(payload) {
       });
       try {
         await AsyncStorage.setItem(
-          'userToken',
-          JSON.stringify(response.data.source),
+          "userToken",
+          JSON.stringify(response.data.source)
         );
       } catch (e) {
-        console.log('error in signing up', e);
+        console.log("error in signing up", e);
       }
       return response;
     }

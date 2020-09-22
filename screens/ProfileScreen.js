@@ -66,7 +66,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
             <Caption
               style={[styles.caption, { color: theme.dark ? "#fff" : "#333" }]}
             >
-              Online
+              {user.user_status}
             </Caption>
           </View>
         </View>
@@ -105,7 +105,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
       </View>
 
       <View style={styles.infoBoxWrapper}>
-        <View
+        {/* <View
           style={[
             styles.infoBox,
             {
@@ -118,22 +118,24 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
           <Caption style={{ color: theme.dark ? "#fff" : "#333" }}>
             Wallet
           </Caption>
-        </View>
+        </View> */}
         <View style={styles.infoBox}>
-          <Title style={{ color: theme.dark ? "#fff" : "#333" }}>12</Title>
+          <Title style={{ color: theme.dark ? "#fff" : "#333" }}>
+            {user.reward}
+          </Title>
           <Caption style={{ color: theme.dark ? "#fff" : "#333" }}>
-            Orders
+            Reward Points
           </Caption>
         </View>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        {/* <TouchableRipple onPress={() => {}}>
           <View style={styles.menuItem}>
             <Icon name="heart-outline" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Your Favorites</Text>
           </View>
-        </TouchableRipple>
+        </TouchableRipple> */}
         <TouchableRipple onPress={() => navigation.push("Address")}>
           <View style={styles.menuItem}>
             <Icon name="home" color="#FF6347" size={25} />
@@ -152,12 +154,12 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
             <Text style={styles.menuItemText}>Support</Text>
           </View>
         </TouchableRipple> */}
-        <TouchableRipple onPress={() => {}}>
+        {/* <TouchableRipple onPress={() => {}}>
           <View style={styles.menuItem}>
             <Icon name="settings-outline" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Settings</Text>
           </View>
-        </TouchableRipple>
+        </TouchableRipple> */}
       </View>
     </ScrollView>
   );

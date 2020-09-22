@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 
-import { FontAwesome, Feather } from "@expo/vector-icons";
+import { FontAwesome, Feather, MaterialIcons } from "@expo/vector-icons";
 import * as GoogleSignIn from "expo-google-sign-in";
 import * as Google from "expo-google-app-auth";
 import {
@@ -42,6 +42,8 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
     mobile: "",
     mobileError: false,
     password: "",
+    email: "",
+    errorEmail: false,
     passwordError: false,
     check_textInputChange: false,
     secureTextEntry: true,
@@ -81,7 +83,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
   };
 
   const handlePasswordChange = (val) => {
-    if (val.trim().length >= 6) {
+    if (val) {
       setData({
         ...data,
         password: val,
@@ -102,6 +104,27 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
       ...data,
       secureTextEntry: !data.secureTextEntry,
     });
+  };
+
+  const textInputChangeEmail = (val) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (re.test(String(val).toLowerCase())) {
+      setData({
+        ...data,
+        email: val,
+        errorEmail: false,
+        check_textInputChange: true,
+      });
+    } else {
+      setData({
+        ...data,
+        email: val,
+        errorEmail: "Please enter a valid email-address",
+        check_textInputChangeEmail: false,
+        check_textInputChange: false,
+      });
+    }
   };
 
   const handleValidUser = (val) => {
@@ -152,15 +175,22 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
     // console.log(number);
     // console.log(user);
     setLoading(true);
-    const { mobile, mobileError, password, passwordError } = data;
+    const {
+      mobile,
+      email,
+      errorEmail,
+      mobileError,
+      password,
+      passwordError,
+    } = data;
     const payload = {
-      phone: mobile,
+      email,
       password,
     };
     if (
-      mobileError ||
       passwordError ||
-      mobile.length === 0 ||
+      errorEmail ||
+      email.length === 0 ||
       password.length === 0
     ) {
       alert("Please provide valid credentials");
@@ -169,63 +199,18 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
     } else {
       const res = await dispatch(loginUser(payload));
       if (res.data.status) {
-        // console.log('User', user);
         setLoading(false);
-        // const token = makeid(5);
-        // console.log(token);
-        // const userData = [
-        //   {
-        //     ...user,
-        //     userToken: user,
-        //   },
-        // ];
-        // console.log(userData);
-        // await signIn(userData);
       } else {
         setLoading(false);
+        setData({
+          ...data,
+          email: "",
+          password: "",
+          check_textInputChange: false,
+        });
         alert("Incorrect Credentials");
       }
-      // if (user) {
-      //   console.log('User', user);
-      //   setLoading(false);
-      //   const token = makeid(5);
-      //   // console.log(token);
-      //   const userData = [
-      //     {
-      //       ...user,
-      //       userToken: token,
-      //     },
-      //   ];
-      //   // console.log(userData);
-      //   await signIn(userData);
-      //   return;
-      // }
-
-      // setLoading(false);
-      // alert('Incorrect Credentials');
-
-      // console.log('user', user);
     }
-
-    // const foundUser = Users.filter(item => {
-    //   return number == item.phone;
-    // });
-
-    // if (data.username.length == 0) {
-    //   Alert.alert(
-    //     'Wrong Input!',
-    //     'Username or password field cannot be empty.',
-    //     [{text: 'Okay'}],
-    //   );
-    //   return;
-    // }
-
-    // if (foundUser.length == 0) {
-    //   Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-    //     {text: 'Okay'},
-    //   ]);
-    //   return;
-    // }
   };
   // if (loading) {
   //   return (
@@ -289,8 +274,8 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             behavior="height"
             style={styles.action}
           >
-            <FontAwesome
-              name="mobile-phone"
+            <MaterialIcons
+              name="email"
               color={theme.dark ? "#333" : "#333"}
               size={28}
               style={{
@@ -300,7 +285,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               }}
             />
             <TextInput
-              placeholder="Enter your mobile number"
+              placeholder="Enter your email-address"
               placeholderTextColor="#333"
               style={[
                 styles.textInput,
@@ -310,9 +295,10 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 },
               ]}
               autoCapitalize="none"
-              keyboardType="numeric"
-              onChangeText={(val) => textInputChange(val)}
-              onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+              keyboardType="email-address"
+              onChangeText={(val) => textInputChangeEmail(val)}
+              value={data.email}
+              // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
             {data.check_textInputChange ? (
               <Animatable.View animation="bounceIn">
@@ -330,24 +316,6 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             ) : null}
           </KeyboardAvoidingView>
 
-          {/* {data.isValidUser ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Mobile number must be 4 characters long.
-            </Text>
-          </Animatable.View>
-        )} */}
-
-          {/* <Text
-          style={[
-            styles.text_footer,
-            {
-              color: colors.text,
-              marginTop: 35,
-            },
-          ]}>
-          Password
-        </Text> */}
           <View style={styles.action}>
             <Feather
               name="lock"
@@ -361,6 +329,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             />
             <TextInput
               placeholder="Enter Your Password"
+              value={data.password}
               placeholderTextColor="#333"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={[
@@ -399,13 +368,6 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               )}
             </TouchableOpacity>
           </View>
-          {/* {data.isValidPassword ? null : (
-            <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Password must be 8 characters long.
-              </Text>
-            </Animatable.View>
-          )} */}
 
           <TouchableOpacity
             onPress={() => navigation.navigate("ForgotPassword")}
@@ -461,6 +423,38 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               </Text>
             </Button>
 
+            <TouchableOpacity
+              onPress={() => navigation.navigate("SignInPhone")}
+              style={[
+                styles.signIn,
+                {
+                  marginTop: 15,
+                  // paddingHorizontal: 20,
+                  borderWidth: 1,
+                  borderColor: "#fff",
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "#fff",
+                    // borderColor: "#000",
+                    // borderWidth: 0,
+                    // border,
+                  },
+                ]}
+              >
+                {/* <FontAwesome
+                name="google"
+                color="black"
+                size={18}
+                style={{marginRight: 10}}
+              /> */}
+                Sign In using Phone Number
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => attempt()}
               style={[

@@ -50,7 +50,7 @@ const All = (props) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   useEffect(() => {
-    // console.log(props.id);
+    console.log(props.id);
     const fetchData = async () => {
       const res = await Axios.post(
         "https://gradhatcreators.com/api/user/products",
@@ -131,7 +131,8 @@ class Categories extends React.Component {
   };
   componentDidMount() {
     this._isMounted = true;
-    console.log(this.props.route.params);
+    // console.log(this.props.route.params);
+    console.log(this.props.categories[0].id);
     if (this._isMounted) {
       const cats =
         this.props.categories && this.props.categories.map((item) => item.name);
@@ -219,7 +220,7 @@ class Categories extends React.Component {
           cats.map((item, index) => {
             // console.log(item);
             if (item === selected) {
-              return <All id={id} key={index} />;
+              return <All id={selectedObj.id} key={index} />;
             }
           })}
         {/* {selected === cats.find(item => item === selected) ? (

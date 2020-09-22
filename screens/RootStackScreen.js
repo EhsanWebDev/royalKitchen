@@ -8,6 +8,8 @@ import SignUpScreen from "./SignUpScreen";
 import SignUpScreen1 from "./SignUpScreen1";
 import Modal from "./Modal/Modal";
 import ForgotPassword from "./ForgotPassword";
+import SignInPhone from "./SignInPhone";
+import OTP from "./OTP";
 
 const RootStack = createStackNavigator();
 
@@ -18,6 +20,8 @@ const RootStackScreen = ({ navigation }) => (
     <RootStack.Screen name="SignUpScreen" component={SignUpScreen} />
     <RootStack.Screen name="SignUpScreen1" component={SignUpScreen1} />
     <RootStack.Screen name="ForgotPassword" component={ForgotPassword} />
+    <RootStack.Screen name="SignInPhone" component={SignInPhone} />
+    <RootStack.Screen name="OTP" component={OTP} />
     <RootStack.Screen name="Modal" component={Modal} />
   </RootStack.Navigator>
 );
