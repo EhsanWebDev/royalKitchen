@@ -101,28 +101,36 @@ class CartItems extends Component {
                   >
                     -
                   </Button>
-
-                  <Button
-                    mode="contained"
-                    disabled
-                    compact={true}
-                    // onPress={() => this.props.addItem(item)}
-                    labelStyle={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      color: "#333",
-                    }}
+                  <View
                     style={{
                       height: 30,
                       width: 30,
                       borderRadius: 15,
                       backgroundColor: "#dfe6e9",
                       justifyContent: "center",
+                      alignItems: "center",
                       marginRight: 8,
                     }}
                   >
-                    {item.units}
-                  </Button>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        // alignItems: "center",
+                        color: "#333",
+                      }}
+                    >
+                      {item.units}
+                    </Text>
+                  </View>
+
+                  {/* <Button
+                    mode="contained"
+                    disabled
+                    compact={true}
+                    // onPress={() => this.props.addItem(item)}
+                    labelStyle={{}}
+                  ></Button> */}
 
                   <Button
                     mode="contained"

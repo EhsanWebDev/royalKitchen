@@ -153,7 +153,7 @@ var cities = [];
 //   }
 // }
 
-const CreateAdd = ({ user, dispatch, navigation }) => {
+const EditAddress = ({ user, dispatch, route, navigation }) => {
   const [name, setName] = useState("");
   // const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
@@ -175,6 +175,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
   const theme = useTheme();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(false);
+
   // const [city, setCity] = useState("");
   const reqLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
@@ -188,14 +189,25 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
         accuracy: Location.Accuracy.High,
       });
       setLocation(location.coords);
-      console.log(location);
+      //   console.log(location);
     } catch (error) {
       alert("Please turn on location services");
     }
   };
   useEffect(() => {
     reqLocation();
-
+    console.log(route.params);
+    const { item } = route.params;
+    setName(item.name);
+    setEmailData({
+      ...emailData,
+      email: item.email,
+    });
+    setNumber(item.contact_number);
+    setStreet(item.street_address);
+    setStates(item.province);
+    cities = [item.city];
+    setCity(item.city);
     return () => {
       cities = [];
     };
@@ -203,7 +215,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
   const saveState = (val, index) => {
     console.log(val, index);
     var city_arr = s_a.find((item, idx) => idx === index);
-    console.log("Cities=>", city_arr);
+    // console.log("Cities=>", city_arr);
 
     if (city_arr) {
       // console.log("city=>", city_arr.split("|"));
@@ -217,7 +229,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
     setStates(val);
   };
   const submitAdd = async () => {
-    // setLoading(true);
+    setLoading(true);
     if (
       name.length === 0 ||
       emailData.email.length === 0 ||
@@ -231,9 +243,11 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
     }
     // console.log(states);
     // console.log(city);
+    // console.log(name);
     const res = await Axios.post(
-      "https://gradhatcreators.com/api/user/add_address",
+      "https://gradhatcreators.com/api/user/edit_address",
       {
+        id: route.params.item.id,
         name,
         email: emailData.email,
         contact_number: number,
@@ -248,22 +262,18 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
     );
 
     if (res.data.status) {
-      setLoading(false);
-      dispatch(
-        addAddress({
-          name,
-          email: emailData.email,
-          contact_number: number,
-          city,
-          province: states,
-          country: "india",
-          street_address: street,
-          id: makeid(2),
-          uid: user.id,
-          lat: location.latitude,
-          lng: location.longitude,
-        })
+      const addresses = await Axios.post(
+        "https://gradhatcreators.com/api/user/address",
+        { uid: user.id }
       );
+      if (addresses.data.status) {
+        setLoading(false);
+        dispatch({ type: "ALL_ADDRESS", payload: addresses.data.source });
+      } else {
+        setLoading(false);
+        return;
+      }
+
       alert(res.data.message);
     } else {
       setLoading(false);
@@ -340,6 +350,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
         >
           <TextInput
             mode="outlined"
+            value={name}
             placeholder="Enter your Name"
             onChangeText={(val) => setName(val)}
             // multiline
@@ -351,6 +362,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
             mode="outlined"
             placeholder="Email address"
             keyboardType="email-address"
+            value={emailData.email}
             // multiline
             // numberOfLines={4}
             theme={{ colors: { text: colors.dark, placeholder: colors.dark } }}
@@ -364,6 +376,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
             mode="outlined"
             placeholder="Mobile Number"
             keyboardType="number-pad"
+            value={number}
             // multiline
             // numberOfLines={4}
             theme={{ colors: { text: colors.dark, placeholder: colors.dark } }}
@@ -410,6 +423,7 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
             placeholder="Street address"
             multiline
             numberOfLines={4}
+            value={street}
             theme={{ colors: { text: colors.dark, placeholder: colors.dark } }}
             style={{ backgroundColor: "#fff", fontSize: 18 }}
             onChangeText={(val) => setStreet(val)}
@@ -432,4 +446,4 @@ const mapStateToProps = ({ auth }) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(EditAddress);

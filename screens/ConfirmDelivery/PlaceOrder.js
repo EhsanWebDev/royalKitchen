@@ -85,7 +85,7 @@ class PlaceOrder extends React.Component {
     const data = {};
     const quantities = this.getQuantityCount();
 
-    // !! Data
+    // * Data
     data.user_id = this.props.user.id;
     data.products = JSON.stringify(this.getProductsID());
     data.quantity = this.getTotalQuantity(quantities);
@@ -105,6 +105,7 @@ class PlaceOrder extends React.Component {
     if (!res.data.status) {
       this.setState({ loading: false });
       alert(res.data.message);
+      console.log(res.data);
       return;
     } else {
       this.setState({ loading: false }, () => {

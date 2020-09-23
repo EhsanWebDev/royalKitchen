@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import {
   Avatar,
@@ -8,33 +8,53 @@ import {
   TouchableRipple,
   useTheme,
   Button,
+  ActivityIndicator,
 } from "react-native-paper";
 
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-
-// import Share from 'react-native-share';
-
-import files from "../assets/filesBase64";
 import { connect } from "react-redux";
+import Axios from "axios";
 
 const ProfileScreen = ({ user, navigation, defaultAddress }) => {
   const theme = useTheme();
-  // const myCustomShare = async () => {
-  //   const shareOptions = {
-  //     message:
-  //       "Order your next meal from FoodFinder App. I've already ordered more than 10 meals on it.",
-  //     url: files.appLogo,
-  //     // urls: [files.image1, files.image2]
-  //   };
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  //   try {
-  //     const ShareResponse = await Share.open(shareOptions);
-  //     console.log(JSON.stringify(ShareResponse));
-  //   } catch (error) {
-  //     console.log('Error => ', error);
-  //   }
-  // };
+  useEffect(() => {
+    // console.log(user.id);
+    setLoading(true);
+    const fetch = async () => {
+      const res = await Axios.post(
+        "http://gradhatcreators.com/api/user/get_user",
+        {
+          uid: user.id,
+        }
+      );
 
+      if (!res.data.status) {
+        alert("Error occurred");
+        setLoading(false);
+        return;
+      } else {
+        setUserData(res.data.source);
+        setLoading(false);
+        console.log(res.data);
+      }
+    };
+
+    fetch();
+
+    return () => {};
+  }, [navigation]);
+  if (loading) {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: "#fff", justifyContent: "center" }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <ScrollView
       style={[
@@ -140,6 +160,12 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
           <View style={styles.menuItem}>
             <Icon name="home" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Manage Your addresses</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.push("OrderHistory")}>
+          <View style={styles.menuItem}>
+            <Icon name="history" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Order History</Text>
           </View>
         </TouchableRipple>
         {/* <TouchableRipple onPress={myCustomShare}>

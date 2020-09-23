@@ -17,8 +17,9 @@ import StarRating from "../components/StarRating";
 import { Title, Button, ActivityIndicator } from "react-native-paper";
 import { connect } from "react-redux";
 import { getAllCategories } from "../src/store/actions/categories";
+import Axios from "axios";
 
-const HomeScreen = ({ navigation, categories, dispatch }) => {
+const HomeScreen = ({ navigation, user, categories, dispatch }) => {
   let _isMounted = false;
 
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,8 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
     _isMounted = true;
     const fetchDate = async () => {
       const res = await dispatch(getAllCategories());
+
+      // console.log(orders.data);
       if (res.data.status) {
         setData(res.data.source);
         setLoading(false);
@@ -308,44 +311,48 @@ const HomeScreen = ({ navigation, categories, dispatch }) => {
 
         <View style={styles.categoryContainer}>
           {data.length > 0 &&
-            data
-              .filter((item, index) => index < 4)
-              .map((item, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.categoryBtn}
-                  disabled
+            data.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.categoryBtn}
+                onPress={() =>
+                  navigation.navigate("SubCat", {
+                    id: item.id,
+                    title: item.name,
+                  })
+                }
+                // disabled
+              >
+                <ImageBackground
+                  source={{
+                    uri: item.image,
+                  }}
+                  resizeMode="cover"
+                  style={[styles.sliderImage, { height: 160, width: "95%" }]}
                 >
-                  <ImageBackground
-                    source={{
-                      uri: item.image,
+                  <View
+                    style={{
+                      backgroundColor: "rgba(0,0,0,0.5)",
+                      justifyContent: "center",
+                      flex: 1,
                     }}
-                    resizeMode="cover"
-                    style={[styles.sliderImage, { height: 160, width: "95%" }]}
                   >
-                    <View
+                    <Title
                       style={{
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        justifyContent: "center",
+                        color: "white",
                         flex: 1,
+                        justifyContent: "center",
+                        paddingLeft: 20,
+                        paddingTop: 40,
+                        fontSize: 24,
                       }}
                     >
-                      <Title
-                        style={{
-                          color: "white",
-                          flex: 1,
-                          justifyContent: "center",
-                          paddingLeft: 20,
-                          paddingTop: 40,
-                          fontSize: 24,
-                        }}
-                      >
-                        {item.name}
-                      </Title>
-                    </View>
-                  </ImageBackground>
-                </TouchableOpacity>
-              ))}
+                      {item.name}
+                    </Title>
+                  </View>
+                </ImageBackground>
+              </TouchableOpacity>
+            ))}
 
           {/* <TouchableOpacity
             style={styles.categoryBtn}
@@ -525,6 +532,7 @@ const mapStateToProps = (state) => {
   // console.log('state', state);
   return {
     categories: state.category.categories,
+    user: state.auth.user,
   };
 };
 const mapDispatchToProps = (dispatch) => ({

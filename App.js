@@ -9,6 +9,7 @@ import reducer from "./src/store/reducers";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 import Navigation from "./screens/Navigation";
+import FlashMessage from "react-native-flash-message";
 const store = createStore(reducer, {}, applyMiddleware(logger, thunk));
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
     <Provider store={store}>
       <View style={{ flex: 1 }}>
         <Navigation />
+        <FlashMessage position="top" />
       </View>
     </Provider>
   );

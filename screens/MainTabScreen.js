@@ -23,6 +23,10 @@ import ConfirmDelivery from "./ConfirmDelivery/ConfirmDelivery";
 import Address from "./Address/Address";
 import CreateAdd from "./Address/CreateAdd";
 import PlaceOrder from "./ConfirmDelivery/PlaceOrder";
+import SubCategory from "../components/SubCategory";
+import OrderHistory from "./Orders/OrderHistory";
+import Products from "./Orders/Products";
+import EditAddress from "./Address/EditAddress";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -167,6 +171,12 @@ const HomeStackScreen = ({ navigation }) => {
         name="Address"
         component={Address}
       />
+
+      <HomeStack.Screen
+        name="SubCat"
+        options={{ headerShown: false }}
+        component={SubCategory}
+      />
     </HomeStack.Navigator>
   );
 };
@@ -296,6 +306,9 @@ const ProfileStackScreen = ({ navigation }) => {
       /> */}
       <ProfileStack.Screen name="Address" component={Address} />
       <ProfileStack.Screen name="CreateAdd" component={CreateAdd} />
+      <ProfileStack.Screen name="EditAddress" component={EditAddress} />
+      <ProfileStack.Screen name="OrderHistory" component={OrderHistory} />
+      <ProfileStack.Screen name="Products" component={Products} />
     </ProfileStack.Navigator>
   );
 };

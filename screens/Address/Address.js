@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import { FlatList, StyleSheet, View, Text, Alert } from "react-native";
 import {
   ActivityIndicator,
   Card,
@@ -11,7 +11,11 @@ import {
   Paragraph,
 } from "react-native-paper";
 import { connect } from "react-redux";
-import { MaterialCommunityIcons as Icon, AntDesign } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons as Icon,
+  AntDesign,
+  Feather,
+} from "@expo/vector-icons";
 import { allAddress, thisAddress } from "../../src/store/actions/address";
 const Address = ({ user, navigation, dispatch, address }) => {
   const theme = useTheme();
@@ -48,11 +52,43 @@ const Address = ({ user, navigation, dispatch, address }) => {
       </View>
     );
   }
+  const delAdd = async (id) => {
+    setLoading(true);
+    const del = await Axios.post(
+      "https://gradhatcreators.com/api/user/del_address",
+      {
+        address_id: id,
+      }
+    );
+    if (del.data.status) {
+      dispatch({ type: "DELETE_ADDRESS", payload: id });
+      setLoading(false);
+    } else {
+      setLoading(false);
+      alert("Error Occurred while deleting your address");
+
+      return;
+    }
+  };
+  const createTwoButtonAlert = (id) =>
+    Alert.alert(
+      "Delete Address",
+      "Are you sure you want to delete this address ?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => delAdd(id) },
+      ],
+      { cancelable: false }
+    );
   return (
     <View style={{ flex: 1, backgroundColor: theme.dark ? "#333" : "#fff" }}>
       <Title
         style={{
-          color: "#000",
+          color: theme.dark ? "#fff" : "#111",
           textAlign: "center",
           marginVertical: 20,
           fontSize: 26,
@@ -71,6 +107,7 @@ const Address = ({ user, navigation, dispatch, address }) => {
                 marginVertical: 10,
                 borderColor: "#000",
                 borderWidth: 1,
+                position: "relative",
               }}
             >
               <Card.Title
@@ -80,7 +117,43 @@ const Address = ({ user, navigation, dispatch, address }) => {
                   fontSize: 14,
                 }}
                 subtitleStyle={{ color: theme.dark ? "#fff" : "#777" }}
-                subtitle={item.city}
+                subtitle={`${item.city} , ${item.province}`}
+                right={(props) => (
+                  <View
+                    style={{
+                      flex: 1,
+                      marginTop: 15,
+                      paddingRight: 5,
+                      justifyContent: "space-between",
+                      // backgroundColor: "#fff",
+                    }}
+                  >
+                    <Feather
+                      {...props}
+                      onPress={() =>
+                        navigation.navigate("EditAddress", {
+                          item,
+                        })
+                      }
+                      style={{
+                        backgroundColor: theme.dark ? "#333" : "#fff",
+                      }}
+                      name="edit"
+                      size={21}
+                      color="#e67e22"
+                    />
+                    <Feather
+                      {...props}
+                      onPress={() => createTwoButtonAlert(item.id)}
+                      style={{
+                        backgroundColor: theme.dark ? "#333" : "#fff",
+                      }}
+                      name="trash-2"
+                      size={24}
+                      color="#c0392b"
+                    />
+                  </View>
+                )}
                 left={(props) => (
                   <Icon
                     {...props}
@@ -94,6 +167,7 @@ const Address = ({ user, navigation, dispatch, address }) => {
                 //   <IconButton {...props} icon="more-vert" onPress={() => {}} />
                 // )}
               />
+
               <Card.Content>
                 <Text
                   style={{

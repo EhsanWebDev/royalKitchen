@@ -14,7 +14,12 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 
-import { FontAwesome, Feather, MaterialIcons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  Feather,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import * as GoogleSignIn from "expo-google-sign-in";
 import * as Google from "expo-google-app-auth";
 import {
@@ -93,6 +98,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
     } else {
       setData({
         ...data,
+        password: val,
         passwordError: "Please enter password",
         isValidPassword: false,
       });
@@ -227,71 +233,68 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
         { backgroundColor: theme.dark ? "#333" : "#fff" },
       ]}
     >
-      <StatusBar backgroundColor="rgba(0,0,0,0.9)" barStyle="light-content" />
+      <StatusBar backgroundColor="rgba(0,0,0,.8)" barStyle="light-content" />
       <ImageBackground
+        blurRadius={1}
         style={styles.bg_img}
         source={{
           uri:
-            "https://images.pexels.com/photos/3212810/pexels-photo-3212810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=653&q=80",
         }}
       >
         {/* <StatusBar backgroundColor="#FF5763" barStyle="light-content" /> */}
         <View style={styles.header}>
-          <Image
+          {/* <Image
             source={require("../assets/logo.png")}
             style={{
-              width: 120,
-              height: 120,
+              width: 80,
+              height: 80,
               borderRadius: 20,
             }}
-          />
-          <Text style={styles.text_header}>Good Food Never Wait!</Text>
-          {user && <Text style={{ color: "white" }}>Welcome {user.fname}</Text>}
+          /> */}
+          <Text style={styles.text_header}>Royal Kitchen</Text>
         </View>
         <Animatable.View
           animation="fadeInUpBig"
-          duration={500}
+          duration={100}
           style={[
             styles.footer,
             {
-              backgroundColor: "rgba(0,0,0,0.5)",
+              backgroundColor: "rgba(0,0,0,.5)",
             },
           ]}
         >
-          {/* <Text
-            style={[
-              styles.text_footer,
-              {
-                color: theme.dark ? '#fff' : '#fff',
-                fontSize: 32,
-                fontWeight: 'bold',
-              },
-            ]}>
-            Phone Login
-          </Text> */}
           <KeyboardAvoidingView
             // keyboardVerticalOffset={-120}
-            behavior="height"
+            behavior="padding"
             style={styles.action}
           >
-            <MaterialIcons
-              name="email"
-              color={theme.dark ? "#333" : "#333"}
-              size={28}
+            <MaterialCommunityIcons
+              name="email-outline"
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
               style={{
-                backgroundColor: "#fff",
-                padding: 10,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
-              placeholder="Enter your email-address"
-              placeholderTextColor="#333"
+              placeholder="Email"
+              placeholderTextColor="#fff"
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  borderRadius: data.check_textInputChange ? 0 : 15,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
                 },
               ]}
               autoCapitalize="none"
@@ -304,12 +307,16 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               <Animatable.View animation="bounceIn">
                 <Feather
                   name="check-circle"
-                  color="green"
-                  size={28}
+                  color="white"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               </Animatable.View>
@@ -317,26 +324,34 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
           </KeyboardAvoidingView>
 
           <View style={styles.action}>
-            <Feather
-              name="lock"
-              color={theme.dark ? "#333" : "#333"}
-              size={28}
+            <MaterialCommunityIcons
+              name="lock-outline"
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
               style={{
-                backgroundColor: "#fff",
-                padding: 10,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
               placeholder="Enter Your Password"
               value={data.password}
-              placeholderTextColor="#333"
+              placeholderTextColor="#fff"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  // borderRadius: 15,
+                  // borderTopRightRadius: 0,
+                  // borderBottomRightRadius: 0,
                 },
               ]}
               autoCapitalize="none"
@@ -346,23 +361,31 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               {data.secureTextEntry ? (
                 <Feather
                   name="eye-off"
-                  color="grey"
-                  size={28}
+                  color="#fff"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               ) : (
                 <Feather
                   name="eye"
-                  color="grey"
-                  size={28}
+                  color="#fff"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               )}
@@ -375,8 +398,8 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             <Text
               style={{
                 color: "#fff",
-                marginTop: 25,
-                textAlign: "center",
+                marginTop: 15,
+                textAlign: "right",
                 fontSize: 16,
                 fontWeight: "bold",
               }}
@@ -384,19 +407,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               Forgot password?
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("SignUpScreen")}>
-            <Text
-              style={{
-                color: "#e84118",
-                marginTop: 25,
-                textAlign: "center",
-                fontSize: 20,
-                // fontWeight: 'bold',
-              }}
-            >
-              Sign Up !
-            </Text>
-          </TouchableOpacity>
+
           <View style={styles.button}>
             <Button
               loading={loading}
@@ -484,6 +495,23 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 Sign in using Google
               </Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("SignUpScreen")}
+            >
+              <Text
+                style={{
+                  color: "#fff",
+                  marginTop: 5,
+                  textAlign: "center",
+                  fontSize: 20,
+                  borderBottomColor: "#fff",
+                  borderBottomWidth: 3,
+                  // fontWeight: 'bold',
+                }}
+              >
+                Create new account
+              </Text>
+            </TouchableOpacity>
           </View>
         </Animatable.View>
       </ImageBackground>
@@ -509,13 +537,14 @@ const styles = StyleSheet.create({
 
     resizeMode: "cover",
     // alignItems: 'center',
-    opacity: 0.93,
+    opacity: 0.85,
     // paddingTop: 20,
     // paddingHorizontal: 20,
     // backgroundColor: 'rgba(0,0,0,.9)',
   },
   header: {
-    flex: 1,
+    // flex: 1,
+    paddingBottom: 30,
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
     // justifyContent: 'flex-end',
@@ -536,7 +565,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 36,
+    paddingTop: 60,
   },
   text_footer: {
     color: "#05375a",
@@ -548,6 +578,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
     // borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
+    borderRadius: 10,
   },
   actionError: {
     flexDirection: "row",

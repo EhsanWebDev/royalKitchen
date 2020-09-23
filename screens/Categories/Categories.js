@@ -129,11 +129,17 @@ class Categories extends React.Component {
       selectedObj: category,
     });
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.route.params !== this.props.route.params) {
+      console.log("idstate has changed.");
+    }
+  }
   componentDidMount() {
     this._isMounted = true;
-    // console.log(this.props.route.params);
-    console.log(this.props.categories[0].id);
+
+    // console.log(this.props.categories[0].id);
     if (this._isMounted) {
+      console.log("props", this.props.route.params);
       const cats =
         this.props.categories && this.props.categories.map((item) => item.name);
       // console.log(cats);

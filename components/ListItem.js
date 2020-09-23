@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
+import { Button, useTheme, Snackbar } from "react-native-paper";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addToCart } from "../src/store/actions";
@@ -13,6 +14,18 @@ const ListItem = (props) => {
     //     `${data.name} Added to the Cart !`,
     //     ToastAndroid.SHORT,
     //   );
+
+    showMessage({
+      message: `${data.name} Added to the Cart !`,
+      type: "success",
+      duration: 1500, //Duration of flash-message(in milliseconds),
+      floating: true, //floating flash-message,
+      titleStyle: {
+        fontSize: 14,
+        fontWeight: "bold",
+      },
+      icon: "info",
+    });
 
     props.addToCart(data);
   };
