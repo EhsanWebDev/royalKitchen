@@ -95,7 +95,7 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                   fontWeight: "bold",
                 }}
                 subtitleStyle={{ color: theme.dark ? "#fff" : "#777" }}
-                subtitle={`Created at :${item.created_on}`}
+                subtitle={`Order Created at :${item.created_on}`}
                 left={(props) => (
                   <Icon
                     {...props}
@@ -133,8 +133,8 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                   Order Status : {item.status}
                 </Paragraph>
                 <ProgressBar
-                  progress={1}
-                  color={Colors.green700}
+                  progress={0.5}
+                  color={Colors.orange700}
                   style={{
                     height: 12,
                     width: "100%",
@@ -149,22 +149,44 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                 >
                   Order Items
                 </Paragraph>
-                {item.products &&
-                  JSON.parse(item.products).map((item, index) => {
-                    if (index < 2) {
-                      return (
-                        <Chip
-                          selected
-                          selectedColor="black"
-                          key={item.id}
-                          style={{ backgroundColor: "#ddd" }}
-                          textStyle={{ fontWeight: "bold" }}
-                        >
-                          {item.name}
-                        </Chip>
-                      );
+                <View
+                  style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}
+                >
+                  {item.products &&
+                    JSON.parse(item.products).map((item, index) => {
+                      if (index < 3) {
+                        return (
+                          <Chip
+                            selected
+                            selectedColor="black"
+                            key={item.id}
+                            style={{
+                              backgroundColor: "#ddd",
+                              marginHorizontal: 5,
+                              marginVertical: 3,
+                            }}
+                            textStyle={{ fontWeight: "bold" }}
+                          >
+                            {item.name}
+                          </Chip>
+                        );
+                      }
+                    })}
+                </View>
+                <View style={{ alignItems: "flex-end" }}>
+                  <Button
+                    onPress={() =>
+                      navigation.navigate("Products", {
+                        items: item.products,
+                      })
                     }
-                  })}
+                    icon="arrow-right"
+                    style={{ marginTop: 18 }}
+                    labelStyle={{ color: "#777" }}
+                  >
+                    See All Products
+                  </Button>
+                </View>
               </Card.Content>
 
               {/* <Card.Actions>

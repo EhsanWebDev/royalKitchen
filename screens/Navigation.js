@@ -43,7 +43,7 @@ const Navigation = ({ user, dispatch }) => {
       } catch (e) {
         console.log(e);
       }
-      // console.log('user token: ', userToken);
+      // console.log("user token: ", userToken);
       dispatch({ type: "RETRIEVE_TOKEN", user: JSON.parse(userToken) });
     }, 2500);
   }, []);

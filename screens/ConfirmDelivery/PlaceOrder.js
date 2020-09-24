@@ -108,11 +108,29 @@ class PlaceOrder extends React.Component {
       console.log(res.data);
       return;
     } else {
-      this.setState({ loading: false }, () => {
-        alert(res.data.message);
-        this.props.dispatch(empty());
-        this.props.navigation.navigate("Home");
-      });
+      // alert(res.data.message);
+      this.props.dispatch(empty());
+
+      const order_history = await axios.post(
+        "https://gradhatcreators.com/api/user/current_order",
+        {
+          uid: this.props.user.id,
+        }
+      );
+      if (order_history.data.status) {
+        // setData(order_history.data.source);
+
+        this.props.dispatch({
+          type: "ALL_CURRENT_ORDERS",
+          payload: order_history.data.source,
+        });
+        this.setState({ loading: false });
+        this.props.navigation.navigate("OrderSuccess");
+      } else {
+        alert("Error Occurred while placing your order");
+        this.setState({ loading: false });
+        return;
+      }
     }
 
     //   this.props
@@ -165,59 +183,66 @@ class PlaceOrder extends React.Component {
           {this.props.cartItems.length > 0 ? (
             <View style={{ marginTop: 108, flex: 1 }}>
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingHorizontal: 5,
-                    marginHorizontal: 5,
-                    paddingVertical: 5,
-                    borderColor: "#777",
-                    borderWidth: 1,
-                    elevation: 1,
-                  }}
-                >
-                  <Text
-                    style={{
-                      // borderWidth: 2,
-                      // borderColor: "#d35400",
-                      paddingHorizontal: 5,
-                      fontSize: 14,
-                      // width: "100%",
-                      // fontStyle: "italic",
-                      // textAlign: "center",
-                      color: theme.dark ? "#fff" : "#000",
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    Shipping Address:
-                  </Text>
-                  <Text
-                    style={{
-                      flex: 1,
-                      // borderWidth: 2,
-                      // borderColor: "#d35400",
-                      paddingHorizontal: 5,
-                      fontSize: 14,
-                      // width: "100%",
-                      // fontStyle: "italic",
-                      // textAlign: "center",
-                      color: theme.dark ? "#fff" : "#000",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {this.props.defaultAddress[0].street_address}
-                    {" , "}
-                    {this.props.defaultAddress[0].city}
-                  </Text>
-                  <Feather.Button
-                    onPress={() => this.props.navigation.navigate("Address")}
-                    style={{ backgroundColor: theme.dark ? "#333" : "#fff" }}
-                    name="edit"
-                    size={24}
-                    color="black"
-                  />
-                </View>
+                {this.props.route.params &&
+                  this.props.route.params.order_mode === "delivery" && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingHorizontal: 5,
+                        marginHorizontal: 5,
+                        paddingVertical: 5,
+                        borderColor: "#777",
+                        borderWidth: 1,
+                        elevation: 1,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          // borderWidth: 2,
+                          // borderColor: "#d35400",
+                          paddingHorizontal: 5,
+                          fontSize: 14,
+                          // width: "100%",
+                          // fontStyle: "italic",
+                          // textAlign: "center",
+                          color: theme.dark ? "#fff" : "#000",
+                          fontWeight: "bold",
+                          alignSelf: "center",
+                        }}
+                      >
+                        Shipping Address:
+                      </Text>
+                      <Text
+                        style={{
+                          flex: 1,
+                          // borderWidth: 2,
+                          // borderColor: "#d35400",
+                          paddingHorizontal: 5,
+                          fontSize: 14,
+                          // width: "100%",
+                          // fontStyle: "italic",
+                          // textAlign: "center",
+                          color: theme.dark ? "#fff" : "#000",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {this.props.defaultAddress[0].street_address}
+                        {" , "}
+                        {this.props.defaultAddress[0].city}
+                      </Text>
+                      <Feather.Button
+                        onPress={() =>
+                          this.props.navigation.navigate("Address")
+                        }
+                        style={{
+                          backgroundColor: theme.dark ? "#333" : "#fff",
+                        }}
+                        name="edit"
+                        size={24}
+                        color="black"
+                      />
+                    </View>
+                  )}
               </View>
 
               <View style={{ padding: 10, flex: 1 }}>

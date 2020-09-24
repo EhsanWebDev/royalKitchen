@@ -28,6 +28,7 @@ import OrderHistory from "./Orders/OrderHistory";
 import Products from "./Orders/Products";
 import EditAddress from "./Address/EditAddress";
 import CurrentOrders from "./Orders/CurrentOrders";
+import OrderSuccess from "./ConfirmDelivery/OrderSuccess";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -178,6 +179,8 @@ const HomeStackScreen = ({ navigation }) => {
         options={{ headerShown: false }}
         component={SubCategory}
       />
+      <HomeStack.Screen name="PlaceOrder" component={PlaceOrder} />
+      <HomeStack.Screen name="OrderSuccess" component={OrderSuccess} />
     </HomeStack.Navigator>
   );
 };
@@ -222,6 +225,7 @@ const CategoryStackScreen = ({ navigation, route }) => {
         component={ConfirmDelivery}
       />
       <CategoryStack.Screen name="PlaceOrder" component={PlaceOrder} />
+      <CategoryStack.Screen name="OrderSuccess" component={OrderSuccess} />
     </CategoryStack.Navigator>
   );
 };

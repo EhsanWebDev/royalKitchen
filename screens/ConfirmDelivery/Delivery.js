@@ -44,7 +44,7 @@ const Delivery = ({ defaultAddress }) => {
               title={defaultAddress[0].street_address}
               titleStyle={{ color: theme.dark ? "#fff" : "#000", fontSize: 14 }}
               subtitleStyle={{ color: theme.dark ? "#fff" : "#000" }}
-              subtitle={defaultAddress[0].city}
+              subtitle={` ${defaultAddress[0].city} , ${defaultAddress[0].province}`}
               left={(props) => (
                 <Icon
                   {...props}
@@ -101,7 +101,11 @@ const Delivery = ({ defaultAddress }) => {
         <Button
           mode="contained"
           style={{ marginHorizontal: 30, borderRadius: 8 }}
-          onPress={() => navigation.navigate("PlaceOrder")}
+          onPress={() =>
+            navigation.navigate("PlaceOrder", {
+              order_mode: "delivery",
+            })
+          }
         >
           Continue
         </Button>
