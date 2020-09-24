@@ -196,7 +196,7 @@ const EditAddress = ({ user, dispatch, route, navigation }) => {
   };
   useEffect(() => {
     reqLocation();
-    console.log(route.params);
+    // console.log(route.params);
     const { item } = route.params;
     setName(item.name);
     setEmailData({
@@ -213,7 +213,7 @@ const EditAddress = ({ user, dispatch, route, navigation }) => {
     };
   }, []);
   const saveState = (val, index) => {
-    console.log(val, index);
+    // console.log(val, index);
     var city_arr = s_a.find((item, idx) => idx === index);
     // console.log("Cities=>", city_arr);
 
@@ -221,7 +221,7 @@ const EditAddress = ({ user, dispatch, route, navigation }) => {
       // console.log("city=>", city_arr.split("|"));
       // setCities(city_arr.split(" | "));
       cities = city_arr.split(" | ");
-      console.log(city);
+      // console.log(city);
     } else {
       cities = [];
     }
@@ -434,7 +434,7 @@ const EditAddress = ({ user, dispatch, route, navigation }) => {
           onPress={() => submitAdd()}
           style={{ marginHorizontal: 30, marginBottom: 10, borderRadius: 8 }}
         >
-          Submit
+          Update Address
         </Button>
       </View>
     );

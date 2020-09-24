@@ -28,7 +28,7 @@ const Address = ({ user, navigation, dispatch, address }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const res = await dispatch(allAddress(user.id));
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.status) {
         setLoading(false);
       } else {

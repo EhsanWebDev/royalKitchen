@@ -27,6 +27,7 @@ import SubCategory from "../components/SubCategory";
 import OrderHistory from "./Orders/OrderHistory";
 import Products from "./Orders/Products";
 import EditAddress from "./Address/EditAddress";
+import CurrentOrders from "./Orders/CurrentOrders";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -308,6 +309,7 @@ const ProfileStackScreen = ({ navigation }) => {
       <ProfileStack.Screen name="CreateAdd" component={CreateAdd} />
       <ProfileStack.Screen name="EditAddress" component={EditAddress} />
       <ProfileStack.Screen name="OrderHistory" component={OrderHistory} />
+      <ProfileStack.Screen name="CurrentOrders" component={CurrentOrders} />
       <ProfileStack.Screen name="Products" component={Products} />
     </ProfileStack.Navigator>
   );

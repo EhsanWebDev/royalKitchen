@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+import { MaterialCommunityIcons as Icon, Entypo } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import Axios from "axios";
 
@@ -166,6 +166,12 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
           <View style={styles.menuItem}>
             <Icon name="history" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Order History</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.push("CurrentOrders")}>
+          <View style={styles.menuItem}>
+            <Entypo name="new" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Current Orders</Text>
           </View>
         </TouchableRipple>
         {/* <TouchableRipple onPress={myCustomShare}>

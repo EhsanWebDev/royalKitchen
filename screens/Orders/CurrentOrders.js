@@ -17,12 +17,11 @@ import { connect } from "react-redux";
 import {
   MaterialCommunityIcons as Icon,
   AntDesign,
-  Octicons,
   Feather,
 } from "@expo/vector-icons";
-import { allAddress, thisAddress } from "../../src/store/actions/address";
-import Products from "./Products";
-const OrderHistory = ({ user, navigation, dispatch, address }) => {
+
+// import Products from "./Products";
+const CurrentOrder = ({ user, navigation, dispatch, address }) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -30,7 +29,7 @@ const OrderHistory = ({ user, navigation, dispatch, address }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const order_history = await Axios.post(
-        "https://gradhatcreators.com/api/user/order_history",
+        "https://gradhatcreators.com/api/user/current_order",
         {
           uid: user.id,
         }
@@ -72,9 +71,9 @@ const OrderHistory = ({ user, navigation, dispatch, address }) => {
           fontSize: 26,
         }}
       >
-        Your Order history
+        Your Active Orders
       </Title>
-      {data.length > 0 && (
+      {data && (
         <FlatList
           data={data}
           keyExtractor={(item) => item.id}
@@ -175,14 +174,10 @@ const OrderHistory = ({ user, navigation, dispatch, address }) => {
           )}
         />
       )}
-      {data.length <= 0 && (
-        <View
-          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
-        >
-          <Octicons name="package" size={40} color="#777" />
-          <Text style={{ fontSize: 18, color: "#777" }}>
-            No Previous Orders
-          </Text>
+      {!data && (
+        <View style={{ flex: 2, alignItems: "center" }}>
+          <AntDesign name="home" size={40} color="black" />
+          <Text style={{ fontSize: 18 }}>No Previous Orders</Text>
         </View>
       )}
     </View>
@@ -204,4 +199,4 @@ const mapStateToProps = ({ auth, address }) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatch,
 });
-export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentOrder);
