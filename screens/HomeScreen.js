@@ -24,6 +24,14 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const handleNavigation = (item) => {
+    console.log(item.name);
+    dispatch({
+      type: "CAT_SELECT",
+      payload: item.name,
+    });
+    navigation.navigate("Categories");
+  };
   useEffect(() => {
     _isMounted = true;
     const fetchDate = async () => {
@@ -315,12 +323,7 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
               <TouchableOpacity
                 key={index}
                 style={styles.categoryBtn}
-                onPress={() =>
-                  navigation.navigate("SubCat", {
-                    id: item.id,
-                    title: item.name,
-                  })
-                }
+                onPress={() => handleNavigation(item)}
                 // disabled
               >
                 <ImageBackground

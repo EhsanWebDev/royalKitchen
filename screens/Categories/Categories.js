@@ -29,9 +29,9 @@ const Category = styled.TouchableOpacity`
 `;
 
 const CategoryName = styled.Text`
-  font-size: ${(props) => (props.selected ? "18px" : "13px")};
+  font-size: ${(props) => (props.selected ? "14px" : "12px")};
   color: ${(props) => (props.dark ? "#fff" : "#333")};
-  font-weight: ${(props) => (props.selected ? "bold" : "200")};
+  font-weight: ${(props) => (props.selected ? "bold" : "100")};
 `;
 
 const CategoryDot = styled.View`
@@ -123,28 +123,35 @@ class Categories extends React.Component {
 
   changeCategory = (category) => {
     // console.log('category', category);
+    this.props.dispatch({
+      type: "CAT_SELECT",
+      payload: category.name,
+    });
     this.setState({
-      selected: category.name,
+      // selected: category.name,
       id: category.id,
       selectedObj: category,
     });
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.route.params !== this.props.route.params) {
-      console.log("idstate has changed.");
-    }
-  }
+
   componentDidMount() {
     this._isMounted = true;
-
-    // console.log(this.props.categories[0].id);
+    console.log("selected", this.props.selector);
     if (this._isMounted) {
-      console.log("props", this.props.route.params);
+      // console.log("props", );
+      if (this.props.route.params) {
+        console.log(this.props.route.params.title);
+      }
       const cats =
         this.props.categories && this.props.categories.map((item) => item.name);
+      this.props.dispatch({
+        type: "CAT_SELECT",
+        payload: this.props.categories[0].name,
+      });
+      console.log("selected", this.props.selector);
       // console.log(cats);
       this.setState({
-        selected: this.props.categories[0].name,
+        // selected: this.props.categories[0].name,
         selectedObj: this.props.categories[0],
         cats,
       });
@@ -154,7 +161,7 @@ class Categories extends React.Component {
     this._isMounted = false;
   }
   render() {
-    const { theme, navigation, categories } = this.props;
+    const { theme, navigation, categories, selector } = this.props;
     const { colors } = theme;
     const { selected, id, selectedObj, cats } = this.state;
     // console.log(
@@ -187,13 +194,23 @@ class Categories extends React.Component {
             />
             <Text
               style={{
-                fontSize: 32,
+                fontSize: 24,
                 marginBottom: 12,
                 marginTop: 10,
                 color: theme.dark ? "#fff" : "#333",
               }}
             >
               Categories
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                marginBottom: 12,
+                marginTop: 10,
+                color: theme.dark ? "#fff" : "#333",
+              }}
+            >
+              {this.props.route.params && this.props.route.params.title}
             </Text>
           </View>
 
@@ -209,11 +226,11 @@ class Categories extends React.Component {
               >
                 <CategoryName
                   dark={theme.dark ? true : false}
-                  selected={selected === category.name ? true : false}
+                  selected={selector === category.name ? true : false}
                 >
                   {category.name}
                 </CategoryName>
-                {selected === category.name && <CategoryDot />}
+                {selector === category.name && <CategoryDot />}
               </Category>
             );
           })}
@@ -225,7 +242,7 @@ class Categories extends React.Component {
         {cats.length > 0 &&
           cats.map((item, index) => {
             // console.log(item);
-            if (item === selected) {
+            if (item === this.props.selector) {
               return <All id={selectedObj.id} key={index} />;
             }
           })}
@@ -249,7 +266,13 @@ const mapStateToProps = (state) => {
   // console.log("state", state.categories);
   return {
     categories: state.category.categories,
+    selector: state.selector.selected,
   };
 };
-
-export default connect(mapStateToProps, null)(withTheme(Categories));
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTheme(Categories));

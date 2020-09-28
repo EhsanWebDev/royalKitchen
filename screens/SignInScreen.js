@@ -16,6 +16,7 @@ import * as Animatable from "react-native-animatable";
 
 import {
   FontAwesome,
+  AntDesign,
   Feather,
   MaterialIcons,
   MaterialCommunityIcons,
@@ -29,6 +30,7 @@ import {
   useTheme,
   Provider,
   ActivityIndicator,
+  Title,
 } from "react-native-paper";
 import { AuthContext } from "../components/context";
 import { connect } from "react-redux";
@@ -233,7 +235,12 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
         { backgroundColor: theme.dark ? "#333" : "#fff" },
       ]}
     >
-      <StatusBar backgroundColor="rgba(0,0,0,.8)" barStyle="light-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        // backgroundColor="rgba(0,0,0,.8)"
+        barStyle="light-content"
+      />
       <ImageBackground
         blurRadius={1}
         style={styles.bg_img}
@@ -254,9 +261,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
           /> */}
           <Text style={styles.text_header}>Royal Kitchen</Text>
         </View>
-        <Animatable.View
-          animation="fadeInUpBig"
-          duration={100}
+        <View
           style={[
             styles.footer,
             {
@@ -266,7 +271,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
         >
           <KeyboardAvoidingView
             // keyboardVerticalOffset={-120}
-            behavior="padding"
+            behavior="height"
             style={styles.action}
           >
             <MaterialCommunityIcons
@@ -323,7 +328,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             ) : null}
           </KeyboardAvoidingView>
 
-          <View style={styles.action}>
+          <KeyboardAvoidingView style={styles.action} behavior="height">
             <MaterialCommunityIcons
               name="lock-outline"
               color={theme.dark ? "#333" : "#fff"}
@@ -390,7 +395,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 />
               )}
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("ForgotPassword")}
@@ -407,7 +412,6 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               Forgot password?
             </Text>
           </TouchableOpacity>
-
           <View style={styles.button}>
             <Button
               loading={loading}
@@ -434,86 +438,147 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               </Text>
             </Button>
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SignInPhone")}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 10,
+              }}
+            >
+              {/* <AntDesign.Button
+              name="google"
+              color="#fff"
+              size={32}
+              style={{ backgroundColor: "#FF5763", justifyContent: "center" }}
+            /> */}
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                  marginRight: 20,
+                  fontStyle: "italic",
+                }}
+              >
+                Sign in using
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("SignInPhone")}
+                style={{
+                  backgroundColor: "#FF5763",
+                  marginHorizontal: 10,
+                  borderRadius: 20,
+                  padding: 5,
+                }}
+                // style={[
+                //   styles.signIn,
+                //   {
+                //     marginTop: 15,
+                //     // paddingHorizontal: 20,
+                //     borderWidth: 1,
+                //     borderColor: "#fff",
+                //   },
+                // ]}
+              >
+                {/* <Text
               style={[
-                styles.signIn,
+                styles.textSign,
                 {
-                  marginTop: 15,
-                  // paddingHorizontal: 20,
-                  borderWidth: 1,
-                  borderColor: "#fff",
+                  color: "#fff",
+                  // borderColor: "#000",
+                  // borderWidth: 0,
+                  // border,
                 },
               ]}
             >
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: "#fff",
-                    // borderColor: "#000",
-                    // borderWidth: 0,
-                    // border,
-                  },
-                ]}
+            
+              
+              Sign In using Phone Number
+            </Text> */}
+                <Feather name="smartphone" color="#fff" size={22} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => attempt()}
+                style={{
+                  backgroundColor: "#FF5763",
+                  marginHorizontal: 10,
+                  borderRadius: 20,
+                  padding: 5,
+                }}
+                // style={[
+                //   styles.signIn,
+                //   {
+                //     marginTop: 15,
+                //     // paddingHorizontal: 20,
+                //     borderWidth: 1,
+                //     borderColor: "#fff",
+                //   },
+                // ]}
               >
-                {/* <FontAwesome
-                name="google"
-                color="black"
-                size={18}
-                style={{marginRight: 10}}
-              /> */}
-                Sign In using Phone Number
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => attempt()}
+                {/* <Text
               style={[
-                styles.signIn,
+                styles.textSign,
                 {
-                  marginTop: 15,
-                  // paddingHorizontal: 20,
-                  borderWidth: 1,
-                  borderColor: "#fff",
+                  color: "#fff",
+                  // borderColor: "#000",
+                  // borderWidth: 0,
+                  // border,
                 },
               ]}
             >
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: "#fff",
-                  },
-                ]}
-              >
-                {/* <FontAwesome
-                name="google"
-                color="black"
-                size={18}
-                style={{marginRight: 10}}
-              /> */}
-                Sign in using Google
-              </Text>
-            </TouchableOpacity>
+            
+              
+              Sign In using Phone Number
+            </Text> */}
+                <AntDesign name="google" color="#fff" size={22} />
+              </TouchableOpacity>
+            </View>
+
+            {/* <TouchableOpacity
+            onPress={() => attempt()}
+            style={[
+              styles.signIn,
+              {
+                marginTop: 15,
+               
+                borderWidth: 1,
+                borderColor: "#fff",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: "#fff",
+                },
+              ]}
+            >
+            
+              Sign in using Google
+            </Text>
+          </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => navigation.navigate("SignUpScreen")}
+              style={{ paddingBottom: 5 }}
             >
               <Text
                 style={{
                   color: "#fff",
-                  marginTop: 5,
+                  // marginTop: 5,
                   textAlign: "center",
-                  fontSize: 20,
+                  fontSize: 18,
                   borderBottomColor: "#fff",
                   borderBottomWidth: 3,
-                  // fontWeight: 'bold',
+                  // paddingBottom: 5,
+                  // fontWeight: "bold",
                 }}
               >
                 Create new account
               </Text>
             </TouchableOpacity>
           </View>
-        </Animatable.View>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -543,7 +608,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'rgba(0,0,0,.9)',
   },
   header: {
-    // flex: 1,
+    flex: 1,
     paddingBottom: 30,
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -552,7 +617,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 50,
   },
   footer: {
-    flex: 2,
+    flex: 3.5,
     // marginTop: 30,
     paddingHorizontal: 10,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -574,7 +639,7 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 10,
     // borderBottomWidth: 1,
     // borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
@@ -605,16 +670,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    marginBottom: 10,
+    // marginTop: 10,
+    paddingTop: 40,
   },
   signIn: {
-    width: "100%",
-    height: 40,
+    width: "90%",
+    // height: 40,
 
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
-    marginHorizontal: 40,
+    borderRadius: 8,
   },
   textSign: {
     fontSize: 15,

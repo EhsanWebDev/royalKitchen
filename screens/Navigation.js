@@ -35,7 +35,6 @@ const Navigation = ({ user, dispatch }) => {
   React.useEffect(() => {
     // console.log(user);
     setTimeout(async () => {
-      setLoading(false);
       let userToken;
       userToken = null;
       try {
@@ -45,7 +44,8 @@ const Navigation = ({ user, dispatch }) => {
       }
       // console.log("user token: ", userToken);
       dispatch({ type: "RETRIEVE_TOKEN", user: JSON.parse(userToken) });
-    }, 2500);
+      setLoading(false);
+    }, 500);
   }, []);
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,

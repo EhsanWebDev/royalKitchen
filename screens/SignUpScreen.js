@@ -21,6 +21,7 @@ import {
   FontAwesome,
 } from "@expo/vector-icons";
 import { useTheme } from "react-native-paper";
+import { connect } from "react-redux";
 const SignUpScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const theme = useTheme();
@@ -101,7 +102,106 @@ const SignUpScreen = ({ navigation }) => {
       });
     }
   };
+  const handlePasswordChange = (val) => {
+    if (val.length >= 6) {
+      setData({
+        ...data,
+        password: val,
+        passwordError: false,
+      });
+    } else {
+      setData({
+        ...data,
+        passwordError: "Password must be 6 at least characters ",
+      });
+    }
+  };
 
+  const handleConfirmPasswordChange = (val) => {
+    setData({
+      ...data,
+      confirm_password: val,
+    });
+  };
+
+  const updateSecureTextEntry = () => {
+    setData({
+      ...data,
+      secureTextEntry: !data.secureTextEntry,
+    });
+  };
+
+  const updateConfirmSecureTextEntry = () => {
+    setData({
+      ...data,
+      confirm_secureTextEntry: !data.confirm_secureTextEntry,
+    });
+  };
+
+  const signUpHandle = async () => {
+    setLoading(true);
+    const {
+      password,
+      username,
+      email,
+      mobileNumber,
+      confirm_password,
+      passwordError,
+    } = data;
+    console.log("password", password);
+    if (passwordError) {
+      alert(passwordError);
+    } else if (password !== confirm_password) {
+      alert("Passwords don't match. Please try again");
+    } else {
+      // console.log(email, username, mobileNumber, password);
+      const payload = {
+        phone: mobileNumber,
+        fname: username,
+        email,
+        password,
+      };
+
+      const res = await dispatch(createUser(payload));
+      // console.log('res', res);
+      if (res.status) {
+        setLoading(false);
+        // console.log('User', user);
+        // setLoading(false);
+        // const token = makeid(5);
+        // // console.log(token);
+        // const userData = [
+        //   {
+        //     ...user,
+        //     userToken: token,
+        //   },
+        // ];
+        // // console.log(userData);
+        // signIn(userData);
+      } else {
+        setLoading(false);
+        alert(res.message);
+      }
+      // console.log('user', user);
+      // if (user) {
+      //   setLoading(false);
+      //   const token = makeid(5);
+      //   // console.log(token);
+      //   const userData = [
+      //     {
+      //       ...user,
+      //       userToken: token,
+      //     },
+      //   ];
+      //   // console.log(userData);
+      //   signIn(userData);
+      // }
+      // if (error) {
+      //   setLoading(false);
+      //   alert('Error Occurred');
+      // }
+    }
+  };
   return (
     <View
       style={[
@@ -109,15 +209,21 @@ const SignUpScreen = ({ navigation }) => {
         { backgroundColor: theme.dark ? "#333" : "#fff" },
       ]}
     >
-      <StatusBar backgroundColor="rgba(0,0,0,0.9)" barStyle="light-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        // backgroundColor="rgba(0,0,0,.8)"
+        barStyle="light-content"
+      />
       <ImageBackground
         style={styles.bg_img}
+        blurRadius={1}
         source={{
           uri:
-            "https://images.pexels.com/photos/3212810/pexels-photo-3212810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=653&q=80",
         }}
       >
-        <Text style={styles.text_header}>Sign Up</Text>
+        <Text style={styles.text_header}>Create a new account</Text>
         <Animatable.View
           animation="fadeInUpBig"
           duration={500}
@@ -131,30 +237,38 @@ const SignUpScreen = ({ navigation }) => {
           <KeyboardAvoidingView behavior="padding" style={styles.action}>
             <FontAwesome
               name="user-o"
-              color={theme.dark ? "#333" : "#333"}
+              color={theme.dark ? "#333" : "#fff"}
               size={24}
               style={{
-                backgroundColor: "#fff",
-                paddingVertical: 10,
-                paddingHorizontal: 5,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
               placeholder="Enter your Full Name"
-              placeholderTextColor="#333"
+              placeholderTextColor="#fff"
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  // borderRadius: data.check_textInputChange ? 0 : 15,
+                  borderRadius: 15,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
                 },
               ]}
               autoCapitalize="none"
               onChangeText={(val) => textInputChangeUser(val)}
               //   onEndEditing={e => handleValidUser(e.nativeEvent.text)}
             />
-            {data.check_textInputChange ? (
+            {/* {data.check_textInputChange ? (
               <Animatable.View animation="bounceIn">
                 <Feather
                   name="check-circle"
@@ -167,31 +281,40 @@ const SignUpScreen = ({ navigation }) => {
                   }}
                 />
               </Animatable.View>
-            ) : null}
+            ) : null} */}
           </KeyboardAvoidingView>
           <KeyboardAvoidingView
             // keyboardVerticalOffset={-120}
             behavior="height"
             style={styles.action}
           >
-            <FontAwesome
-              name="mobile-phone"
-              color={theme.dark ? "#333" : "#333"}
-              size={34}
+            <Feather
+              name="smartphone"
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
               style={{
-                backgroundColor: "#fff",
-                padding: 5,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
               placeholder="Enter your mobile number"
-              placeholderTextColor="#333"
+              placeholderTextColor="#fff"
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  borderRadius: data.check_textInputChangeMobile ? 0 : 15,
+                  // borderRadius: 15,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
                 },
               ]}
               autoCapitalize="none"
@@ -203,12 +326,16 @@ const SignUpScreen = ({ navigation }) => {
               <Animatable.View animation="bounceIn">
                 <Feather
                   name="check-circle"
-                  color="green"
-                  size={28}
+                  color="#fff"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               </Animatable.View>
@@ -226,23 +353,30 @@ const SignUpScreen = ({ navigation }) => {
           >
             <MaterialCommunityIcons
               name="email-outline"
-              color={theme.dark ? "#333" : "#333"}
-              size={26}
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
               style={{
-                backgroundColor: "#fff",
-                paddingVertical: 10,
-                paddingHorizontal: 5,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
               placeholder="Enter your Email Address"
-              placeholderTextColor="#333"
+              placeholderTextColor="#fff"
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  borderRadius: data.check_textInputChangeEmail ? 0 : 15,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
                 },
               ]}
               autoCapitalize="none"
@@ -254,12 +388,16 @@ const SignUpScreen = ({ navigation }) => {
               <Animatable.View animation="bounceIn">
                 <Feather
                   name="check-circle"
-                  color="green"
-                  size={28}
+                  color="#fff"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               </Animatable.View>
@@ -270,6 +408,103 @@ const SignUpScreen = ({ navigation }) => {
               {data.errorEmail}
             </Text>
           )}
+
+          <View style={styles.action}>
+            <Feather
+              name="lock"
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
+              style={{
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }}
+            />
+            <TextInput
+              placeholder="Enter Your Password"
+              placeholderTextColor="#fff"
+              secureTextEntry={data.secureTextEntry ? true : false}
+              style={[
+                styles.textInput,
+                {
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  // borderRadius: 15,
+                  // borderTopRightRadius: 0,
+                  // borderBottomRightRadius: 0,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(val) => handlePasswordChange(val)}
+            />
+            <TouchableOpacity onPress={updateSecureTextEntry}>
+              {data.secureTextEntry ? (
+                <Feather
+                  name="eye-off"
+                  color="#fff"
+                  size={24}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
+                  }}
+                />
+              ) : (
+                <Feather
+                  name="eye"
+                  color="#fff"
+                  size={24}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
+                  }}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+          {/* <View style={styles.action}>
+            <Feather
+              name="lock"
+              color={theme.dark ? "#333" : "#333"}
+              size={28}
+              style={{
+                backgroundColor: "#fff",
+                padding: 10,
+                borderRightColor: "#fff",
+              }}
+            />
+            <TextInput
+              placeholder="Re-Enter Your Password"
+              placeholderTextColor="#333"
+              secureTextEntry={data.secureTextEntry ? true : false}
+              style={[
+                styles.textInput,
+                {
+                  color: theme.dark ? "#333" : "#333",
+                  fontSize: 18,
+                },
+              ]}
+              autoCapitalize="none"
+              onChangeText={(val) => handleConfirmPasswordChange(val)}
+            />
+            <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
+            
+            </TouchableOpacity>
+          </View> */}
 
           <View style={styles.button}>
             <TouchableOpacity style={styles.signIn} onPress={() => Continue()}>
@@ -308,8 +543,14 @@ const SignUpScreen = ({ navigation }) => {
     </View>
   );
 };
-
-export default SignUpScreen;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  error: state.auth.error,
+});
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -327,7 +568,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'rgba(0,0,0,.9)',
   },
   header: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
     // justifyContent: 'flex-end',
@@ -335,7 +576,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 50,
   },
   footer: {
-    flex: 2,
+    flex: 1,
     // marginTop: 30,
     paddingHorizontal: 10,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -348,8 +589,8 @@ const styles = StyleSheet.create({
   text_header: {
     color: "#fff",
     fontWeight: "bold",
-    paddingTop: 20,
-    fontSize: 30,
+    paddingTop: 30,
+    fontSize: 28,
     textAlign: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
   },
@@ -359,7 +600,7 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: "row",
-    marginTop: 20,
+    marginTop: 10,
     // borderBottomWidth: 1,
     // borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
