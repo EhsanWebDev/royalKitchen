@@ -89,12 +89,18 @@ const ForgotPassword = ({ navigation }) => {
         },
       ]}
     >
-      <StatusBar backgroundColor="rgba(0,0,0,0.9)" barStyle="light-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        // backgroundColor="rgba(0,0,0,.8)"
+        barStyle="light-content"
+      />
       <ImageBackground
         style={styles.bg_img}
+        blurRadius={1}
         source={{
           uri:
-            "https://images.pexels.com/photos/3212810/pexels-photo-3212810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+            "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=653&q=80",
         }}
       >
         <Text style={styles.text_header}>Forgot password</Text>
@@ -115,23 +121,30 @@ const ForgotPassword = ({ navigation }) => {
           >
             <MaterialCommunityIcons
               name="email-outline"
-              color={theme.dark ? "#333" : "#333"}
-              size={26}
+              color={theme.dark ? "#333" : "#fff"}
+              size={24}
               style={{
-                backgroundColor: "#fff",
-                paddingVertical: 10,
-                paddingHorizontal: 5,
-                borderRightColor: "#fff",
+                backgroundColor: "rgba(255,255,255,0.3)",
+                padding: 15,
+                // borderRightColor: "#fff",
+                borderRadius: 15,
+
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
             <TextInput
               placeholder="Enter your Email Address"
-              placeholderTextColor="#333"
+              placeholderTextColor="#fff"
               style={[
                 styles.textInput,
                 {
-                  color: theme.dark ? "#333" : "#333",
-                  fontSize: 18,
+                  color: theme.dark ? "#333" : "#fff",
+                  backgroundColor: "rgba(255,255,255,0.3)",
+                  fontSize: 16,
+                  borderRadius: data.check_textInputChangeEmail ? 0 : 15,
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
                 },
               ]}
               autoCapitalize="none"
@@ -143,12 +156,16 @@ const ForgotPassword = ({ navigation }) => {
               <Animatable.View animation="bounceIn">
                 <Feather
                   name="check-circle"
-                  color="green"
-                  size={28}
+                  color="#fff"
+                  size={24}
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 10,
-                    borderRightColor: "#fff",
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    padding: 15,
+                    // borderRightColor: "#fff",
+                    borderRadius: 15,
+
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
                   }}
                 />
               </Animatable.View>

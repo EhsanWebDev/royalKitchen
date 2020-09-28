@@ -86,16 +86,34 @@ const Address = ({ user, navigation, dispatch, address }) => {
     );
   return (
     <View style={{ flex: 1, backgroundColor: theme.dark ? "#333" : "#fff" }}>
-      <Title
+      <View
         style={{
-          color: theme.dark ? "#fff" : "#111",
-          textAlign: "center",
-          marginVertical: 20,
-          fontSize: 26,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-around",
+          marginHorizontal: 10,
         }}
       >
-        Previously Saved addresses
-      </Title>
+        <Feather
+          name="arrow-left"
+          size={26}
+          style={{ paddingRight: 10 }}
+          onPress={() => navigation.navigate("Profile")}
+        />
+        <Title
+          style={{
+            color: theme.dark ? "#fff" : "#111",
+            textAlign: "center",
+            alignItems: "center",
+            marginVertical: 20,
+            fontSize: 24,
+          }}
+        >
+          Previously Saved addresses
+        </Title>
+      </View>
+
+      {/* <Button >Back</Button> */}
       {address && (
         <FlatList
           data={address}

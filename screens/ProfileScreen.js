@@ -141,7 +141,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
         </View> */}
         <View style={styles.infoBox}>
           <Title style={{ color: theme.dark ? "#fff" : "#333" }}>
-            {user.reward}
+            {user.reward ? user.reward : 0}
           </Title>
           <Caption style={{ color: theme.dark ? "#fff" : "#333" }}>
             Reward Points

@@ -20,9 +20,11 @@ import {
   Feather,
   FontAwesome,
 } from "@expo/vector-icons";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import { connect } from "react-redux";
-const SignUpScreen = ({ navigation }) => {
+import { createUser } from "../src/store/actions/auth";
+const SignUpScreen = ({ navigation, dispatch }) => {
+  const [loading, setLoading] = React.useState(false);
   const { colors } = useTheme();
   const theme = useTheme();
   const [data, setData] = React.useState({
@@ -34,6 +36,12 @@ const SignUpScreen = ({ navigation }) => {
     check_textInputChange: false,
     check_textInputChangeMobile: false,
     check_textInputChangeEmail: false,
+    password: "",
+    passwordError: null,
+    confirm_password: "",
+    // check_textInputChange: false,
+    secureTextEntry: true,
+    confirm_secureTextEntry: true,
   });
 
   const textInputChangeUser = (val) => {
@@ -86,20 +94,56 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  const Continue = () => {
-    const { username, email, mobileNumber, errorEmail, errorMobile } = data;
+  const Continue = async () => {
+    setLoading(true);
+    const {
+      username,
+      email,
+      password,
+      passwordError,
+      mobileNumber,
+      errorEmail,
+      errorMobile,
+    } = data;
     if (
       username.length === 0 ||
       email.length === 0 ||
       mobileNumber.length === 0 ||
       errorMobile ||
-      errorEmail
+      errorEmail ||
+      passwordError
     ) {
       alert("Some fields are missing");
     } else {
-      navigation.navigate("SignUpScreen1", {
-        data: data,
-      });
+      const payload = {
+        phone: mobileNumber,
+        fname: username,
+        email,
+        password,
+      };
+      const res = await dispatch(createUser(payload));
+      if (res.data.status) {
+        setLoading(false);
+        console.log(res.data);
+        // console.log('User', user);
+        // setLoading(false);
+        // const token = makeid(5);
+        // // console.log(token);
+        // const userData = [
+        //   {
+        //     ...user,
+        //     userToken: token,
+        //   },
+        // ];
+        // // console.log(userData);
+        // signIn(userData);
+      } else {
+        setLoading(false);
+        console.log(res.data);
+        alert(res.data.message);
+      }
+
+      // console.log(username, email, mobileNumber, password);
     }
   };
   const handlePasswordChange = (val) => {
@@ -202,6 +246,19 @@ const SignUpScreen = ({ navigation }) => {
       // }
     }
   };
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#111",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <View
       style={[
@@ -476,6 +533,11 @@ const SignUpScreen = ({ navigation }) => {
               )}
             </TouchableOpacity>
           </View>
+          {data.passwordError && (
+            <Text style={{ color: "#e1b12c", fontWeight: "bold" }}>
+              {data.passwordError}
+            </Text>
+          )}
           {/* <View style={styles.action}>
             <Feather
               name="lock"
@@ -520,7 +582,7 @@ const SignUpScreen = ({ navigation }) => {
                     },
                   ]}
                 >
-                  Continue
+                  Sign up
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

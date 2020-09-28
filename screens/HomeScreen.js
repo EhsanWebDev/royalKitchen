@@ -335,9 +335,10 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
                 >
                   <View
                     style={{
-                      backgroundColor: "rgba(0,0,0,0.5)",
+                      backgroundColor: "rgba(0,0,0,0.65)",
                       justifyContent: "center",
                       flex: 1,
+                      alignItems: "center",
                     }}
                   >
                     <Title
@@ -345,9 +346,13 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
                         color: "white",
                         flex: 1,
                         justifyContent: "center",
-                        paddingLeft: 20,
-                        paddingTop: 40,
-                        fontSize: 24,
+                        alignItems: "center",
+                        alignSelf: "center",
+                        textAlign: "center",
+                        // paddingLeft: 20,
+                        paddingHorizontal: 10,
+                        paddingTop: 50,
+                        fontSize: 18,
                       }}
                     >
                       {item.name}

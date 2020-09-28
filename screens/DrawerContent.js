@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 import {
   useTheme,
   Avatar,
@@ -12,8 +12,13 @@ import {
   Switch,
   ActivityIndicator,
   Button,
+  List,
 } from "react-native-paper";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
@@ -23,6 +28,9 @@ import { connect } from "react-redux";
 import Axios from "axios";
 
 function DrawerContent(props) {
+  const [expanded, setExpanded] = React.useState(true);
+
+  const handlePress = () => setExpanded(!expanded);
   const paperTheme = useTheme();
   const { colors } = useTheme();
   const theme = useTheme();
@@ -79,111 +87,363 @@ function DrawerContent(props) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.dark ? "#000" : "#333" }}>
-      <DrawerContentScrollView {...props}>
-        <View style={styles.drawerContent}>
-          <View style={styles.userInfoSection}>
-            <View
-              style={{ flexDirection: "row", marginTop: 15, marginBottom: 20 }}
-            >
-              <Avatar.Image
-                source={{
-                  uri: "https://api.adorable.io/avatars/50/abott@adorable.png",
+    <View
+      style={{
+        flex: 1,
+        // backgroundColor: "rgba(255,255,255,0.2)",
+        // height: Dimensions.get("screen").height,
+      }}
+    >
+      <ImageBackground
+        style={{
+          flex: 1,
+          // resizeMode: "cover",
+          opacity: 0.95,
+        }}
+        blurRadius={1.5}
+        source={{
+          uri:
+            "https://images.unsplash.com/photo-1592382419305-140c7ac8932a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+        }}
+      >
+        <DrawerContentScrollView
+          {...props}
+          style={{
+            backgroundColor: "rgba(0,0,0,0.3)",
+          }}
+        >
+          <View style={[styles.drawerContent]}>
+            <View style={styles.userInfoSection}>
+              <View
+                style={{
+                  // flexDirection: "row",
+                  marginTop: 25,
+                  // justifyContent: "center",
+                  // flex: 1,
+                  alignItems: "center",
+                  marginBottom: 20,
+                  // marginRight: 20,
                 }}
-                size={50}
-              />
-              <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                <Title
-                  style={[
-                    styles.title,
-                    // {color: paperTheme.dark ? '#fff' : '#000'},
-                  ]}
-                >
-                  {user && user.fname}
-                </Title>
-                <Caption
-                  style={[
-                    styles.caption,
-                    // {color: paperTheme.dark ? '#fff' : '#000'},
-                  ]}
-                >
-                  {user && user.email}
-                </Caption>
+              >
+                <Avatar.Image
+                  source={require("../assets/man.png")}
+                  style={{ backgroundColor: "gray" }}
+                  size={80}
+                />
+                {/* <View style={{ marginLeft: 15, flexDirection: "column" }}>
+                  <Title
+                    style={[
+                      styles.title,
+                      // {color: paperTheme.dark ? '#fff' : '#000'},
+                    ]}
+                  >
+                    {user && user.fname}
+                  </Title>
+                  <Caption
+                    style={[
+                      styles.caption,
+                      // {color: paperTheme.dark ? '#fff' : '#000'},
+                    ]}
+                  >
+                    {user && user.email}
+                  </Caption>
+                </View> */}
               </View>
             </View>
-          </View>
-          <Drawer.Section title="Most Recent Orders">
-            <View style={{ flex: 1, paddingLeft: 20 }}>
-              {props.orders &&
-                props.orders.map((item, index) => {
-                  if (index < 2) {
-                    return (
-                      <View key={item.id} style={{ flex: 1 }}>
-                        <Text>Order Id : {item.id}</Text>
-                        <View
-                          style={{ marginVertical: 5, flexDirection: "row" }}
-                        >
-                          <Text style={{ marginRight: 10, padding: 3 }}>
-                            {" "}
-                            Status :
-                          </Text>
-                          <Text
-                            style={{
-                              backgroundColor: "#e67e22",
-                              color: "#fff",
-                              padding: 3,
-                              paddingHorizontal: 5,
-                              borderRadius: 10,
-                              // fontWeight: "bold",
-                            }}
+            {/* <Drawer.Section title="Most Recent Orders">
+              <View style={{ flex: 1, paddingLeft: 20 }}>
+                {props.orders &&
+                  props.orders.map((item, index) => {
+                    if (index < 2) {
+                      return (
+                        <View key={item.id} style={{ flex: 1 }}>
+                          <Text>Order Id : {item.id}</Text>
+                          <View
+                            style={{ marginVertical: 5, flexDirection: "row" }}
                           >
-                            {item.status}
-                          </Text>
+                            <Text style={{ marginRight: 10, padding: 3 }}>
+                              {" "}
+                              Status :
+                            </Text>
+                            <Text
+                              style={{
+                                backgroundColor: "#e67e22",
+                                color: "#fff",
+                                padding: 3,
+                                paddingHorizontal: 5,
+                                borderRadius: 10,
+                                // fontWeight: "bold",
+                              }}
+                            >
+                              {item.status}
+                            </Text>
+                          </View>
                         </View>
-                      </View>
-                    );
-                  }
-                })}
-              {props.orders && (
-                <View style={{ alignItems: "flex-end" }}>
-                  <Button
-                    onPress={() => props.navigation.navigate("Profile")}
-                    icon="arrow-right"
-                    style={{ marginTop: 18 }}
-                    labelStyle={{ color: "#fff" }}
-                  >
-                    See All Active Orders
-                  </Button>
-                </View>
-              )}
-              {!props.orders && (
-                <View style={{}}>
-                  <Text>No active orders.</Text>
-                </View>
-              )}
-            </View>
-          </Drawer.Section>
+                      );
+                    }
+                  })}
+                {props.orders && (
+                  <View style={{ alignItems: "flex-end" }}>
+                    <Button
+                      onPress={() => props.navigation.navigate("Profile")}
+                      icon="arrow-right"
+                      style={{ marginTop: 18 }}
+                      labelStyle={{ color: "#fff" }}
+                    >
+                      See All Active Orders
+                    </Button>
+                  </View>
+                )}
+                {!props.orders && (
+                  <View style={{}}>
+                    <Text>No active orders.</Text>
+                  </View>
+                )}
+              </View>
+            </Drawer.Section> */}
 
-          <Drawer.Section style={styles.drawerSection}>
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Icon name="home-outline" color={color} size={size} />
-              )}
-              label="Home"
-              onPress={() => {
-                props.navigation.navigate("Home");
-              }}
-            />
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Icon name="grid" color={color} size={size} />
-              )}
-              label="Categories"
-              onPress={() => {
-                props.navigation.navigate("Categories");
-              }}
-            />
-            {/* <DrawerItem
+            <Drawer.Section style={styles.drawerSection}>
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="home-outline"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Home"
+                labelStyle={{
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color: "#fff",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                }}
+                onPress={() => {
+                  props.navigation.navigate("Home");
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="grid"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Menu"
+                onPress={() => {
+                  props.navigation.navigate("Categories");
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="cart"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="My Cart"
+                onPress={() => {
+                  props.navigation.navigate("Cart");
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="package-variant"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Orders"
+                onPress={() => {
+                  props.navigation.navigate("Profile", {
+                    screen: "CurrentOrders",
+                  });
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="coin"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Rewards"
+                onPress={() => {
+                  props.navigation.navigate("Profile");
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="home-city"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Manage Addresses"
+                onPress={() => {
+                  props.navigation.navigate("Profile", { screen: "Address" });
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="contact-phone"
+                    color="#fff"
+                    size={size}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                  />
+                )}
+                label="Contact Us"
+                // onPress={() => {
+                //   props.navigation.navigate("Categories");
+                // }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                style={{
+                  borderBottomColor: "#000",
+                  borderBottomWidth: 1,
+                }}
+              />
+
+              <List.Accordion
+                titleStyle={{
+                  fontWeight: "bold",
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                  fontSize: 16,
+                  color: "#fff",
+                }}
+                title="Royal Kitchen"
+                left={(props) => (
+                  <List.Icon
+                    {...props}
+                    style={{
+                      textShadowColor: "#000",
+                      textShadowRadius: 2,
+                      textShadowOffset: { width: 2, height: 2 },
+                    }}
+                    color="#fff"
+                    icon="folder"
+                  />
+                )}
+              >
+                <List.Item title="First item" />
+                <List.Item title="Second item" />
+              </List.Accordion>
+
+              {/* <DrawerItem
               icon={({color, size}) => (
                 <Icon name="bookmark-outline" color={color} size={size} />
               )}
@@ -192,7 +452,7 @@ function DrawerContent(props) {
                 props.navigation.navigate('BookmarkScreen');
               }}
             /> */}
-            {/* <DrawerItem
+              {/* <DrawerItem
               icon={({color, size}) => (
                 <Icon name="cog" color={color} size={size} />
               )}
@@ -201,41 +461,81 @@ function DrawerContent(props) {
                 props.navigation.navigate('SettingScreen');
               }}
             /> */}
-            <DrawerItem
-              icon={({ color, size }) => (
-                <Icon name="account-check-outline" color={color} size={size} />
-              )}
-              label="Support"
-              onPress={() => {
-                props.navigation.navigate("SupportScreen");
-              }}
-            />
-          </Drawer.Section>
-          <Drawer.Section title="Preferences">
+              {/* <DrawerItem
+                icon={({ color, size }) => (
+                  <Icon
+                    name="account-check-outline"
+                    color={color}
+                    size={size}
+                  />
+                )}
+                label="Support"
+                onPress={() => {
+                  props.navigation.navigate("SupportScreen");
+                }}
+              /> */}
+            </Drawer.Section>
+            {/* <Drawer.Section title="Preferences"> */}
             <TouchableRipple
               onPress={() => {
                 toggleTheme();
               }}
             >
               <View style={styles.preference}>
-                <Text>Dark Theme</Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 14,
+                    color: "#fff",
+                    textShadowColor: "#000",
+                    textShadowRadius: 2,
+                    textShadowOffset: { width: 2, height: 2 },
+                  }}
+                >
+                  Dark Theme
+                </Text>
                 <View pointerEvents="none">
                   <Switch value={paperTheme.dark} />
                 </View>
               </View>
             </TouchableRipple>
-          </Drawer.Section>
-        </View>
-      </DrawerContentScrollView>
-      <Drawer.Section style={styles.bottomDrawerSection}>
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Icon name="exit-to-app" color={color} size={size} />
-          )}
-          label="Sign Out"
-          onPress={() => SignOut()}
-        />
-      </Drawer.Section>
+            {/* </Drawer.Section> */}
+          </View>
+        </DrawerContentScrollView>
+        <Drawer.Section
+          style={[
+            styles.bottomDrawerSection,
+            {
+              backgroundColor: "rgba(0,0,0,0.1)",
+            },
+          ]}
+        >
+          <DrawerItem
+            icon={({ color, size }) => (
+              <Icon
+                name="exit-to-app"
+                color="#fff"
+                style={{
+                  textShadowColor: "#000",
+                  textShadowRadius: 2,
+                  textShadowOffset: { width: 2, height: 2 },
+                }}
+                size={size}
+              />
+            )}
+            label="Sign Out"
+            labelStyle={{
+              fontWeight: "bold",
+              fontSize: 16,
+              color: "#fff",
+              textShadowColor: "#000",
+              textShadowRadius: 2,
+              textShadowOffset: { width: 2, height: 2 },
+            }}
+            onPress={() => SignOut()}
+          />
+        </Drawer.Section>
+      </ImageBackground>
     </View>
   );
 }
@@ -253,7 +553,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userInfoSection: {
-    paddingLeft: 20,
+    // paddingLeft: 20,
   },
   title: {
     fontSize: 16,
@@ -282,7 +582,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   bottomDrawerSection: {
-    marginBottom: 15,
     borderTopColor: "#f4f4f4",
     borderTopWidth: 1,
   },
