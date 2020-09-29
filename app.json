@@ -29,7 +29,8 @@
     },
     "android": {
       "package": "com.ehsanwebdev47.RoyalKitchen",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

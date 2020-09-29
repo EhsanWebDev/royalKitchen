@@ -98,7 +98,7 @@ function DrawerContent(props) {
         style={{
           flex: 1,
           // resizeMode: "cover",
-          opacity: 0.95,
+          opacity: 0.8,
         }}
         blurRadius={1.5}
         source={{
@@ -399,9 +399,9 @@ function DrawerContent(props) {
                   />
                 )}
                 label="Contact Us"
-                // onPress={() => {
-                //   props.navigation.navigate("Categories");
-                // }}
+                onPress={() => {
+                  props.navigation.navigate("ContactUs");
+                }}
                 labelStyle={{
                   fontWeight: "bold",
                   textShadowColor: "#000",
@@ -476,6 +476,7 @@ function DrawerContent(props) {
               /> */}
             </Drawer.Section>
             {/* <Drawer.Section title="Preferences"> */}
+
             <TouchableRipple
               onPress={() => {
                 toggleTheme();
@@ -484,7 +485,7 @@ function DrawerContent(props) {
               <View style={styles.preference}>
                 <Text
                   style={{
-                    fontWeight: "bold",
+                    // fontWeight: "bold",
                     fontSize: 14,
                     color: "#fff",
                     textShadowColor: "#000",
@@ -495,10 +496,15 @@ function DrawerContent(props) {
                   Dark Theme
                 </Text>
                 <View pointerEvents="none">
-                  <Switch value={paperTheme.dark} />
+                  <Switch
+                    value={paperTheme.dark}
+                    color="red"
+                    // style={{ backgroundColor: "white" }}
+                  />
                 </View>
               </View>
             </TouchableRipple>
+
             {/* </Drawer.Section> */}
           </View>
         </DrawerContentScrollView>

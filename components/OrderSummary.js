@@ -58,6 +58,9 @@ class OrderSummary extends Component {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
+              {/* <Text style={{ fontSize: 16, marginRight: 20 }}>
+                Size: {item.size}
+              </Text> */}
               <Text style={{ fontSize: 16, marginRight: 20 }}>
                 Qty: {item.units}{" "}
               </Text>

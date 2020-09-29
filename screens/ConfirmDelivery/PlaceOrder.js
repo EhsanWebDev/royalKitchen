@@ -81,66 +81,58 @@ class PlaceOrder extends React.Component {
   };
 
   postData = async () => {
-    this.setState({ loading: true });
-    const data = {};
-    const quantities = this.getQuantityCount();
+    this.props.navigation.navigate("Payment");
+    // this.setState({ loading: true });
+    // const data = {};
+    // const quantities = this.getQuantityCount();
 
-    // * Data
-    data.user_id = this.props.user.id;
-    data.products = JSON.stringify(this.getProductsID());
-    data.quantity = this.getTotalQuantity(quantities);
-    (data.type = "delivery"),
-      (data.coupon = this.state.promoMatch ? this.state.promoMatch.id : 0),
-      (data.price = this.calPrice());
-    data.address_id = this.props.defaultAddress[0].id;
+    // // * Data
+    // data.user_id = this.props.user.id;
+    // data.products = JSON.stringify(this.getProductsID());
+    // data.quantity = this.getTotalQuantity(quantities);
+    // (data.type = "delivery"),
+    //   (data.coupon = this.state.promoMatch ? this.state.promoMatch.id : 0),
+    //   (data.price = this.calPrice());
+    // data.address_id = this.props.defaultAddress[0].id;
 
-    // console.log(data);
-    // console.log(JSON.stringify(data));
+    // // console.log(data);
+    // // console.log(JSON.stringify(data));
 
-    const res = await axios.post(
-      "https://gradhatcreators.com/api/user/add_order",
-      JSON.stringify(data)
-    );
+    // const res = await axios.post(
+    //   "https://gradhatcreators.com/api/user/add_order",
+    //   JSON.stringify(data)
+    // );
 
-    if (!res.data.status) {
-      this.setState({ loading: false });
-      alert(res.data.message);
-      console.log(res.data);
-      return;
-    } else {
-      // alert(res.data.message);
-      this.props.dispatch(empty());
+    // if (!res.data.status) {
+    //   this.setState({ loading: false });
+    //   alert(res.data.message);
+    //   console.log(res.data);
+    //   return;
+    // } else {
+    //   // alert(res.data.message);
+    //   this.props.dispatch(empty());
 
-      const order_history = await axios.post(
-        "https://gradhatcreators.com/api/user/current_order",
-        {
-          uid: this.props.user.id,
-        }
-      );
-      if (order_history.data.status) {
-        // setData(order_history.data.source);
+    //   const order_history = await axios.post(
+    //     "https://gradhatcreators.com/api/user/current_order",
+    //     {
+    //       uid: this.props.user.id,
+    //     }
+    //   );
+    //   if (order_history.data.status) {
+    //     // setData(order_history.data.source);
 
-        this.props.dispatch({
-          type: "ALL_CURRENT_ORDERS",
-          payload: order_history.data.source,
-        });
-        this.setState({ loading: false });
-        this.props.navigation.navigate("OrderSuccess");
-      } else {
-        alert("Error Occurred while placing your order");
-        this.setState({ loading: false });
-        return;
-      }
-    }
-
-    //   this.props
-    //     .dispatch(placeOrder(data))
-    //     .then(() => {
-    //       this.props.dispatch(empty());
-    //       this.props.navigation.navigate("HomeScreen");
-    //       alert("Thank You for Shopping With Us. Your Order Placed Successfully");
-    //     })
-    //     .catch((e) => console.log(e));
+    //     this.props.dispatch({
+    //       type: "ALL_CURRENT_ORDERS",
+    //       payload: order_history.data.source,
+    //     });
+    //     this.setState({ loading: false });
+    //     this.props.navigation.navigate("OrderSuccess");
+    //   } else {
+    //     alert("Error Occurred while placing your order");
+    //     this.setState({ loading: false });
+    //     return;
+    //   }
+    // }
   };
   calPrice = () => {
     return this.props.cartItems.reduce((total, item) => {

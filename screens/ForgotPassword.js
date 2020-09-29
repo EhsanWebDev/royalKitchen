@@ -20,7 +20,7 @@ import {
   Feather,
   FontAwesome,
 } from "@expo/vector-icons";
-import { useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 import Axios from "axios";
 const ForgotPassword = ({ navigation }) => {
   const { colors } = useTheme();
@@ -191,11 +191,38 @@ const ForgotPassword = ({ navigation }) => {
                     },
                   ]}
                 >
-                  Continue
+                  Send email link
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
+          <Button
+            // style={[styles.signIn]}
+            style={{
+              justifyContent: "flex-start",
+              width: "40%",
+              // backgroundColor: "black",
+              alignItems: "flex-start",
+            }}
+            contentStyle={{
+              alignSelf: "flex-start",
+              justifyContent: "flex-start",
+            }}
+            labelStyle={{ color: "#0097e6" }}
+            icon="arrow-left"
+            onPress={() => navigation.goBack()}
+          >
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: "#0097e6",
+                },
+              ]}
+            >
+              go Back
+            </Text>
+          </Button>
         </Animatable.View>
       </ImageBackground>
     </View>

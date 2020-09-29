@@ -14,8 +14,9 @@ class CartItems extends Component {
   //   };
 
   renderItems(items, onPress) {
-    return items.map((item) => (
-      <View key={item.id} style={styles.mainContainer}>
+    console.log(items);
+    return items.map((item, index) => (
+      <View key={index} style={styles.mainContainer}>
         <View
           style={{
             flex: 1,
@@ -66,6 +67,9 @@ class CartItems extends Component {
               )}
               <Text style={{ fontSize: 14, paddingVertical: 5 }}>
                 Total Price: {item.units * item.price} ₹
+              </Text>
+              <Text style={{ fontSize: 14, paddingVertical: 5 }}>
+                Size: {item.size}
               </Text>
 
               <View

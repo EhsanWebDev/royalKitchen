@@ -35,6 +35,7 @@ import {
 import { AuthContext } from "../components/context";
 import { connect } from "react-redux";
 import { loginUser } from "../src/store/actions/auth";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import {makeid} from '../src/helpers/constants';
 // import {GoogleSignin} from '@react-native-community/google-signin';
 // import auth from '@react-native-firebase/auth';
@@ -90,21 +91,21 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
   };
 
   const handlePasswordChange = (val) => {
-    if (val) {
-      setData({
-        ...data,
-        password: val,
-        isValidPassword: true,
-        passwordError: false,
-      });
-    } else {
-      setData({
-        ...data,
-        password: val,
-        passwordError: "Please enter password",
-        isValidPassword: false,
-      });
-    }
+    // if (val) {
+    setData({
+      ...data,
+      password: val,
+      isValidPassword: true,
+      passwordError: false,
+    });
+    // } else {
+    //   setData({
+    //     ...data,
+    //     password: val,
+    //     passwordError: "Please enter password",
+    //     isValidPassword: false,
+    //   });
+    // }
   };
 
   const updateSecureTextEntry = () => {
@@ -328,7 +329,11 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             ) : null}
           </KeyboardAvoidingView>
 
-          <KeyboardAvoidingView style={styles.action} behavior="height">
+          <KeyboardAvoidingView
+            style={styles.action}
+            behavior="height"
+            keyboardVerticalOffset={-550}
+          >
             <MaterialCommunityIcons
               name="lock-outline"
               color={theme.dark ? "#333" : "#fff"}
@@ -362,6 +367,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               autoCapitalize="none"
               onChangeText={(val) => handlePasswordChange(val)}
             />
+
             <TouchableOpacity onPress={updateSecureTextEntry}>
               {data.secureTextEntry ? (
                 <Feather
@@ -412,7 +418,8 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               Forgot password?
             </Text>
           </TouchableOpacity>
-          <View style={styles.button}>
+          <View style={{ height: 80 }} />
+          <KeyboardAvoidingView style={styles.button}>
             <Button
               loading={loading}
               mode="contained"
@@ -446,12 +453,6 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 paddingVertical: 10,
               }}
             >
-              {/* <AntDesign.Button
-              name="google"
-              color="#fff"
-              size={32}
-              style={{ backgroundColor: "#FF5763", justifyContent: "center" }}
-            /> */}
               <Text
                 style={{
                   color: "white",
@@ -533,31 +534,6 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 <AntDesign name="google" color="#fff" size={22} />
               </TouchableOpacity>
             </View>
-
-            {/* <TouchableOpacity
-            onPress={() => attempt()}
-            style={[
-              styles.signIn,
-              {
-                marginTop: 15,
-               
-                borderWidth: 1,
-                borderColor: "#fff",
-              },
-            ]}
-          >
-            <Text
-              style={[
-                styles.textSign,
-                {
-                  color: "#fff",
-                },
-              ]}
-            >
-            
-              Sign in using Google
-            </Text>
-          </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => navigation.navigate("SignUpScreen")}
               style={{ paddingBottom: 5 }}
@@ -577,7 +553,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 Create new account
               </Text>
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </ImageBackground>
     </View>
@@ -600,7 +576,8 @@ const styles = StyleSheet.create({
   bg_img: {
     flex: 1,
 
-    resizeMode: "cover",
+    // resizeMode: "cover",
+
     // alignItems: 'center',
     opacity: 0.85,
     // paddingTop: 20,
@@ -617,7 +594,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 50,
   },
   footer: {
-    flex: 3.5,
+    flex: 3,
     // marginTop: 30,
     paddingHorizontal: 10,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -631,7 +608,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 36,
-    paddingTop: 60,
+    paddingTop: 120,
   },
   text_footer: {
     color: "#05375a",
@@ -671,7 +648,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     // marginTop: 10,
-    paddingTop: 40,
+    paddingTop: 60,
   },
   signIn: {
     width: "90%",

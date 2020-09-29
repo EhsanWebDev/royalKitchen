@@ -1,10 +1,14 @@
-export default function(state = [], action) {
+export default function (state = [], action) {
   switch (action.type) {
-    case 'ADD_TO_CART':
+    case "ADD_TO_CART":
       const product = action.payload;
       const cart = state;
 
-      const existingProductIndex = findProductIndex(cart, product.id);
+      const existingProductIndex = findProductIndex(
+        cart,
+        product.id,
+        product.size
+      );
 
       const updatedCart =
         existingProductIndex >= 0
@@ -13,15 +17,24 @@ export default function(state = [], action) {
 
       return updatedCart;
 
-    case 'EMPTY':
+    case "EMPTY":
       return (state = []);
-    case 'REMOVE_FROM_CART':
-      return state.filter(cartItem => cartItem.id !== action.payload.id);
-    case 'REMOVE_ONE':
+    case "REMOVE_FROM_CART":
+      return state.filter(
+        (cartItem) =>
+          cartItem.id !== action.payload.id ||
+          (cartItem.id === action.payload.id &&
+            cartItem.size !== action.payload.size)
+      );
+    case "REMOVE_ONE":
       const products = action.payload;
       const cartItems = state;
 
-      const existingProductsIndex = findProductIndex(cartItems, products.id);
+      const existingProductsIndex = findProductIndex(
+        cartItems,
+        products.id,
+        products.size
+      );
 
       const updatedCarts =
         existingProductsIndex >= 0
@@ -30,7 +43,7 @@ export default function(state = [], action) {
 
       return updatedCarts;
 
-    case 'CHECKOUT':
+    case "CHECKOUT":
       return (state = []);
 
     default:
@@ -39,8 +52,8 @@ export default function(state = [], action) {
 }
 
 const removeOne = (cart, product) => {
-  const productIndex = findProductIndex(cart, product.id);
-
+  const productIndex = findProductIndex(cart, product.id, product.size);
+  // console.log("product index", productIndex);
   const updatedCart = [...cart];
   const existingProduct = updatedCart[productIndex];
   if (existingProduct.units > 1) {
@@ -51,16 +64,20 @@ const removeOne = (cart, product) => {
     updatedCart[productIndex] = updatedUnitsProduct;
     return updatedCart;
   } else {
-    return cart.filter(cartItem => cartItem.id !== product.id);
+    return cart.filter(
+      (cartItem) =>
+        cartItem.id !== product.id ||
+        (cartItem.id === product.id && cartItem.size !== product.size)
+    );
   }
 };
 
-const findProductIndex = (cart, productID) => {
-  return cart.findIndex(p => p.id === productID);
+const findProductIndex = (cart, productID, pSize) => {
+  return cart.findIndex((p) => p.id === productID && pSize === p.size);
 };
 
 const updateProductUnits = (cart, product) => {
-  const productIndex = findProductIndex(cart, product.id);
+  const productIndex = findProductIndex(cart, product.id, product.size);
 
   const updatedCart = [...cart];
   const existingProduct = updatedCart[productIndex];

@@ -29,6 +29,8 @@ import Products from "./Orders/Products";
 import EditAddress from "./Address/EditAddress";
 import CurrentOrders from "./Orders/CurrentOrders";
 import OrderSuccess from "./ConfirmDelivery/OrderSuccess";
+import ContactUs from "./Static/ContactUs";
+import Payment from "./ConfirmDelivery/Payment";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -181,6 +183,12 @@ const HomeStackScreen = ({ navigation }) => {
       />
       <HomeStack.Screen name="PlaceOrder" component={PlaceOrder} />
       <HomeStack.Screen name="OrderSuccess" component={OrderSuccess} />
+      <HomeStack.Screen name="Payment" component={Payment} />
+      <HomeStack.Screen
+        name="ContactUs"
+        options={{ title: "Contact Us" }}
+        component={ContactUs}
+      />
     </HomeStack.Navigator>
   );
 };
@@ -226,6 +234,7 @@ const CategoryStackScreen = ({ navigation, route }) => {
       />
       <CategoryStack.Screen name="PlaceOrder" component={PlaceOrder} />
       <CategoryStack.Screen name="OrderSuccess" component={OrderSuccess} />
+      <CategoryStack.Screen name="Payment" component={Payment} />
     </CategoryStack.Navigator>
   );
 };
