@@ -35,7 +35,16 @@ const ListItem = (props) => {
         icon: "info",
       });
       // alert(size);
-      const cartItem = { ...data, size: size };
+      let prc;
+      if (size === "full" || size === "large") {
+        prc = item.max_price;
+      } else if (size === "medium") {
+        prc = item.avg_price;
+      } else {
+        prc = item.min_price;
+      }
+      const cartItem = { ...data, size: size, price: prc };
+      console.log("cart", cartItem);
       props.addToCart(cartItem);
     }
   };
@@ -60,7 +69,7 @@ const ListItem = (props) => {
         /> */}
         <View style={{ position: "relative" }}>
           <Image
-            style={{ width: "100%", height: 200 }}
+            style={{ width: "100%", height: 200, resizeMode: "contain" }}
             source={{
               uri: item.image,
               // headers: {Authorization: 'someAuthToken'},
@@ -81,7 +90,7 @@ const ListItem = (props) => {
               borderRadius: 20,
             }}
           >
-            ₹ {item.price}
+            ₹ {item.max_price}
           </Text>
         </View>
 
@@ -145,9 +154,33 @@ const ListItem = (props) => {
             onValueChange={(itemValue, itemIndex) => setFoodSize(itemValue)}
           >
             {item.size &&
-              item.size.map((item) => {
+              item.size.map((i) => {
                 console.log(item);
-                return <Picker.Item key={item} label={item} value={item} />;
+                if (i.toLowerCase() === "full" || i.toLowerCase() === "large") {
+                  return (
+                    <Picker.Item
+                      key={i}
+                      label={`${i} ${item.max_price}`}
+                      value={i}
+                    />
+                  );
+                } else if (i.toLowerCase() === "medium") {
+                  return (
+                    <Picker.Item
+                      key={i}
+                      label={`${i} ${item.avg_price}`}
+                      value={i}
+                    />
+                  );
+                } else {
+                  return (
+                    <Picker.Item
+                      key={i}
+                      label={`${i} ${item.min_price}`}
+                      value={i}
+                    />
+                  );
+                }
               })}
           </Picker>
         </View>

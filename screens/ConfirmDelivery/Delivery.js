@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, ScrollView, View } from "react-native";
 import {
+  ActivityIndicator,
   Button,
   Card,
   Paragraph,
@@ -12,12 +13,90 @@ import {
 import { connect } from "react-redux";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { getDistance } from "geolib";
+import Axios from "axios";
 // import { Container } from './styles';
 
 const Delivery = ({ defaultAddress }) => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const [storeData, setStoreData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const store = await Axios.get(
+          "https://gradhatcreators.com/api/user/store"
+        );
+        if (store.data.status) {
+          setStoreData(store.data.source);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          throw store.data;
+        }
+      } catch (error) {
+        console.log("error while getting response");
+      }
+    };
+    fetchData();
+  }, []);
   const { colors } = useTheme();
+  const handleStoreLocation = () => {
+    let pdis = getDistance(
+      {
+        latitude: storeData.lat,
+        longitude: storeData.lng,
+      },
+      {
+        latitude: defaultAddress[0].lat,
+        longitude: defaultAddress[0].lng,
+      }
+    );
+
+    // console.log(pdis);
+    if (pdis <= storeData.distance && storeData.distance !== 0) {
+      navigation.navigate("PlaceOrder", {
+        order_mode: "delivery",
+      });
+      //  return pdis;
+    } else {
+      alert("Sorry we don't operate in your area");
+    }
+  };
+
+  // const calDistance = (lat, lng) => {
+  //   const newData = data.storeData.filter(this._getPreciseDistance);
+  //   this.setState({ distances: newData });
+  //   console.log(this.state.distances);
+  // };
+  // const _getPreciseDistance = (element) => {
+  //   let long = this.state.longitude;
+  //   let lat = this.state.latitude;
+  //   let pdis = getDistance(
+  //     {
+  //       latitude: element.LATITUDE ? element.LATITUDE : 0,
+  //       longitude: element.LONGITUDE ? element.LONGITUDE : 0,
+  //     },
+  //     {
+  //       latitude: element.LATITUDE ? lat : 0,
+  //       longitude: element.LONGITUDE ? long : 0,
+  //     }
+  //   );
+  //   if (pdis < this.state.radius * 1000 && this.state.radius !== 0) {
+  //     return pdis;
+  //   }
+  // };
+  if (loading) {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: "#fff", justifyContent: "center" }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <View
       style={{
@@ -101,11 +180,7 @@ const Delivery = ({ defaultAddress }) => {
         <Button
           mode="contained"
           style={{ marginHorizontal: 30, borderRadius: 8 }}
-          onPress={() =>
-            navigation.navigate("PlaceOrder", {
-              order_mode: "delivery",
-            })
-          }
+          onPress={() => handleStoreLocation()}
         >
           Continue
         </Button>
