@@ -74,7 +74,11 @@ const MainTabScreen = () => {
           tabBarLabel: "Updates",
           tabBarColor: "#1f65ff",
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-notifications" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="contact-phone"
+              color={color}
+              size={26}
+            />
           ),
         }}
       />
@@ -242,7 +246,7 @@ const NotificationStackScreen = ({ navigation }) => (
   <NotificationStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#1f65ff",
+        backgroundColor: "#c0392b",
       },
       headerTintColor: "#fff",
       headerTitleStyle: {
@@ -252,13 +256,14 @@ const NotificationStackScreen = ({ navigation }) => (
   >
     <NotificationStack.Screen
       name="Notifications"
-      component={NotificationScreen}
+      component={ContactUs}
       options={{
+        title: "Contact Us",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#1f65ff"
+            backgroundColor="#c0392b"
             onPress={() => navigation.openDrawer()}
           />
         ),

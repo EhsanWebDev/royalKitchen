@@ -11,7 +11,11 @@ const ShoppingCartIcon = (props) => {
   return (
     <View
       style={[
-        { padding: 5, backgroundColor: props.dark ? "#333" : "transparent" },
+        {
+          padding: 5,
+          backgroundColor: props.dark ? "#333" : "transparent",
+          ...props.styles,
+        },
         Platform.OS == "android" ? styles.iconContainer : null,
       ]}
     >

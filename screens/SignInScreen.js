@@ -305,7 +305,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
               ]}
               autoCapitalize="none"
               keyboardType="email-address"
-              onChangeText={(val) => textInputChangeEmail(val)}
+              onChangeText={(val) => setData({ ...data, email: val })}
               value={data.email}
               // onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
@@ -365,7 +365,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 },
               ]}
               autoCapitalize="none"
-              onChangeText={(val) => handlePasswordChange(val)}
+              onChangeText={(val) => setData({ ...data, password: val })}
             />
 
             <TouchableOpacity onPress={updateSecureTextEntry}>
