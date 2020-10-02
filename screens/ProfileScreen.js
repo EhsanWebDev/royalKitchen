@@ -34,8 +34,9 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
 
   useEffect(() => {
     // console.log(user.id);
-    setLoading(true);
+
     const fetch = async () => {
+      setLoading(true);
       const res = await Axios.post(
         "http://gradhatcreators.com/api/user/get_user",
         {
@@ -57,6 +58,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
         );
         if (ords.data.status) {
           setOrders(ords.data.source.length);
+          setLoading(false);
         }
         setLoading(false);
         // console.log(res.data);
@@ -64,9 +66,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
     };
 
     fetch();
-
-    return () => {};
-  }, [navigation]);
+  }, []);
   if (loading) {
     return (
       <View

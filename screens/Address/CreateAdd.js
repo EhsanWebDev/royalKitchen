@@ -164,12 +164,9 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
     errorMobile: false,
     check_textInputChangeEmail: false,
   });
-  // const [cities, setCities] = useState("");
-  const [cityName, setCityName] = useState("");
+
   const [states, setStates] = useState("");
-  const [stateName, setStateName] = useState("");
-  const [province, setProvince] = useState("");
-  const [country, setCountry] = useState("");
+
   const [street, setStreet] = useState("");
   const [location, setLocation] = useState(null);
   const theme = useTheme();
