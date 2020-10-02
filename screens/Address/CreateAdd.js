@@ -261,7 +261,8 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
           lng: location.longitude,
         })
       );
-      alert(res.data.message);
+      // alert(res.data.message);
+      navigation.goBack();
     } else {
       setLoading(false);
       alert("Error occurred !");

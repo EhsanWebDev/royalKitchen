@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Button, Text, TextInput, Title, useTheme } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
+import { useNavigation } from "@react-navigation/native";
 
 var state_arr = new Array(
   "Andaman & Nicobar",
@@ -123,6 +124,7 @@ var cities = [];
 
 const TakeAway = ({ coords }) => {
   const theme = useTheme();
+  const navigation = useNavigation();
   const { colors } = useTheme();
   const [res, setRes] = useState("");
   const [states, setStates] = useState("");
@@ -150,7 +152,17 @@ const TakeAway = ({ coords }) => {
     setStates(val);
   };
   const handleTakeAway = () => {
-    console.log(city, states, res);
+    if (city.length === 0 || states.length === 0 || res.length === 0) {
+      alert("Please select city and restaurent for take away");
+      return;
+    } else if (city !== "Fatehabad" || states !== "Haryana") {
+      alert("We Don't operate in your city");
+      return;
+    } else {
+      navigation.navigate("PlaceOrder", {
+        order_mode: "take-away",
+      });
+    }
   };
   return (
     <View
@@ -240,7 +252,11 @@ const TakeAway = ({ coords }) => {
         </Picker>
       </View>
 
-      <Button mode="contained" style={{ marginTop: 40 }}>
+      <Button
+        mode="contained"
+        style={{ marginTop: 40 }}
+        onPress={handleTakeAway}
+      >
         Continue
       </Button>
     </View>

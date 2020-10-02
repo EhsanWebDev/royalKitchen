@@ -62,7 +62,7 @@ const Delivery = ({ defaultAddress }) => {
       });
       //  return pdis;
     } else {
-      alert("Sorry we don't operate in your area");
+      alert("Sorry we don't operate delivery in your area");
     }
   };
 

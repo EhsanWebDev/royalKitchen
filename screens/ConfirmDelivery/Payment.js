@@ -1,79 +1,68 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import { WebView } from "react-native-webview";
-export default class Payment extends Component {
-  state = { loading: true };
-  handleWebViewNavigationStateChange = (newNavState) => {
-    // newNavState looks something like this:
-    // {
-    //   url?: string;
-    //   title?: string;
-    //   loading?: boolean;
-    //   canGoBack?: boolean;
-    //   canGoForward?: boolean;
-    // }
-    console.log(newNavState);
-    const { url } = newNavState;
-    if (!url) return;
-    console.log(url);
-    // handle certain doctypes
-    // if (url.includes(".pdf")) {
-    //   this.webview.stopLoading();
-    //   // open a modal with the PDF viewer
-    //   }
-
-    // one way to handle a successful form submit is via query strings
-    if (url.includes("/success")) {
-      this.webview.stopLoading();
-      // maybe close this view?
-      alert("Payment Successful");
-      return;
-    }
-
-    // one way to handle errors is via query string
-    if (url.includes("?errors=true")) {
-      this.webview.stopLoading();
-    }
-
-    // redirect somewhere else
-    if (url.includes("google.com")) {
-      const newURL = "https://reactnative.dev/";
-      const redirectTo = 'window.location = "' + newURL + '"';
-      this.webview.injectJavaScript(redirectTo);
-    }
-  };
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 2000);
-  }
+import { Button, Title, withTheme } from "react-native-paper";
+import { FontAwesome5 } from "@expo/vector-icons";
+class Payment extends Component {
   render() {
-    const { loading } = this.state;
-    if (loading) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#111",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: -90,
-          }}
-        >
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    }
+    const { theme } = this.props;
     return (
-      <WebView
-        source={{
-          uri:
-            "http://gradhatcreators.com/razorpay/checkout?price=55&user_id=5",
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: theme.dark ? "#333" : "white",
+          marginTop: -100,
         }}
-        ref={(ref) => (this.webview = ref)}
-        onNavigationStateChange={this.handleWebViewNavigationStateChange}
-      />
+      >
+        <View style={{ flex: 1, marginTop: 100, justifyContent: "center" }}>
+          <Title
+            style={{ color: theme.dark ? "#fff" : "#000", textAlign: "center" }}
+          >
+            Choose Payment Method
+          </Title>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 10,
+            }}
+          >
+            <FontAwesome5 name="wallet" size={24} color="#c23616" />
+            <Button
+              onPress={() =>
+                this.props.navigation.navigate("Wallet", {
+                  PromoDis: this.props.route.params.PromoDis,
+                  promoMatch: this.props.route.params.promoMatch,
+                  order_mode: this.props.route.params.order_mode,
+                })
+              }
+            >
+              Pay with Reward's Wallet
+            </Button>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome5 name="credit-card" size={24} color="#c23616" />
+            <Button
+              onPress={() =>
+                this.props.navigation.navigate("CardPay", {
+                  PromoDis: this.props.route.params.PromoDis,
+                  promoMatch: this.props.route.params.promoMatch,
+                  order_mode: this.props.route.params.order_mode,
+                })
+              }
+            >
+              Credit Card Payment
+            </Button>
+          </View>
+        </View>
+      </View>
     );
   }
 }
+export default withTheme(Payment);

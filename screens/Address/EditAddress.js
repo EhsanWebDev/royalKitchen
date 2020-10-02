@@ -274,7 +274,8 @@ const EditAddress = ({ user, dispatch, route, navigation }) => {
         return;
       }
 
-      alert(res.data.message);
+      // alert(res.data.message);
+      navigation.goBack();
     } else {
       setLoading(false);
       alert("Error occurred !");

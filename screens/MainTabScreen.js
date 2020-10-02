@@ -31,6 +31,9 @@ import CurrentOrders from "./Orders/CurrentOrders";
 import OrderSuccess from "./ConfirmDelivery/OrderSuccess";
 import ContactUs from "./Static/ContactUs";
 import Payment from "./ConfirmDelivery/Payment";
+import CardPay from "./ConfirmDelivery/CardPay";
+import Wallet from "./ConfirmDelivery/Wallet";
+import Rewards from "./Rewards";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -188,10 +191,22 @@ const HomeStackScreen = ({ navigation }) => {
       <HomeStack.Screen name="PlaceOrder" component={PlaceOrder} />
       <HomeStack.Screen name="OrderSuccess" component={OrderSuccess} />
       <HomeStack.Screen name="Payment" component={Payment} />
+      <HomeStack.Screen name="CardPay" component={CardPay} />
       <HomeStack.Screen
         name="ContactUs"
         options={{ title: "Contact Us" }}
         component={ContactUs}
+      />
+
+      <HomeStack.Screen
+        name="CreateAdd"
+        options={{ headerShown: false }}
+        component={CreateAdd}
+      />
+      <HomeStack.Screen
+        name="EditAddress"
+        options={{ headerShown: false }}
+        component={EditAddress}
       />
     </HomeStack.Navigator>
   );
@@ -232,6 +247,12 @@ const CategoryStackScreen = ({ navigation, route }) => {
         options={{ headerShown: false }}
         component={CreateAdd}
       />
+
+      <CategoryStack.Screen
+        options={{ headerShown: false }}
+        name="EditAddress"
+        component={EditAddress}
+      />
       <CategoryStack.Screen
         name="ConfirmDelivery"
         component={ConfirmDelivery}
@@ -239,6 +260,9 @@ const CategoryStackScreen = ({ navigation, route }) => {
       <CategoryStack.Screen name="PlaceOrder" component={PlaceOrder} />
       <CategoryStack.Screen name="OrderSuccess" component={OrderSuccess} />
       <CategoryStack.Screen name="Payment" component={Payment} />
+
+      <CategoryStack.Screen name="CardPay" component={CardPay} />
+      <CategoryStack.Screen name="Wallet" component={Wallet} />
     </CategoryStack.Navigator>
   );
 };
@@ -329,6 +353,14 @@ const ProfileStackScreen = ({ navigation }) => {
       <ProfileStack.Screen name="OrderHistory" component={OrderHistory} />
       <ProfileStack.Screen name="CurrentOrders" component={CurrentOrders} />
       <ProfileStack.Screen name="Products" component={Products} />
+
+      <ProfileStack.Screen name="ConfirmDelivery" component={ConfirmDelivery} />
+      <ProfileStack.Screen name="PlaceOrder" component={PlaceOrder} />
+      <ProfileStack.Screen name="OrderSuccess" component={OrderSuccess} />
+      <ProfileStack.Screen name="Payment" component={Payment} />
+
+      <ProfileStack.Screen name="CardPay" component={CardPay} />
+      <ProfileStack.Screen name="Rewards" component={Rewards} />
     </ProfileStack.Navigator>
   );
 };

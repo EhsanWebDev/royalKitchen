@@ -52,27 +52,8 @@ class PlaceOrder extends React.Component {
     );
     this.setState({ loading: false, promoRes: coup.data.source });
     console.log(coup);
-    // getTokens((val) => {
-    //   if (val[0][1] === null) {
-    //     this.setState({ loading: false });
-    //   } else {
-    //     this.setState({ userID: val[0][1], loading: false });
-
-    //   }
-    // });
   }
 
-  // getData = (cb) => {
-
-  //   this.setState(
-  //     {
-  //       data: data,
-  //     },
-  //     () => {
-  //       cb();
-  //     }
-  //   );
-  // };
   getProductsID = () => {
     return this.props.cartItems.map((element) => element);
   };
@@ -81,7 +62,12 @@ class PlaceOrder extends React.Component {
   };
 
   postData = async () => {
-    this.props.navigation.navigate("Payment");
+    const { PromoDis, promoMatch } = this.state;
+    this.props.navigation.navigate("Payment", {
+      PromoDis: PromoDis && Number(PromoDis),
+      promoMatch,
+      order_mode: this.props.route.params.order_mode,
+    });
     // this.setState({ loading: true });
     // const data = {};
     // const quantities = this.getQuantityCount();
@@ -174,6 +160,11 @@ class PlaceOrder extends React.Component {
         >
           {this.props.cartItems.length > 0 ? (
             <View style={{ marginTop: 108, flex: 1 }}>
+              <Text style={{ textAlign: "center" }}>
+                Order Mode:
+                {this.props.route.params &&
+                  this.props.route.params.order_mode.toUpperCase()}
+              </Text>
               <View>
                 {this.props.route.params &&
                   this.props.route.params.order_mode === "delivery" && (
@@ -202,7 +193,7 @@ class PlaceOrder extends React.Component {
                           alignSelf: "center",
                         }}
                       >
-                        Shipping Address:
+                        Delivery Address:
                       </Text>
                       <Text
                         style={{

@@ -205,7 +205,13 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
             <Text style={{ color: "#fff", marginLeft: 20 }}>{user.email}</Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 8,
+          }}
+        >
           <View
             style={{
               backgroundColor: "#333",
@@ -411,20 +417,26 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
         </TouchableRipple> */}
         <TouchableRipple onPress={() => navigation.push("Address")}>
           <View style={styles.menuItem}>
-            <Icon name="home" color="#FF6347" size={25} />
+            <Icon name="home" color="#FF6347" size={24} />
             <Text style={styles.menuItemText}>Manage Your addresses</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.push("OrderHistory")}>
           <View style={styles.menuItem}>
-            <Icon name="history" color="#FF6347" size={25} />
+            <Icon name="history" color="#FF6347" size={24} />
             <Text style={styles.menuItemText}>Order History</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.push("CurrentOrders")}>
           <View style={styles.menuItem}>
-            <Entypo name="new" color="#FF6347" size={25} />
+            <Entypo name="new" color="#FF6347" size={24} />
             <Text style={styles.menuItemText}>Current Orders</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.push("Rewards")}>
+          <View style={styles.menuItem}>
+            <Icon name="wallet-giftcard" size={24} color="#FF6347" />
+            <Text style={styles.menuItemText}>Rewards</Text>
           </View>
         </TouchableRipple>
         {/* <TouchableRipple onPress={myCustomShare}>
@@ -464,7 +476,7 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 25,
+    marginBottom: 10,
   },
   title: {
     fontSize: 24,
@@ -493,7 +505,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   menuWrapper: {
-    marginTop: 10,
+    marginTop: 0,
   },
   menuItem: {
     flexDirection: "row",

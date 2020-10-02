@@ -69,7 +69,7 @@ const ListItem = (props) => {
         /> */}
         <View style={{ position: "relative" }}>
           <Image
-            style={{ width: "100%", height: 200, resizeMode: "contain" }}
+            style={{ width: "100%", height: 220 }}
             source={{
               uri: item.image,
               // headers: {Authorization: 'someAuthToken'},
