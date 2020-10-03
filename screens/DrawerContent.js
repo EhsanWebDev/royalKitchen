@@ -439,8 +439,12 @@ function DrawerContent(props) {
                   />
                 )}
               >
-                <List.Item title="First item" />
-                <List.Item title="Second item" />
+                <List.Item
+                  title="About Us"
+                  onPress={() => props.navigation.navigate("AboutUs")}
+                />
+                <List.Item title="Terms And Conditions" />
+                <List.Item title="Privacy Policy" />
               </List.Accordion>
 
               {/* <DrawerItem

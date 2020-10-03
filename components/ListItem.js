@@ -10,7 +10,9 @@ import { addToCart } from "../src/store/actions";
 const ListItem = (props) => {
   const { item } = props;
   const theme = useTheme();
-  const [size, setSize] = useState(item.size ? item.size[0] : "");
+  const [size, setSize] = useState(
+    item.product_detail ? item.product_detail[0] : ""
+  );
   const addToCart = (data) => {
     //   ToastAndroid.show(
     //     `${data.name} Added to the Cart !`,
@@ -36,15 +38,13 @@ const ListItem = (props) => {
       });
       // alert(size);
       let prc;
-      if (size === "full" || size === "large") {
-        prc = item.max_price;
-      } else if (size === "medium") {
-        prc = item.avg_price;
-      } else {
-        prc = item.min_price;
-      }
-      const cartItem = { ...data, size: size, price: prc };
-      console.log("cart", cartItem);
+      console.log(size);
+      const cartItem = {
+        ...data,
+        size: size.size && size.size,
+        price: size.price,
+      };
+      // console.log("cart", cartItem);
       props.addToCart(cartItem);
     }
   };
@@ -81,16 +81,17 @@ const ListItem = (props) => {
             style={{
               backgroundColor: theme.dark ? "#fff" : "#333",
               padding: 5,
+              marginLeft: 5,
               position: "absolute",
-              bottom: 0,
+              bottom: 5,
               left: 0,
-              fontSize: 22,
+              fontSize: 17,
               fontWeight: "bold",
               color: theme.dark ? "#333" : "#fff",
               borderRadius: 20,
             }}
           >
-            ₹ {item.max_price}
+            ₹ {item && item.product_detail[0].price}
           </Text>
         </View>
 
@@ -151,36 +152,19 @@ const ListItem = (props) => {
             style={{ width: "60%", height: 20 }}
             itemStyle={{ fontWeight: "bold", color: "red" }}
             selectedValue={size}
-            onValueChange={(itemValue, itemIndex) => setFoodSize(itemValue)}
+            onValueChange={(itemValue) => setFoodSize(itemValue)}
           >
-            {item.size &&
-              item.size.map((i) => {
+            {item.product_detail &&
+              item.product_detail.map((i) => {
                 console.log(item);
-                if (i.toLowerCase() === "full" || i.toLowerCase() === "large") {
-                  return (
-                    <Picker.Item
-                      key={i}
-                      label={`${i} ${item.max_price}`}
-                      value={i}
-                    />
-                  );
-                } else if (i.toLowerCase() === "medium") {
-                  return (
-                    <Picker.Item
-                      key={i}
-                      label={`${i} ${item.avg_price}`}
-                      value={i}
-                    />
-                  );
-                } else {
-                  return (
-                    <Picker.Item
-                      key={i}
-                      label={`${i} ${item.min_price}`}
-                      value={i}
-                    />
-                  );
-                }
+
+                return (
+                  <Picker.Item
+                    key={i}
+                    label={`${i.size} ${i.price}`}
+                    value={i}
+                  />
+                );
               })}
           </Picker>
         </View>

@@ -3,6 +3,8 @@ import { Text, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { WebView } from "react-native-webview";
 import { connect } from "react-redux";
+import axios from "axios";
+import { empty } from "../../src/store/actions";
 class CardPay extends Component {
   state = {
     loading: true,
@@ -27,7 +29,7 @@ class CardPay extends Component {
   };
   postData = async () => {
     // this.props.navigation.navigate("Payment");
-    // this.setState({ loading: true });
+    this.setState({ loading: true });
     const data = {};
     const quantities = this.getQuantityCount();
 
@@ -46,49 +48,48 @@ class CardPay extends Component {
     data.address_id =
       this.props.route.params.order_mode === "delivery"
         ? this.props.defaultAddress[0].id
-        : 0;
+        : "1";
     data.payment_type = "card";
     console.log(data);
     // console.log(JSON.stringify(data));
 
-    // const res = await axios.post(
-    //   "https://gradhatcreators.com/api/user/add_order",
-    //   JSON.stringify(data)
-    // );
+    const res = await axios.post(
+      "https://gradhatcreators.com/api/user/add_order",
+      JSON.stringify(data)
+    );
 
-    // if (!res.data.status) {
-    //   this.setState({ loading: false });
-    //   alert(res.data.message);
-    //   console.log(res.data);
-    //   return;
-    // } else {
-    //   // alert(res.data.message);
-    //   this.props.dispatch(empty());
+    if (!res.data.status) {
+      this.setState({ loading: false });
+      alert(res.data.message);
+      console.log(res.data);
+      return;
+    } else {
+      // alert(res.data.message);
+      this.props.dispatch(empty());
 
-    //   const order_history = await axios.post(
-    //     "https://gradhatcreators.com/api/user/current_order",
-    //     {
-    //       uid: this.props.user.id,
-    //     }
-    //   );
-    //   if (order_history.data.status) {
-    //     // setData(order_history.data.source);
+      const order_history = await axios.post(
+        "https://gradhatcreators.com/api/user/current_order",
+        {
+          uid: this.props.user.id,
+        }
+      );
+      if (order_history.data.status) {
+        // setData(order_history.data.source);
 
-    //     this.props.dispatch({
-    //       type: "ALL_CURRENT_ORDERS",
-    //       payload: order_history.data.source,
-    //     });
-    //     this.setState({ loading: false });
-    //     this.props.navigation.navigate("OrderSuccess");
-    //   } else {
-    //     alert("Error Occurred while placing your order");
-    //     this.setState({ loading: false });
-    //     return;
-    //   }
-    // }
+        this.props.dispatch({
+          type: "ALL_CURRENT_ORDERS",
+          payload: order_history.data.source,
+        });
+        this.setState({ loading: false });
+        this.props.navigation.navigate("OrderSuccess");
+      } else {
+        alert("Error Occurred while placing your order");
+        this.setState({ loading: false });
+        return;
+      }
+    }
   };
   handleWebViewNavigationStateChange = (newNavState) => {
-    this.postData();
     // newNavState looks something like this:
     // {
     //   url?: string;
@@ -110,6 +111,7 @@ class CardPay extends Component {
     // one way to handle a successful form submit is via query strings
     if (url.includes("/success")) {
       this.webview.stopLoading();
+      this.postData();
       // maybe close this view?
       //   alert("Payment Successful");
       return;

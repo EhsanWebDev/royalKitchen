@@ -69,8 +69,11 @@ const SignInPhone = ({ navigation }) => {
       });
       if (!res.data.status) {
         //   alert("Please enter registered email-address");
-        console.log("error", res.data);
+        alert("Mobile Number not registered. Please Sign Up First");
         setLoading(false);
+        setData({
+          email: "",
+        });
         return;
       } else {
         //   alert("Email Sent, Please check your email-address");

@@ -217,7 +217,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
           password: "",
           check_textInputChange: false,
         });
-        alert("Incorrect Credentials");
+        alert("Email / Password Incorrect, Or Not Registered");
       }
     }
   };

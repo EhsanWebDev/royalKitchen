@@ -159,9 +159,12 @@ const TakeAway = ({ coords }) => {
       alert("We Don't operate in your city");
       return;
     } else {
-      navigation.navigate("PlaceOrder", {
-        order_mode: "take-away",
-      });
+      alert("We generally take 30-45 minutes to prepare your tasty food.");
+      setTimeout(() => {
+        navigation.navigate("PlaceOrder", {
+          order_mode: "take-away",
+        });
+      }, 2000);
     }
   };
   return (

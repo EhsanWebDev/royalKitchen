@@ -34,6 +34,7 @@ import Payment from "./ConfirmDelivery/Payment";
 import CardPay from "./ConfirmDelivery/CardPay";
 import Wallet from "./ConfirmDelivery/Wallet";
 import Rewards from "./Rewards";
+import AboutUs from "./Static/AboutUs";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -207,6 +208,11 @@ const HomeStackScreen = ({ navigation }) => {
         name="EditAddress"
         options={{ headerShown: false }}
         component={EditAddress}
+      />
+      <HomeStack.Screen
+        name="AboutUs"
+        options={{ headerShown: false }}
+        component={AboutUs}
       />
     </HomeStack.Navigator>
   );
