@@ -340,7 +340,9 @@ function DrawerContent(props) {
                 )}
                 label="Rewards"
                 onPress={() => {
-                  props.navigation.navigate("Profile");
+                  props.navigation.navigate("Profile", {
+                    screen: "Rewards",
+                  });
                 }}
                 labelStyle={{
                   fontWeight: "bold",

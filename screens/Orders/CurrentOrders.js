@@ -36,6 +36,9 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
       );
       if (order_history.data.status) {
         setData(order_history.data.source);
+        console.log(
+          JSON.parse(JSON.parse(order_history.data.source[0].products))
+        );
         setLoading(false);
       } else {
         alert("Error Occurred");
@@ -92,7 +95,7 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
 
       {data && (
         <FlatList
-          data={data}
+          data={data && data}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Card
@@ -159,36 +162,38 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                     marginVertical: 5,
                   }}
                 />
-                <Paragraph
+                {/* <Paragraph
                   style={{
                     color: theme.dark ? "#fff" : "#000",
                   }}
                 >
                   Order Items
-                </Paragraph>
+                </Paragraph> */}
                 <View
                   style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}
                 >
-                  {item.products &&
-                    JSON.parse(item.products).map((item, index) => {
-                      if (index < 3) {
-                        return (
-                          <Chip
-                            selected
-                            selectedColor="black"
-                            key={item.id}
-                            style={{
-                              backgroundColor: "#ddd",
-                              marginHorizontal: 5,
-                              marginVertical: 3,
-                            }}
-                            textStyle={{ fontWeight: "bold" }}
-                          >
-                            {item.name}
-                          </Chip>
-                        );
+                  {/* {item.products &&
+                    JSON.parse(JSON.parse(item.products && item.products)).map(
+                      (item, index) => {
+                        if (index < 3) {
+                          return (
+                            <Chip
+                              selected
+                              selectedColor="black"
+                              key={item.id}
+                              style={{
+                                backgroundColor: "#ddd",
+                                marginHorizontal: 5,
+                                marginVertical: 3,
+                              }}
+                              textStyle={{ fontWeight: "bold" }}
+                            >
+                              {item.name}
+                            </Chip>
+                          );
+                        }
                       }
-                    })}
+                    )} */}
                 </View>
                 <View style={{ alignItems: "flex-end" }}>
                   <Button

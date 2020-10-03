@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import { Button, Paragraph, Title, withTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Paragraph,
+  Title,
+  withTheme,
+} from "react-native-paper";
 import { FontAwesome5, SimpleLineIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { empty } from "../../src/store/actions";
 import axios from "axios";
 class Wallet extends Component {
+  state = { loading: false };
+
   getProductsID = () => {
     return this.props.cartItems.map((element) => element);
   };
@@ -19,7 +27,7 @@ class Wallet extends Component {
   };
   postData = async () => {
     // this.props.navigation.navigate("Payment");
-    // this.setState({ loading: true });
+    this.setState({ loading: true });
     if (
       this.calPrice() - this.props.route.params.PromoDis >
       Number(this.props.user.reward)
@@ -50,13 +58,13 @@ class Wallet extends Component {
           ? this.props.defaultAddress[0].id
           : "1";
       data.payment_type = "reward";
-      console.log(data);
+      // console.log(JSON.stringify(this.getProductsID()));
 
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
 
       const res = await axios.post(
         "https://gradhatcreators.com/api/user/add_order",
-        JSON.stringify(data)
+        data
       );
 
       if (!res.data.status) {
@@ -66,9 +74,8 @@ class Wallet extends Component {
         return;
       } else {
         // alert(res.data.message);
-        this.props.dispatch(empty());
 
-        const order_history = await Axios.post(
+        const order_history = await axios.post(
           "https://gradhatcreators.com/api/user/current_order",
           {
             uid: this.props.user.id,
@@ -82,6 +89,7 @@ class Wallet extends Component {
             payload: order_history.data.source,
           });
           this.setState({ loading: false });
+          this.props.dispatch(empty());
           this.props.navigation.navigate("OrderSuccess");
         } else {
           alert("Error Occurred while placing your order");
@@ -102,7 +110,20 @@ class Wallet extends Component {
   };
   render() {
     const { theme } = this.props;
-
+    if (this.state.loading) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
     return (
       <View
         style={{
@@ -123,7 +144,7 @@ class Wallet extends Component {
                 textAlign: "center",
               }}
             >
-              Your Reward Wallet Balance :{" "}
+              Your Reward Wallet Balance :
               {this.props.user && this.props.user.reward
                 ? this.props.user.reward
                 : 0}
@@ -145,22 +166,28 @@ class Wallet extends Component {
               Total Amount To Pay :{"  ₹ "}
               {this.calPrice() - this.props.route.params.PromoDis}
             </Paragraph>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingTop: 80,
-              }}
-            >
-              <Button
-                mode="contained"
-                style={{ width: "60%", borderRadius: 8 }}
-                onPress={() => this.postData()}
+            {this.props.user.reward ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingTop: 80,
+                }}
               >
-                Pay
-              </Button>
-            </View>
+                <Button
+                  mode="contained"
+                  style={{ width: "60%", borderRadius: 8 }}
+                  onPress={() => this.postData()}
+                >
+                  Pay
+                </Button>
+              </View>
+            ) : (
+              <Text style={{ color: "#000", textAlign: "center" }}>
+                You Don't have enough balance{" "}
+              </Text>
+            )}
           </View>
         </View>
       </View>

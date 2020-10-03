@@ -35,8 +35,10 @@ const OrderHistory = ({ user, navigation, dispatch, address }) => {
           uid: user.id,
         }
       );
+
       if (order_history.data.status) {
         setData(order_history.data.source);
+        // console.log(order_history.data.source.products);
         setLoading(false);
       } else {
         alert("Error Occurred");

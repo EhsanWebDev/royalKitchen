@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import { Button, Paragraph, Title, withTheme } from "react-native-paper";
-import { FontAwesome5, SimpleLineIcons } from "@expo/vector-icons";
+import { FontAwesome5, SimpleLineIcons, Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 class Rewards extends Component {
   render() {
@@ -16,6 +16,32 @@ class Rewards extends Component {
         }}
       >
         <View style={{ flex: 1, marginTop: 100 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              // justifyContent: "space-around",
+              marginHorizontal: 20,
+            }}
+          >
+            <Feather
+              name="arrow-left"
+              size={26}
+              style={{ paddingRight: 60 }}
+              onPress={() => this.props.navigation.navigate("Profile")}
+            />
+            <Title
+              style={{
+                color: theme.dark ? "#fff" : "#111",
+                textAlign: "center",
+                alignItems: "center",
+                marginVertical: 20,
+                fontSize: 24,
+              }}
+            >
+              Your Reward Wallet
+            </Title>
+          </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <SimpleLineIcons name="wallet" size={200} color="#ccc" />
           </View>
@@ -32,22 +58,22 @@ class Rewards extends Component {
                 ? this.props.user.reward
                 : 0}
             </Title>
-            <Paragraph
+            {/* <Paragraph
               style={{
                 color: theme.dark ? "#fff" : "#000",
                 textAlign: "center",
               }}
             >
               Total Spent :
-            </Paragraph>
-            <Paragraph
+            </Paragraph> */}
+            {/* <Paragraph
               style={{
                 color: theme.dark ? "#fff" : "#000",
                 textAlign: "center",
               }}
             >
               Total Amount To Pay :{" "}
-            </Paragraph>
+            </Paragraph> */}
             {/* <View
               style={{
                 flexDirection: "row",

@@ -65,7 +65,6 @@ class CardPay extends Component {
       return;
     } else {
       // alert(res.data.message);
-      this.props.dispatch(empty());
 
       const order_history = await axios.post(
         "https://gradhatcreators.com/api/user/current_order",
@@ -81,6 +80,7 @@ class CardPay extends Component {
           payload: order_history.data.source,
         });
         this.setState({ loading: false });
+        this.props.dispatch(empty());
         this.props.navigation.navigate("OrderSuccess");
       } else {
         alert("Error Occurred while placing your order");

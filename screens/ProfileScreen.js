@@ -152,7 +152,7 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
           style={[
             styles.title,
             {
-              marginTop: 40,
+              marginTop: 45,
               marginBottom: 5,
               color: "#fff",
               textAlign: "center",
