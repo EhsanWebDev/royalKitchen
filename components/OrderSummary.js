@@ -19,10 +19,17 @@ import {
   withTheme,
   ActivityIndicator,
 } from "react-native-paper";
+import { Picker } from "@react-native-community/picker";
 class OrderSummary extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true, promo: "", promoRes: null, PromoDis: 0 };
+    this.state = {
+      loading: true,
+      promo: "",
+      promoRes: null,
+      PromoDis: 0,
+      pm: "",
+    };
   }
 
   renderProdList = (data) => {
@@ -107,45 +114,6 @@ class OrderSummary extends Component {
       </View>
     ));
   };
-  //   calPercentage = (price, discountRate) => {
-  //     const dis = discountRate / 100;
-  //     var totalValue = price - price * dis;
-  //     return totalValue;
-  //   };
-  //   calPrice = (items) => {
-  //     return items.reduce((total, item) => {
-  //       if (item.discountedPrice) {
-  //         return total + item.discountedPrice * item.units;
-  //       } else {
-  //         return total + item.price * item.units;
-  //       }
-  //     }, 0);
-  //   };
-  //   UniqueByID = (pro) => {
-  //     Axios({
-  //       url: `${URL}api/StoresApi/GetPromo`,
-  //       method: "POST",
-  //       data: JSON.stringify({
-  //         UID: this.props.user.auth.ID,
-  //         promo: pro,
-  //       }),
-  //       headers: {
-  //         "Content-type": "application/json; charset=UTF-8",
-  //       },
-  //     })
-  //       .then((res) => {
-  //         if (res.data !== null) {
-  //           this.setState({ promoRes: res.data.AMOUNT }, () =>
-  //             console.log(this.state.promoRes)
-  //           );
-  //         }
-  //         this.setState({ isPromo: res.data });
-
-  //         // let total = this.calPrice(data)
-  //         //console.log(dis);
-  //       })
-  //       .catch((e) => console.log(e));
-  //   };
 
   async componentDidMount() {
     const coup = await Axios.get(
@@ -155,8 +123,9 @@ class OrderSummary extends Component {
     // console.log(coup);
   }
   render() {
-    const { theme } = this.props;
+    const { theme, selected, handlePM } = this.props;
     const { colors } = theme;
+    const { pm } = this.state;
     if (this.state.loading) {
       return (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -184,19 +153,38 @@ class OrderSummary extends Component {
                   }}
                   style={{
                     backgroundColor: "#fff",
-                    fontSize: 14,
+                    fontSize: 13,
+                    height: 38,
                     width: Dimensions.get("screen").width / 1.4,
                   }}
                 />
                 <Button
                   mode="contained"
+                  style={{ marginTop: 6 }}
                   onPress={() => this.props.handleCoupon()}
                 >
                   Check
                 </Button>
               </View>
             )}
-
+            <View
+              style={{
+                borderBottomColor: "#000",
+                borderBottomWidth: 2,
+                marginTop: 10,
+              }}
+            >
+              <Picker
+                mode="dropdown"
+                selectedValue={selected}
+                style={{ height: 50 }}
+                onValueChange={(itemValue, itemIndex) => handlePM(itemValue)}
+              >
+                <Picker.Item label="Select Payment Method" value="" />
+                <Picker.Item label="Pay with Reward's Wallet" value="reward" />
+                <Picker.Item label="Credit Card Payment" value="credit" />
+              </Picker>
+            </View>
             {/* {this.state.isPromo === null ? (
               <Text style={{ fontSize: 16, color: "red", fontWeight: "bold" }}>
                 Promo doesn't Exist

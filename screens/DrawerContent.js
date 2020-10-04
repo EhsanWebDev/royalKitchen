@@ -445,8 +445,14 @@ function DrawerContent(props) {
                   title="About Us"
                   onPress={() => props.navigation.navigate("AboutUs")}
                 />
-                <List.Item title="Terms And Conditions" />
-                <List.Item title="Privacy Policy" />
+                <List.Item
+                  title="Terms And Conditions"
+                  onPress={() => props.navigation.navigate("Terms")}
+                />
+                <List.Item
+                  title="Privacy Policy"
+                  onPress={() => props.navigation.navigate("Policy")}
+                />
               </List.Accordion>
 
               {/* <DrawerItem

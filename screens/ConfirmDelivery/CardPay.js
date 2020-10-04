@@ -84,6 +84,7 @@ class CardPay extends Component {
         this.props.navigation.navigate("OrderSuccess");
       } else {
         alert("Error Occurred while placing your order");
+
         this.setState({ loading: false });
         return;
       }

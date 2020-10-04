@@ -21,6 +21,7 @@ class PlaceOrder extends React.Component {
     hideCoupon: false,
     PromoDis: null,
     promoMatch: null,
+    pm: "",
   };
   handleCoupons = () => {
     const { promoRes, promo } = this.state;
@@ -61,64 +62,25 @@ class PlaceOrder extends React.Component {
     return this.props.cartItems.map((element) => element.units);
   };
 
-  postData = async () => {
-    const { PromoDis, promoMatch } = this.state;
-    this.props.navigation.navigate("Payment", {
-      PromoDis: PromoDis && Number(PromoDis),
-      promoMatch,
-      order_mode: this.props.route.params.order_mode,
-    });
-    // this.setState({ loading: true });
-    // const data = {};
-    // const quantities = this.getQuantityCount();
-
-    // // * Data
-    // data.user_id = this.props.user.id;
-    // data.products = JSON.stringify(this.getProductsID());
-    // data.quantity = this.getTotalQuantity(quantities);
-    // (data.type = "delivery"),
-    //   (data.coupon = this.state.promoMatch ? this.state.promoMatch.id : 0),
-    //   (data.price = this.calPrice());
-    // data.address_id = this.props.defaultAddress[0].id;
-
-    // // console.log(data);
-    // // console.log(JSON.stringify(data));
-
-    // const res = await axios.post(
-    //   "https://gradhatcreators.com/api/user/add_order",
-    //   JSON.stringify(data)
-    // );
-
-    // if (!res.data.status) {
-    //   this.setState({ loading: false });
-    //   alert(res.data.message);
-    //   console.log(res.data);
-    //   return;
-    // } else {
-    //   // alert(res.data.message);
-    //   this.props.dispatch(empty());
-
-    //   const order_history = await axios.post(
-    //     "https://gradhatcreators.com/api/user/current_order",
-    //     {
-    //       uid: this.props.user.id,
-    //     }
-    //   );
-    //   if (order_history.data.status) {
-    //     // setData(order_history.data.source);
-
-    //     this.props.dispatch({
-    //       type: "ALL_CURRENT_ORDERS",
-    //       payload: order_history.data.source,
-    //     });
-    //     this.setState({ loading: false });
-    //     this.props.navigation.navigate("OrderSuccess");
-    //   } else {
-    //     alert("Error Occurred while placing your order");
-    //     this.setState({ loading: false });
-    //     return;
-    //   }
-    // }
+  postData = () => {
+    const { PromoDis, promoMatch, pm } = this.state;
+    if (pm.length === 0) {
+      alert("Please select payment method");
+      return;
+    } else if (pm === "reward") {
+      this.props.navigation.navigate("Wallet", {
+        PromoDis: PromoDis && Number(PromoDis),
+        promoMatch,
+        order_mode: this.props.route.params.order_mode,
+      });
+      return;
+    } else {
+      this.props.navigation.navigate("CardPay", {
+        PromoDis: PromoDis && Number(PromoDis),
+        promoMatch,
+        order_mode: this.props.route.params.order_mode,
+      });
+    }
   };
   calPrice = () => {
     return this.props.cartItems.reduce((total, item) => {
@@ -135,7 +97,9 @@ class PlaceOrder extends React.Component {
       return total + item;
     }, 0);
   };
-
+  handlePM = (val) => {
+    this.setState({ pm: val });
+  };
   render() {
     const { theme } = this.props;
     if (this.state.loading) {
@@ -234,6 +198,8 @@ class PlaceOrder extends React.Component {
                   promo={this.promo}
                   handleCoupon={this.handleCoupons}
                   items={this.props.cartItems}
+                  selected={this.state.pm}
+                  handlePM={this.handlePM}
                 />
               </View>
               {this.state.PromoDis && (

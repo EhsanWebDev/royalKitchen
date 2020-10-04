@@ -35,6 +35,8 @@ import CardPay from "./ConfirmDelivery/CardPay";
 import Wallet from "./ConfirmDelivery/Wallet";
 import Rewards from "./Rewards";
 import AboutUs from "./Static/AboutUs";
+import Policy from "./Static/Policy";
+import Terms from "./Static/Terms";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -214,6 +216,17 @@ const HomeStackScreen = ({ navigation }) => {
         options={{ headerShown: false }}
         component={AboutUs}
       />
+      <HomeStack.Screen
+        name="Policy"
+        options={{ headerShown: false }}
+        component={Policy}
+      />
+      <HomeStack.Screen
+        name="Terms"
+        options={{ headerShown: false }}
+        component={Terms}
+      />
+      <HomeStack.Screen name="Wallet" component={Wallet} />
     </HomeStack.Navigator>
   );
 };
@@ -366,6 +379,9 @@ const ProfileStackScreen = ({ navigation }) => {
       <ProfileStack.Screen name="Payment" component={Payment} />
 
       <ProfileStack.Screen name="CardPay" component={CardPay} />
+
+      <ProfileStack.Screen name="Wallet" component={Wallet} />
+
       <ProfileStack.Screen name="Rewards" component={Rewards} />
     </ProfileStack.Navigator>
   );
