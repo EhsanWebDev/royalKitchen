@@ -1,5 +1,5 @@
 import { Picker } from "@react-native-community/picker";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { Button, useTheme, Snackbar } from "react-native-paper";
@@ -9,10 +9,9 @@ import { addToCart } from "../src/store/actions";
 
 const ListItem = (props) => {
   const { item } = props;
+
   const theme = useTheme();
-  const [size, setSize] = useState(
-    item.product_detail ? item.product_detail[0] : ""
-  );
+  const [size, setSize] = useState(item ? JSON.parse(item.product_detail) : "");
   const addToCart = (data) => {
     //   ToastAndroid.show(
     //     `${data.name} Added to the Cart !`,
@@ -91,7 +90,7 @@ const ListItem = (props) => {
               borderRadius: 20,
             }}
           >
-            ₹ {item && item.product_detail[0].price}
+            ₹ {item && JSON.parse(item.product_detail)[0].price}
           </Text>
         </View>
 
@@ -154,8 +153,8 @@ const ListItem = (props) => {
             selectedValue={size}
             onValueChange={(itemValue) => setFoodSize(itemValue)}
           >
-            {item.product_detail &&
-              item.product_detail.map((i) => {
+            {item &&
+              JSON.parse(item.product_detail).map((i) => {
                 console.log(item);
 
                 return (

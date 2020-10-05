@@ -17,7 +17,7 @@ const Products = ({ navigation, route }) => {
 
   useEffect(() => {
     if (route.params) {
-      setData(JSON.parse(JSON.parse(route.params.items)));
+      setData(JSON.parse(route.params.items));
       // console.log(typeof JSON.parse(JSON.parse(route.params.items)));
     }
   }, []);

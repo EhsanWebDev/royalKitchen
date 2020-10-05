@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import { Button, Paragraph, Title, withTheme } from "react-native-paper";
+import {
+  Button,
+  Headline,
+  Paragraph,
+  Title,
+  withTheme,
+} from "react-native-paper";
 import { FontAwesome5, SimpleLineIcons, Feather } from "@expo/vector-icons";
 import { connect } from "react-redux";
 class Rewards extends Component {
@@ -47,7 +53,7 @@ class Rewards extends Component {
           </View>
 
           <View style={{ flex: 1, justifyContent: "center" }}>
-            <Title
+            <Headline
               style={{
                 color: theme.dark ? "#fff" : "#000",
                 textAlign: "center",
@@ -56,6 +62,17 @@ class Rewards extends Component {
               Your Reward Wallet Balance :{" "}
               {this.props.user && this.props.user.reward
                 ? this.props.user.reward
+                : 0}
+            </Headline>
+            <Title
+              style={{
+                color: theme.dark ? "#fff" : "#000",
+                textAlign: "center",
+              }}
+            >
+              Rewards spent :{" "}
+              {this.props.user && this.props.user.used_rewards
+                ? this.props.user.used_rewards
                 : 0}
             </Title>
             {/* <Paragraph

@@ -9,14 +9,63 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
-
+import Onboarding from "react-native-onboarding-swiper";
 import Swiper from "react-native-swiper";
 import { Button, Title } from "react-native-paper";
 const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
-      <View
+      <StatusBar backgroundColor="#FF6666" barStyle="light-content" />
+      <Onboarding
+        onSkip={() => navigation.navigate("SignInScreen")}
+        onDone={() => navigation.navigate("SignInScreen")}
+        // onPress={)}
+        pages={[
+          {
+            backgroundColor: "#fff",
+            image: (
+              <Image
+                style={{
+                  width: Dimensions.get("screen").width * 1.4,
+                  height: Dimensions.get("screen").height,
+                }}
+                source={require("../assets/imges/Attachment_1601841955-1.png")}
+              />
+            ),
+            title: "Royal Kitchen",
+            subtitle: "Done with React Native Onboarding Swiper",
+          },
+          {
+            backgroundColor: "#fff",
+            image: (
+              <Image
+                style={{
+                  width: Dimensions.get("screen").width * 1.4,
+                  height: Dimensions.get("screen").height,
+                }}
+                source={require("../assets/imges/Attachment_1601841955-3.png")}
+              />
+            ),
+            title: "Royal Kitchen",
+            subtitle: "Done with React Native Onboarding Swiper",
+          },
+          {
+            backgroundColor: "#fff",
+            image: (
+              <Image
+                style={{
+                  width: Dimensions.get("screen").width * 1.4,
+                  height: Dimensions.get("screen").height,
+                }}
+                source={require("../assets/imges/Attachment_1601841955-2.png")}
+              />
+            ),
+            title: "Royal Kitchen",
+            subtitle: "Done with React Native Onboarding Swiper",
+          },
+        ]}
+      />
+      {/* <View
         style={{
           flex: 1,
           backgroundColor: "#FDFDFD",
@@ -163,46 +212,7 @@ const SplashScreen = ({ navigation }) => {
         >
           Get started
         </Button>
-      </View>
-
-      {/* <View style={styles.header}>
-        <Animatable.Image
-          animation="bounceIn"
-          duraton="1500"
-          source={require('../assets/logo.png')}
-          style={styles.logo}
-          resizeMode="stretch"
-        />
-      </View>
-      <Animatable.View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: colors.background,
-          },
-        ]}
-        animation="fadeInUpBig">
-        <Text
-          style={[
-            styles.title,
-            {
-              color: colors.text,
-            },
-          ]}>
-          Find best food in your locality!
-        </Text>
-        <Text style={styles.text}>Sign in with account</Text>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
-            <LinearGradient
-              colors={['#FFA07A', '#FF6347']}
-              style={styles.signIn}>
-              <Text style={styles.textSign}>Get Started</Text>
-              <MaterialIcons name="navigate-next" color="#fff" size={20} />
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View> */}
+      </View> */}
     </View>
   );
 };

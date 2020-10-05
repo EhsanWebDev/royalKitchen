@@ -36,9 +36,7 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
       );
       if (order_history.data.status) {
         setData(order_history.data.source);
-        console.log(
-          JSON.parse(JSON.parse(order_history.data.source[0].products))
-        );
+        console.log(JSON.parse(order_history.data.source[0].products));
         setLoading(false);
       } else {
         alert("Error Occurred");
@@ -172,8 +170,8 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                 <View
                   style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}
                 >
-                  {/* {item.products &&
-                    JSON.parse(JSON.parse(item.products && item.products)).map(
+                  {item.products &&
+                    JSON.parse(item.products && item.products).map(
                       (item, index) => {
                         if (index < 3) {
                           return (
@@ -193,7 +191,7 @@ const CurrentOrder = ({ user, navigation, dispatch, address }) => {
                           );
                         }
                       }
-                    )} */}
+                    )}
                 </View>
                 <View style={{ alignItems: "flex-end" }}>
                   <Button
