@@ -184,8 +184,17 @@ class Wallet extends Component {
                 </Button>
               </View>
             ) : (
-              <Text style={{ color: "#000", textAlign: "center" }}>
-                You Don't have enough balance{" "}
+              <Text
+                numberOfLines={2}
+                style={{
+                  marginTop: 40,
+                  color: "#c0392b",
+                  textAlign: "center",
+                  marginHorizontal: 80,
+                  fontWeight: "bold",
+                }}
+              >
+                You don't have enough balance, Please pay with credit card{" "}
               </Text>
             )}
           </View>

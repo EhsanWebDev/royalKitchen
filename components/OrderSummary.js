@@ -33,8 +33,8 @@ class OrderSummary extends Component {
   }
 
   renderProdList = (data) => {
-    return data.map((item) => (
-      <View key={item.id}>
+    return data.map((item, index) => (
+      <View key={index}>
         <View
           style={{
             flexDirection: "row",

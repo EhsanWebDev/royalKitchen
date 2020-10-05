@@ -11,7 +11,11 @@ const ListItem = (props) => {
   const { item } = props;
 
   const theme = useTheme();
-  const [size, setSize] = useState(item ? JSON.parse(item.product_detail) : "");
+  const [size, setSize] = useState(
+    `${JSON.parse(item.product_detail)[0].size},${
+      JSON.parse(item.product_detail)[0].price
+    }`
+  );
   const addToCart = (data) => {
     //   ToastAndroid.show(
     //     `${data.name} Added to the Cart !`,
@@ -37,17 +41,20 @@ const ListItem = (props) => {
       });
       // alert(size);
       let prc;
-      console.log(size);
+
+      const sizeArr = size.split(",");
+
       const cartItem = {
         ...data,
-        size: size.size && size.size,
-        price: size.price,
+        size: sizeArr[0],
+        price: sizeArr[1],
       };
       // console.log("cart", cartItem);
       props.addToCart(cartItem);
     }
   };
   const setFoodSize = (itemVal) => {
+    console.log("item value", itemVal);
     setSize(itemVal);
   };
   return (
@@ -155,13 +162,13 @@ const ListItem = (props) => {
           >
             {item &&
               JSON.parse(item.product_detail).map((i) => {
-                console.log(item);
+                // console.log(item);
 
                 return (
                   <Picker.Item
                     key={i}
                     label={`${i.size} ${i.price}`}
-                    value={i}
+                    value={`${i.size},${i.price}`}
                   />
                 );
               })}
@@ -181,7 +188,7 @@ const ListItem = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state =>", state);
+  // console.log("state =>", state);
   return {
     cart: state.cart,
   };
