@@ -569,6 +569,24 @@ const SignUpScreen = ({ navigation, dispatch }) => {
           </View> */}
 
           <View style={styles.button}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+              }}
+            >
+              <Text style={{ color: "white" }}>
+                By Signing Up , I agree to the{" "}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("TermsNConditions")}
+              >
+                <Text style={{ color: "#1abc9c", fontWeight: "bold" }}>
+                  Terms and Conditions
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity style={styles.signIn} onPress={() => Continue()}>
               <LinearGradient
                 colors={["#FF5763", "#FF5763"]}

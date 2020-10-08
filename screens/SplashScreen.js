@@ -12,22 +12,25 @@ import {
 import Onboarding from "react-native-onboarding-swiper";
 import Swiper from "react-native-swiper";
 import { Button, Title } from "react-native-paper";
+const { width } = Dimensions.get("screen");
 const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#FF6666" barStyle="light-content" />
       <Onboarding
+        // containerStyles={{ flex: 1 }}
+        imageContainerStyles={{ paddingTop: 150 }}
         onSkip={() => navigation.navigate("SignInScreen")}
         onDone={() => navigation.navigate("SignInScreen")}
         // onPress={)}
         pages={[
           {
-            backgroundColor: "#fff",
+            backgroundColor: "#FF6666",
             image: (
               <Image
                 style={{
-                  width: Dimensions.get("screen").width * 1.4,
-                  height: Dimensions.get("screen").height,
+                  width: width * 1.4,
+                  height: width * 0.5 * 4.2,
                 }}
                 source={require("../assets/imges/Attachment_1601841955-1.png")}
               />
@@ -36,26 +39,27 @@ const SplashScreen = ({ navigation }) => {
             subtitle: "Done with React Native Onboarding Swiper",
           },
           {
-            backgroundColor: "#fff",
+            backgroundColor: "#FF6666",
             image: (
               <Image
+                resizeMode="cover"
                 style={{
-                  width: Dimensions.get("screen").width * 1.4,
-                  height: Dimensions.get("screen").height,
+                  width: width * 1.4,
+                  height: width * 0.5 * 4.2,
                 }}
                 source={require("../assets/imges/Attachment_1601841955-3.png")}
               />
             ),
-            title: "Royal Kitchen",
-            subtitle: "Done with React Native Onboarding Swiper",
+            title: "",
+            subtitle: "",
           },
           {
-            backgroundColor: "#fff",
+            backgroundColor: "#FF6666",
             image: (
               <Image
                 style={{
-                  width: Dimensions.get("screen").width * 1.4,
-                  height: Dimensions.get("screen").height,
+                  width: width * 1.4,
+                  height: width * 0.5 * 4.2,
                 }}
                 source={require("../assets/imges/Attachment_1601841955-2.png")}
               />

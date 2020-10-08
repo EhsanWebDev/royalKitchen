@@ -37,6 +37,7 @@ import Rewards from "./Rewards";
 import AboutUs from "./Static/AboutUs";
 import Policy from "./Static/Policy";
 import Terms from "./Static/Terms";
+import { StackActions } from "@react-navigation/native";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -45,7 +46,7 @@ const ProfileStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
-const MainTabScreen = () => {
+const MainTabScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const theme = useTheme();
   return (
@@ -72,6 +73,14 @@ const MainTabScreen = () => {
             <Icon name="md-grid" color={color} size={28} />
           ),
         })}
+
+        // listeners={({ navigation, route }) => ({
+        //   tabPress: (e) => {
+
+        //     // navigation.dispatch(StackActions.popToTop());
+        //     // navigation.navigate("Profile");
+        //   },
+        // })}
       />
       <Tab.Screen
         name="Notifications"
@@ -94,10 +103,24 @@ const MainTabScreen = () => {
         options={{
           tabBarLabel: "Profile",
           tabBarColor: colors.dark,
+
           tabBarIcon: ({ color }) => (
             <Icon name="ios-person" color={color} size={26} />
           ),
         }}
+        // listeners={({ navigation, route }) => ({
+        //   tabPress: (e) => {
+        //     e.preventDefault();
+        //     if (navigation.canGoBack()) {
+
+        //     } else {
+        //       // this.doSomething();
+        //       navigation.navigate("Profile");
+        //     }
+        //     // navigation.dispatch(StackActions.popToTop());
+        //     // navigation.navigate("Profile");
+        //   },
+        // })}
       />
       {/* <Tab.Screen
       name="Explore"
@@ -211,19 +234,12 @@ const HomeStackScreen = ({ navigation }) => {
         options={{ headerShown: false }}
         component={EditAddress}
       />
-      <HomeStack.Screen
-        name="AboutUs"
-        options={{ headerShown: false }}
-        component={AboutUs}
-      />
-      <HomeStack.Screen
-        name="Policy"
-        options={{ headerShown: false }}
-        component={Policy}
-      />
+      <HomeStack.Screen name="AboutUs" component={AboutUs} />
+      <HomeStack.Screen name="Policy" component={Policy} />
       <HomeStack.Screen
         name="Terms"
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
+        options={{ title: "Terms & Conditions" }}
         component={Terms}
       />
       <HomeStack.Screen name="Wallet" component={Wallet} />
@@ -317,15 +333,34 @@ const NotificationStackScreen = ({ navigation }) => (
 
 const ProfileStackScreen = ({ navigation }) => {
   const { colors } = useTheme();
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener("tabPress", (e) => {
+  //     // Prevent default behavior
+  //     // e.preventDefault();
+  //     // navigation.dispatch(StackActions.popToTop());
+  //     if (navigation.canGoBack()) {
+  //       navigation.pop(1);
+  //     }
+  //     // navigation.navigate("Profile");
 
+  //     // alert("Default behavior prevented");
+  //     // Do something manually
+  //     // ...
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
   return (
     <ProfileStack.Navigator
+      initialRouteName="Profile"
       screenOptions={{
-        headerShown: false,
         headerStyle: {
           backgroundColor: colors.background,
           shadowColor: colors.background, // iOS
-          elevation: 0, // Android
+          elevation: 10, // Android
+          borderBottomRightRadius: 40,
+          borderBottomLeftRadius: 40,
+          height: 70,
         },
         headerTintColor: colors.text,
       }}
@@ -335,6 +370,7 @@ const ProfileStackScreen = ({ navigation }) => {
         component={ProfileScreen}
         options={{
           title: "",
+          headerShown: false,
           headerLeft: () => (
             <View style={{ marginLeft: 10 }}>
               <Icon.Button
@@ -366,7 +402,11 @@ const ProfileStackScreen = ({ navigation }) => {
         }}
         component={EditProfileScreen}
       /> */}
-      <ProfileStack.Screen name="Address" component={Address} />
+      <ProfileStack.Screen
+        name="Address"
+        component={Address}
+        options={{ title: " Previously Saved addresses" }}
+      />
       <ProfileStack.Screen name="CreateAdd" component={CreateAdd} />
       <ProfileStack.Screen name="EditAddress" component={EditAddress} />
       <ProfileStack.Screen name="OrderHistory" component={OrderHistory} />

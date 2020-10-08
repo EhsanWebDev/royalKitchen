@@ -50,7 +50,7 @@ const All = (props) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   useEffect(() => {
-    console.log(props.id);
+    console.log("My Props ---->", props.id);
     const fetchData = async () => {
       const res = await Axios.post(
         "https://gradhatcreators.com/api/user/products",
@@ -125,7 +125,7 @@ class Categories extends React.Component {
     // console.log('category', category);
     this.props.dispatch({
       type: "CAT_SELECT",
-      payload: category.name,
+      payload: category,
     });
     this.setState({
       // selected: category.name,
@@ -146,22 +146,54 @@ class Categories extends React.Component {
         this.props.categories && this.props.categories.map((item) => item.name);
       this.props.dispatch({
         type: "CAT_SELECT",
-        payload: this.props.categories[0].name,
+        payload: this.props.categories[0],
       });
-      console.log("selected", this.props.selector);
+      // var index;
+
+      // index =
+      //   this.props.categories &&
+      //   this.props.categories.findIndex((p) => p.id === this.props.selector.id);
+      // alert(index);
+
+      console.log("selected item", this.props.selector);
       // console.log(cats);
+      alert(
+        this.props.categories.findIndex((p) => p.id === this.props.selector.id)
+      );
       this.setState({
         // selected: this.props.categories[0].name,
         selectedObj: this.props.categories[0],
         cats,
+      });
+      let wait = new Promise((resolve) => setTimeout(resolve, 10)); // Smaller number should work
+      wait.then(() => {
+        this.flatListRef.scrollTo({
+          y: 0,
+          x: Dimensions.get("screen").width,
+          animated: true,
+        });
       });
     }
   }
   componentWillUnmount() {
     this._isMounted = false;
   }
+  scrollToIndex = () => {
+    // let randomIndex = Math.floor(
+    //   Math.random(Date.now()) * this.props.data.length
+    // );
+    // this.flatListRef.current.scrollToIndex({ animated: true, index: 1 });
+    this.flatListRef.scrollTo({
+      y: 0,
+      x: Dimensions.get("screen").width * 2,
+      animated: true,
+    });
+  };
+
   render() {
+    // this.scrollToIndex();
     const { theme, navigation, categories, selector } = this.props;
+
     const { colors } = theme;
     const { selected, id, selectedObj, cats } = this.state;
     // console.log(
@@ -169,6 +201,13 @@ class Categories extends React.Component {
     //   cats.find((item) => item === selected)
     // );
     // console.log("selected", selected);
+    if (!selector) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
     return (
       <Container dark={theme.dark ? true : false}>
         <StatusBar
@@ -216,8 +255,15 @@ class Categories extends React.Component {
 
           <CartIcon dark={theme.dark ? true : false} color="#333" />
         </View>
+        <Button onPress={this.scrollToIndex}>Index</Button>
 
-        <CategoriesList horizontal showsHorizontalScrollIndicator={false}>
+        <CategoriesList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ref={(ref) => {
+            this.flatListRef = ref;
+          }}
+        >
           {categories.map((category, index) => {
             return (
               <Category
@@ -226,11 +272,13 @@ class Categories extends React.Component {
               >
                 <CategoryName
                   dark={theme.dark ? true : false}
-                  selected={selector === category.name ? true : false}
+                  selected={
+                    selector && selector.name === category.name ? true : false
+                  }
                 >
                   {category.name}
                 </CategoryName>
-                {selector === category.name && <CategoryDot />}
+                {selector && selector.name === category.name && <CategoryDot />}
               </Category>
             );
           })}
@@ -241,9 +289,9 @@ class Categories extends React.Component {
         )} */}
         {cats.length > 0 &&
           cats.map((item, index) => {
-            // console.log(item);
-            if (item === this.props.selector) {
-              return <All id={selectedObj.id} key={index} />;
+            console.log(selector && selector.id);
+            if (item === selector.name) {
+              return <All id={selector.id} key={index} />;
             }
           })}
         {/* {selected === cats.find(item => item === selected) ? (

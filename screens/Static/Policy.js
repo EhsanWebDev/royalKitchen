@@ -7,8 +7,8 @@ import Swiper from "react-native-swiper";
 
 const Policy = () => {
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <View style={{ flex: 1, marginHorizontal: 10 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#fff", marginTop: -90 }}>
+      <View style={{ flex: 1, marginHorizontal: 10, marginTop: 90 }}>
         <Title
           style={{
             color: "#000",

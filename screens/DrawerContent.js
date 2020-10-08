@@ -70,7 +70,7 @@ function DrawerContent(props) {
     fetchData();
   }, []);
   const { signOut, toggleTheme } = React.useContext(AuthContext);
-  const { user, dispatch } = props;
+  const { user, dispatch, categories } = props;
   const SignOut = async () => {
     // signOut();
     await dispatch(SIGNOUT());
@@ -85,7 +85,14 @@ function DrawerContent(props) {
       </View>
     );
   }
-
+  const handleNavigation = () => {
+    // console.log(item.name);
+    dispatch({
+      type: "CAT_SELECT",
+      payload: categories[0],
+    });
+    props.navigation.navigate("Categories");
+  };
   return (
     <View
       style={{
@@ -98,7 +105,7 @@ function DrawerContent(props) {
         style={{
           flex: 1,
           // resizeMode: "cover",
-          opacity: 0.8,
+          opacity: 0.95,
         }}
         blurRadius={1.5}
         source={{
@@ -109,7 +116,7 @@ function DrawerContent(props) {
         <DrawerContentScrollView
           {...props}
           style={{
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "rgba(255,255,255,0)",
           }}
         >
           <View style={[styles.drawerContent]}>
@@ -247,9 +254,7 @@ function DrawerContent(props) {
                   />
                 )}
                 label="Menu"
-                onPress={() => {
-                  props.navigation.navigate("Categories");
-                }}
+                onPress={() => handleNavigation()}
                 labelStyle={{
                   fontWeight: "bold",
                   textShadowColor: "#000",
@@ -557,9 +562,10 @@ function DrawerContent(props) {
     </View>
   );
 }
-const mapStateToProps = ({ auth, orders }) => ({
+const mapStateToProps = ({ auth, orders, category }) => ({
   user: auth.user,
   orders: orders.orders,
+  categories: category.categories,
 });
 const mapDispatchToProps = (dispatch) => ({
   dispatch,

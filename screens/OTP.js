@@ -82,12 +82,7 @@ class OTP extends Component {
       }
     );
 
-    if (!res.data.status) {
-      alert("Invalid OTP");
-      this.setState({ loading: false });
-      return;
-    } else {
-      //   ({ type: "" });
+    if (res.data.status) {
       this.setState({ loading: false });
       this.props.dispatch({
         type: actionTypes.LOGIN_SUCCESS,
@@ -102,6 +97,11 @@ class OTP extends Component {
       } catch (e) {
         console.log("error in signing in", e);
       }
+    } else {
+      //   ({ type: "" });
+      alert("Invalid OTP");
+      this.setState({ loading: false });
+      return;
     }
 
     // console.log(this.props.dispatch);

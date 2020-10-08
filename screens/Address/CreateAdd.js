@@ -323,9 +323,12 @@ const CreateAdd = ({ user, dispatch, navigation }) => {
         style={{
           flex: 1,
           paddingTop: 10,
+
           backgroundColor: theme.dark ? "#333" : "#fff",
+          marginTop: -90,
         }}
       >
+        <View style={{ marginTop: 90 }}></View>
         {/* <Title style={{color: '#000', textAlign: 'center'}}>
         Enter your details
       </Title> */}

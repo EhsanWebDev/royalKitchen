@@ -85,33 +85,22 @@ const Address = ({ user, navigation, dispatch, address }) => {
       { cancelable: false }
     );
   return (
-    <View style={{ flex: 1, backgroundColor: theme.dark ? "#333" : "#fff" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.dark ? "#333" : "#fff",
+        marginTop: -90,
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-around",
           marginHorizontal: 10,
+          marginTop: 90,
         }}
-      >
-        <Feather
-          name="arrow-left"
-          size={26}
-          style={{ paddingRight: 10 }}
-          onPress={() => navigation.navigate("Profile")}
-        />
-        <Title
-          style={{
-            color: theme.dark ? "#fff" : "#111",
-            textAlign: "center",
-            alignItems: "center",
-            marginVertical: 20,
-            fontSize: 24,
-          }}
-        >
-          Previously Saved addresses
-        </Title>
-      </View>
+      ></View>
 
       {/* <Button >Back</Button> */}
       {address && (
@@ -209,6 +198,29 @@ const Address = ({ user, navigation, dispatch, address }) => {
                   Location: {item.lat} , {item.lng}
                 </Paragraph>
               </Card.Content>
+              <View
+                style={{ flex: 1, flexDirection: "row", marginHorizontal: 15 }}
+              >
+                <Paragraph
+                  style={{
+                    color: theme.dark ? "#fff" : "#000",
+                  }}
+                >
+                  Street Address:
+                </Paragraph>
+                <Paragraph
+                  style={{
+                    color: theme.dark ? "#fff" : "#000",
+                    flex: 1,
+                    marginHorizontal: 5,
+                  }}
+                >
+                  {item.street_address} , {item.province}
+                  {" , "}
+                  {item.country}
+                </Paragraph>
+              </View>
+
               <Card.Actions>
                 <Button onPress={() => handleDefault(item)}>
                   Use this address

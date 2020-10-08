@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
@@ -19,17 +20,20 @@ import { connect } from "react-redux";
 import { getAllCategories } from "../src/store/actions/categories";
 import Axios from "axios";
 
-const HomeScreen = ({ navigation, user, categories, dispatch }) => {
+const HomeScreen = ({ navigation, user, categories, selector, dispatch }) => {
   let _isMounted = false;
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const handleNavigation = (item) => {
-    console.log(item.name);
+    // console.log(item.name);
+
     dispatch({
       type: "CAT_SELECT",
-      payload: item.name,
+      payload: item,
     });
+    // console.log("selected", selector);
+
     navigation.navigate("Categories");
   };
   useEffect(() => {
@@ -470,7 +474,7 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
         </TouchableOpacity> */}
         </View>
 
-        <View style={styles.cardsWrapper}>
+        {/* <View style={styles.cardsWrapper}>
           <Text
             style={{
               alignSelf: "center",
@@ -529,7 +533,7 @@ const HomeScreen = ({ navigation, user, categories, dispatch }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
     );
   }
@@ -541,6 +545,7 @@ const mapStateToProps = (state) => {
   return {
     categories: state.category.categories,
     user: state.auth.user,
+    selector: state.selector.selected,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
