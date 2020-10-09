@@ -12,6 +12,7 @@ import SignInPhone from "./SignInPhone";
 import OTP from "./OTP";
 import Terms from "./Static/Terms";
 import { useTheme } from "react-native-paper";
+import MainTabScreen from "./MainTabScreen";
 
 const RootStack = createStackNavigator();
 
@@ -79,6 +80,11 @@ const RootStackScreen = ({ navigation }) => {
         name="TermsNConditions"
         options={{ title: "Terms & conditions" }}
         component={Terms}
+      />
+      <RootStack.Screen
+        name="homepage"
+        options={{ headerShown:false }}
+        component={MainTabScreen}
       />
     </RootStack.Navigator>
   );

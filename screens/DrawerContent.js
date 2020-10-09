@@ -34,7 +34,7 @@ function DrawerContent(props) {
   const paperTheme = useTheme();
   const { colors } = useTheme();
   const theme = useTheme();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function DrawerContent(props) {
     };
     // console.log("orders", props.orders);
 
-    fetchData();
+    // fetchData();
   }, []);
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const { user, dispatch, categories } = props;

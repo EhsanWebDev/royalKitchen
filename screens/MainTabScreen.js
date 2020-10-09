@@ -38,6 +38,10 @@ import AboutUs from "./Static/AboutUs";
 import Policy from "./Static/Policy";
 import Terms from "./Static/Terms";
 import { StackActions } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import UnAuth from "./UnauthUser";
+import EditPhone from "./EditPhone";
+import EditEmail from "./EditEmail";
 
 const HomeStack = createStackNavigator();
 const CategoryStack = createStackNavigator();
@@ -140,7 +144,12 @@ const MainTabScreen = ({ navigation }) => {
 export default MainTabScreen;
 
 const HomeStackScreen = ({ navigation }) => {
-  const { colors } = useTheme();
+  const { colors } = useTheme(); 
+  const  user  = useSelector(state => state.auth.user)
+  React.useEffect(() => {
+    
+  console.log("user" ,user)
+  }, [])
   const theme = useTheme();
   return (
     <HomeStack.Navigator
@@ -151,7 +160,7 @@ const HomeStackScreen = ({ navigation }) => {
           elevation: 10, // Android
           borderBottomRightRadius: 40,
           borderBottomLeftRadius: 40,
-          height: 70,
+          height: 80,
         },
         // headerTintColor: colors.text,
         headerTitleStyle: {
@@ -164,7 +173,8 @@ const HomeStackScreen = ({ navigation }) => {
         component={HomeScreen}
         options={{
           title: "Royal Kitchen",
-          headerLeft: () => (
+          
+          headerLeft: () => ( user ? 
             <View style={{ paddingLeft: 20 }}>
               <Icon.Button
                 name="ios-menu"
@@ -174,7 +184,7 @@ const HomeStackScreen = ({ navigation }) => {
                 backgroundColor={colors.background}
                 onPress={() => navigation.openDrawer()}
               />
-            </View>
+            </View> :<View style={{paddingLeft:10}}></View>
           ),
           headerRight: () => (
             <CartIcon dark={theme.dark ? true : false} color="#fff" />
@@ -204,7 +214,7 @@ const HomeStackScreen = ({ navigation }) => {
       <HomeStack.Screen name="Cart" component={Cart} />
       <HomeStack.Screen name="ConfirmDelivery" component={ConfirmDelivery} />
       <HomeStack.Screen
-        options={{ headerShown: false }}
+        options={{title:'Previously Saved Addresses'}}
         name="Address"
         component={Address}
       />
@@ -226,12 +236,12 @@ const HomeStackScreen = ({ navigation }) => {
 
       <HomeStack.Screen
         name="CreateAdd"
-        options={{ headerShown: false }}
+        
         component={CreateAdd}
       />
       <HomeStack.Screen
         name="EditAddress"
-        options={{ headerShown: false }}
+       
         component={EditAddress}
       />
       <HomeStack.Screen name="AboutUs" component={AboutUs} />
@@ -243,6 +253,7 @@ const HomeStackScreen = ({ navigation }) => {
         component={Terms}
       />
       <HomeStack.Screen name="Wallet" component={Wallet} />
+      <HomeStack.Screen name="UnAuth" options={{headerShown:false}} component={UnAuth} />
     </HomeStack.Navigator>
   );
 };
@@ -423,19 +434,10 @@ const ProfileStackScreen = ({ navigation }) => {
       <ProfileStack.Screen name="Wallet" component={Wallet} />
 
       <ProfileStack.Screen name="Rewards" component={Rewards} />
+      <ProfileStack.Screen name="EditPhone" options={{title:'Edit Your Phone Number'}} component={EditPhone} />
+      <ProfileStack.Screen name="EditEmail" options={{title:'Edit Your Email Address'}} component={EditEmail} />
     </ProfileStack.Navigator>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconContainer: {
-    paddingLeft: 10,
-    paddingTop: 10,
-    marginRight: 10,
-  },
-});
+

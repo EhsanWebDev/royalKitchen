@@ -25,6 +25,7 @@ import {
 import { connect } from "react-redux";
 import Axios from "axios";
 import CartIcon from "./Cart/CartIcon";
+import UnAuth from './UnauthUser'
 
 const ProfileScreen = ({ user, navigation, defaultAddress }) => {
   const theme = useTheme();
@@ -64,8 +65,12 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
         // console.log(res.data);
       }
     };
-
-    fetch();
+    if (user) {
+       fetch();
+    } else {
+      setLoading(false)
+    }
+   
   }, []);
   if (loading) {
     return (
@@ -75,6 +80,11 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
         <ActivityIndicator size="large" />
       </View>
     );
+  }
+  if (!user) {
+    return (
+      <UnAuth />
+    )
   }
   return (
     <ScrollView
@@ -178,7 +188,8 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
               paddingHorizontal: 25,
             }}
           >
-            <Text
+            <View style={{flex:1,flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+          <Text
               style={{
                 color: "#fff",
                 fontSize: 22,
@@ -186,22 +197,41 @@ const ProfileScreen = ({ user, navigation, defaultAddress }) => {
                 textAlign: "center",
               }}
             >
-              Phone
+                Phone 
             </Text>
+               <Icon
+                name="square-edit-outline"
+                size={20} onPress={() => navigation.navigate('EditPhone', {
+                  phone: user &&  user.phone
+                })}
+                color={theme.dark ? "#000" : "#fff"}
+              />
+            </View>
+            
             {/* <Icon name="phone" color="#fff" size={20} /> */}
             <Text style={{ color: "#fff" }}>{user.phone}</Text>
           </View>
           <View style={{}}>
-            <Text
+             <View style={{flexDirection:'row', alignItems:'center',alignSelf:'center', justifyContent:'space-around', }}>
+                     <Text
               style={{
                 color: "#fff",
                 fontSize: 22,
                 fontWeight: "bold",
-                textAlign: "center",
+                textAlign: "center",paddingRight:5
               }}
             >
               Email
             </Text>
+               <Icon
+                name="square-edit-outline"
+                size={20} onPress={() => navigation.navigate('EditEmail', {
+                  phone: user &&  user.email
+                })}
+                color={theme.dark ? "#000" : "#fff"}
+              />
+            </View>
+
             {/* <Icon name="email" color="#fff" size={20} /> */}
             <Text style={{ color: "#fff", marginLeft: 20 }}>{user.email}</Text>
           </View>

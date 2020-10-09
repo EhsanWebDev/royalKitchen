@@ -36,6 +36,7 @@ import { AuthContext } from "../components/context";
 import { connect } from "react-redux";
 import { loginUser } from "../src/store/actions/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from "@react-native-community/async-storage";
 // import {makeid} from '../src/helpers/constants';
 // import {GoogleSignin} from '@react-native-community/google-signin';
 // import auth from '@react-native-firebase/auth';
@@ -58,7 +59,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
     isValidUser: true,
     isValidPassword: true,
   });
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [googleUser, setGoogleUser] = useState();
   const { colors } = useTheme();
   const theme = useTheme();
@@ -149,19 +150,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
       });
     }
   };
-  // const handleGoogleAuth = async () => {
-  //   setLoading(true);
-  //   onGoogleButtonPress()
-  //     .then(res => {
-  //       const user = res.user._user.providerData[0];
-  //       console.log('res', user);
-  //       setLoading(false);
-  //       if (!user.phone) {
-  //         navigation.navigate('Modal', {user});
-  //       }
-  //     })
-  //     .catch(e => alert('Error occurred while signing in '));
-  // };
+
   const attempt = async () => {
     const { type, accessToken, user } = await Google.logInAsync({
       iosClientId: `706778063952-v9031e7idlub8vebv34m3htamumqr0i5.apps.googleusercontent.com`,
@@ -177,8 +166,25 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
   };
 
   useEffect(() => {
-    // attempt();
-    // initAsync();
+     const fetchData = async () => {
+        let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem("userToken");
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("user token: ", userToken);
+      dispatch({ type: "RETRIEVE_TOKEN", user: JSON.parse(userToken) });
+      if (userToken || user) {
+        navigation.navigate('homepage')
+        setLoading(false)
+      } else {
+         setLoading(false);
+      }
+     
+     }
+    fetchData()
   }, []);
   const loginHandle = async () => {
     // console.log(number);
@@ -229,6 +235,19 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
   //     </View>
   //   );
   // }
+   if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#333",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <View
       style={[
@@ -250,6 +269,7 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
             "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=653&q=80",
         }}
       >
+         
         {/* <StatusBar backgroundColor="#FF5763" barStyle="light-content" /> */}
         <View style={styles.header}>
           {/* <Image
@@ -553,6 +573,31 @@ const SignInScreen = ({ navigation, dispatch, user, error }) => {
                 Create new account
               </Text>
             </TouchableOpacity>
+            <Button mode="contained"
+            // style={[styles.signIn]}
+            style={{
+              justifyContent: "flex-start",
+              width: "90%",
+              backgroundColor: "#0097e6",
+              alignItems: "center",
+            }}
+            contentStyle={{
+              alignSelf: "flex-start",
+              justifyContent: "flex-start",
+            }}
+            // labelStyle={{ color: "#0097e6" }}
+            icon="arrow-right"
+            onPress={() => navigation.navigate('homepage')}
+          >
+            <Text
+              style={[
+                styles.textSign,
+               
+              ]}
+            >
+              Skip Login
+            </Text>
+          </Button>
           </KeyboardAvoidingView>
         </View>
       </ImageBackground>

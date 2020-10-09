@@ -9,6 +9,8 @@ import {
   ScrollView,
   ImageBackground,
   Dimensions,
+  BackHandler,
+  Alert,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
@@ -49,6 +51,7 @@ const HomeScreen = ({ navigation, user, categories, selector, dispatch }) => {
       // console.log(categories);
     };
     if (_isMounted) {
+
       fetchDate();
     }
 

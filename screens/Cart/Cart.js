@@ -30,6 +30,16 @@ class Cart extends Component {
     }, 0);
   };
 
+  handleCheckOut = () => {
+    if (this.props.user) {
+      this.props.navigation.navigate("ConfirmDelivery")
+    } else {
+     
+      this.props.navigation.navigate("UnAuth")
+    }
+     
+  }
+
   render() {
     const theme = this.props.theme;
     return (
@@ -58,8 +68,8 @@ class Cart extends Component {
                   backgroundColor: "#e84118",
                   justifyContent: "space-around",
                 }}
-                onPress={() =>
-                  this.props.navigation.navigate("ConfirmDelivery")
+                onPress={
+                 this.handleCheckOut
                 }
               >
                 Checkout
@@ -95,6 +105,7 @@ class Cart extends Component {
 const mapStateToProps = (state) => {
   return {
     cartItems: state.cart,
+      user: state.auth.user,
   };
 };
 const mapDispatchToProps = (dispatch) => {

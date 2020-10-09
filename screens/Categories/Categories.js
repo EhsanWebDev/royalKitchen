@@ -157,22 +157,22 @@ class Categories extends React.Component {
 
       console.log("selected item", this.props.selector);
       // console.log(cats);
-      alert(
-        this.props.categories.findIndex((p) => p.id === this.props.selector.id)
-      );
+      // alert(
+      //   this.props.categories.findIndex((p) => p.id === this.props.selector.id)
+      // );
       this.setState({
         // selected: this.props.categories[0].name,
         selectedObj: this.props.categories[0],
         cats,
       });
-      let wait = new Promise((resolve) => setTimeout(resolve, 10)); // Smaller number should work
-      wait.then(() => {
-        this.flatListRef.scrollTo({
-          y: 0,
-          x: Dimensions.get("screen").width,
-          animated: true,
-        });
-      });
+      // let wait = new Promise((resolve) => setTimeout(resolve, 10)); // Smaller number should work
+      // wait.then(() => {
+      //   this.flatListRef.scrollTo({
+      //     y: 0,
+      //     x: Dimensions.get("screen").width,
+      //     animated: true,
+      //   });
+      // });
     }
   }
   componentWillUnmount() {
@@ -183,11 +183,11 @@ class Categories extends React.Component {
     //   Math.random(Date.now()) * this.props.data.length
     // );
     // this.flatListRef.current.scrollToIndex({ animated: true, index: 1 });
-    this.flatListRef.scrollTo({
-      y: 0,
-      x: Dimensions.get("screen").width * 2,
-      animated: true,
-    });
+    // this.flatListRef.scrollTo({
+    //   y: 0,
+    //   x: Dimensions.get("screen").width * 2,
+    //   animated: true,
+    // });
   };
 
   render() {
@@ -209,7 +209,7 @@ class Categories extends React.Component {
       );
     }
     return (
-      <Container dark={theme.dark ? true : false}>
+      <Container dark={theme.dark ? true : false} style={{ paddingTop:this.props.user ? 0: 30}}>
         <StatusBar
           backgroundColor={theme.dark ? "#333" : "#fff"}
           barStyle={theme.dark ? "default" : "dark-content"}
@@ -223,20 +223,22 @@ class Categories extends React.Component {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Icon.Button
+            {this.props.user &&  <Icon.Button
               name="ios-menu"
               // style={{bordebott: 120}}
               size={32}
               color={theme.dark ? "#fff" : "#333"}
               backgroundColor={theme.dark ? "#333" : "#fff"}
               onPress={() => navigation.openDrawer()}
-            />
+            />}
+            
             <Text
               style={{
                 fontSize: 24,
                 marginBottom: 12,
                 marginTop: 10,
                 color: theme.dark ? "#fff" : "#333",
+                paddingLeft: this.props.user ? 0 : 20
               }}
             >
               Categories
@@ -255,7 +257,7 @@ class Categories extends React.Component {
 
           <CartIcon dark={theme.dark ? true : false} color="#333" />
         </View>
-        <Button onPress={this.scrollToIndex}>Index</Button>
+        {/* <Button onPress={this.scrollToIndex}>Index</Button> */}
 
         <CategoriesList
           horizontal
@@ -315,6 +317,7 @@ const mapStateToProps = (state) => {
   return {
     categories: state.category.categories,
     selector: state.selector.selected,
+     user: state.auth.user,
   };
 };
 const mapDispatchToProps = (dispatch) => ({

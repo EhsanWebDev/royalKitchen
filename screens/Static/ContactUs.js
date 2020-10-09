@@ -1,5 +1,7 @@
+import Axios from "axios";
 import React, { useState } from "react";
 import { View } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import { Button, Colors, Text, TextInput, useTheme } from "react-native-paper";
 
 // import { Container } from './styles';
@@ -9,6 +11,7 @@ const ContactUs = () => {
   const { colors } = useTheme();
   const [number, setNumber] = useState("");
   const [subject, setSubject] = useState("");
+  const [loading, setLoading] = useState(false)
   const [issue, setIssue] = useState("");
   const [emailData, setEmailData] = useState({
     email: "",
@@ -29,13 +32,14 @@ const ContactUs = () => {
     } else {
       setEmailData({
         ...emailData,
+        email: val,
         errorEmail: "Please enter a valid email-address",
         check_textInputChangeEmail: false,
       });
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     if (
       number.length === 0 ||
       emailData.errorEmail ||
@@ -48,6 +52,30 @@ const ContactUs = () => {
     if (subject.length === 0 || issue.length === 0) {
       alert("Enter subject and issue to submit");
       return;
+    }
+    setLoading(true)
+    const res = await Axios.post('https://gradhatcreators.com/api/user/contact-us', {
+      email: emailData.email, 
+      phone: number, 
+      subject: subject, 
+      issue : issue
+    })
+
+    if (res.data.status) {
+      // alert(res.data.message)
+      setEmailData({
+        ...emailData , email:''
+      })
+      setNumber('')
+      setIssue('')
+      setSubject('')
+      setLoading(false)
+      showMessage({
+        message: 'Form submitted successfully', 
+        type: 'success', duration: 2000,
+       
+      })
+      
     }
   };
   return (
@@ -66,6 +94,7 @@ const ContactUs = () => {
           keyboardType="email-address"
           // multiline
           // numberOfLines={4}
+          value={emailData.email}
           theme={{ colors: { text: colors.dark, placeholder: colors.dark } }}
           style={{ backgroundColor: "#fff", fontSize: 18 }}
           onChangeText={(val) => textInputChangeEmail(val)}
@@ -78,6 +107,7 @@ const ContactUs = () => {
           mode="outlined"
           label="Mobile Number"
           keyboardType="number-pad"
+          value={number}
           // multiline
           // numberOfLines={4}
           theme={{ colors: { text: colors.dark, placeholder: colors.dark } }}
@@ -87,6 +117,7 @@ const ContactUs = () => {
         <TextInput
           mode="outlined"
           label="Subject"
+          value={subject}
           //   keyboardType="number-pad"
           // multiline
           // numberOfLines={4}
@@ -97,6 +128,7 @@ const ContactUs = () => {
         <TextInput
           mode="outlined"
           label="Describe your issue"
+          value={issue}
           //   keyboardType="number-pad"
           multiline
           numberOfLines={4}
@@ -105,7 +137,7 @@ const ContactUs = () => {
           onChangeText={(val) => setIssue(val)}
         />
         <Button
-          mode="contained"
+          mode="contained" loading={loading}
           style={{ marginTop: 20 }}
           onPress={handleSubmit}
         >

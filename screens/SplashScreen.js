@@ -11,9 +11,16 @@ import {
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import Swiper from "react-native-swiper";
-import { Button, Title } from "react-native-paper";
+import { ActivityIndicator, Button, Title } from "react-native-paper";
+import { connect } from "react-redux";
+import AsyncStorage from "@react-native-community/async-storage";
 const { width } = Dimensions.get("screen");
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({ navigation , user, dispatch }) => {
+  const [loading, setLoading] = React.useState(false);
+  React.useEffect(() => {
+   
+  }, []);
+ 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#FF6666" barStyle="light-content" />
@@ -220,8 +227,16 @@ const SplashScreen = ({ navigation }) => {
     </View>
   );
 };
-
-export default SplashScreen;
+const mapStateToProps = (state) => {
+  // console.log(state);
+  return {
+    user: state.auth.user,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+});
+export default connect(mapStateToProps, mapDispatchToProps) (SplashScreen);
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;
